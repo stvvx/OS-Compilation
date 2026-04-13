@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Windows OS — ITOS220-T Project Compilation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════ */
+    :root {
+      --blue:       #0078d4;
+      --blue-lt:    #2ea8ff;
+      --cyan:       #00d4ff;
+      --cyan-dim:   rgba(0,212,255,0.15);
+      --navy:       #050b18;
+      --navy-mid:   #080f20;
+      --navy-card:  rgba(8,20,48,0.7);
+      --glass:      rgba(255,255,255,0.04);
+      --glass-bd:   rgba(255,255,255,0.09);
+      --text:       #e8f0ff;
+      --text-dim:   #7a99c0;
+      --text-mute:  #3a5070;
+      --glow-blue:  0 0 40px rgba(0,120,212,0.5);
+      --glow-cyan:  0 0 30px rgba(0,212,255,0.35);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ═══════════════════════════════════════
+       ANIMATED CANVAS BACKGROUND
+    ═══════════════════════════════════════ */
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+    }
+
+    /* deep base gradient */
+    .bg-base {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 100% 70% at 50% -5%,  rgba(0,100,200,0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 50%  50% at 95%  80%,  rgba(0,200,255,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 40%  60% at  5%  60%,  rgba(0, 60,150,0.14) 0%, transparent 55%),
+        linear-gradient(185deg, #050b18 0%, #070e22 40%, #040918 100%);
+      pointer-events: none;
+    }
+
+    /* subtle scanlines */
+    .bg-scan {
+      position: fixed; inset: 0; z-index: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,100,200,0.018) 2px,
+        rgba(0,100,200,0.018) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 52px;
+      background: rgba(5, 10, 22, 0.82);
+      backdrop-filter: blur(28px) saturate(1.4);
+      border-bottom: 1px solid rgba(0, 180, 255, 0.1);
+    }
+
+    nav::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,180,255,0.4) 40%, rgba(0,120,212,0.4) 60%, transparent);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+    }
+
+    /* Animated Windows pane logo */
+    .win-panes {
+      width: 30px; height: 30px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+      animation: wlogo-pulse 4s ease-in-out infinite;
+    }
+    @keyframes wlogo-pulse {
+      0%,100% { filter: drop-shadow(0 0 4px rgba(0,180,255,0.4)); }
+      50%      { filter: drop-shadow(0 0 12px rgba(0,180,255,0.9)); }
+    }
+    .win-panes span {
+      border-radius: 2px;
+      display: block;
+      background: var(--blue);
+    }
+    .win-panes span:nth-child(1) { background: #0090e8; }
+    .win-panes span:nth-child(2) { background: #0070c8; opacity:.85; }
+    .win-panes span:nth-child(3) { background: #0070c8; opacity:.85; }
+    .win-panes span:nth-child(4) { background: #0058a8; opacity:.7; }
+
+    .nav-brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .nav-brand span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex; gap: 2px; list-style: none;
+    }
+
+    .nav-links a {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 22px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color .2s, background .2s;
+      position: relative;
+    }
+
+    .nav-links a .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--cyan);
+      opacity: 0; transform: scale(0);
+      transition: all .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #fff;
+      background: rgba(0,180,255,0.08);
+    }
+    .nav-links a.active .dot { opacity: 1; transform: scale(1); }
+    .nav-links a.active { color: var(--cyan); }
+
+    /* ═══════════════════════════════════════
+       SECTION BASE
+    ═══════════════════════════════════════ */
+    section {
+      position: relative; z-index: 1;
+      display: none;
+      min-height: 100vh;
+      padding: 104px 60px 80px;
+      animation: sec-in .5s cubic-bezier(.22,1,.36,1);
+    }
+    section.active { display: block; }
+
+    @keyframes sec-in {
+      from { opacity:0; transform: translateY(22px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      text-align: center;
+      padding: 30px 0 70px;
+      position: relative;
+    }
+
+    /* big decorative orb behind hero */
+    .hero::before {
+      content:'';
+      position:absolute; top:-60px; left:50%; transform:translateX(-50%);
+      width:700px; height:400px;
+      background: radial-gradient(ellipse, rgba(0,120,212,0.18) 0%, transparent 70%);
+      pointer-events:none; z-index:0;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 7px 20px;
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 100px;
+      background: rgba(0,212,255,0.07);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      position: relative; z-index:1;
+    }
+    .hero-eyebrow::before {
+      content:'';
+      width:6px; height:6px; border-radius:50%;
+      background: var(--cyan);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 7vw, 86px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      position: relative; z-index:1;
+    }
+
+    .hero h1 .line1 {
+      display: block;
+      background: linear-gradient(110deg, #ffffff 0%, #cde8ff 50%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 .line2 {
+      display: block;
+      font-size: .55em;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      -webkit-text-fill-color: var(--text-dim);
+      margin-top: 10px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin: 24px auto 0;
+      line-height: 1.75;
+      font-weight: 300;
+      position: relative; z-index:1;
+    }
+
+    /* ═══════════════════════════════════════
+       USER IDENTITY CARD
+    ═══════════════════════════════════════ */
+    .identity-card {
+      display: inline-flex; align-items: stretch; gap: 0;
+      margin: 48px auto 0;
+      border: 1px solid rgba(0,180,255,0.2);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(0,30,70,0.5);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+      position: relative; z-index:1;
+    }
+
+    .id-stripe {
+      width: 5px;
+      background: linear-gradient(180deg, var(--blue-lt), var(--cyan));
+    }
+
+    .id-body {
+      display: flex; align-items: center; gap: 0;
+    }
+
+    .id-field {
+      padding: 20px 32px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .id-field:last-child { border-right: none; }
+
+    .id-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .id-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .id-badge {
+      padding: 20px 28px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    .id-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 16px; font-weight: 800;
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(0,212,255,0.3);
+    }
+
+    /* ═══════════════════════════════════════
+       SECTION HEADERS
+    ═══════════════════════════════════════ */
+    .s-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .s-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 52px;
+      letter-spacing: -.5px;
+    }
+
+    .s-divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 2px;
+      margin: 14px auto 52px;
+    }
+
+    /* ═══════════════════════════════════════
+       FACTS GRID
+    ═══════════════════════════════════════ */
+    .facts-wrap {
+      max-width: 1200px; margin: 0 auto 90px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media(max-width:900px){ .facts-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ .facts-grid { grid-template-columns: 1fr; } }
+
+    .fact-card {
+      position: relative;
+      background: var(--navy-card);
+      border: 1px solid var(--glass-bd);
+      border-radius: 18px;
+      padding: 30px 26px;
+      overflow: hidden;
+      transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .3s;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .fact-card.revealed {
+      animation: card-reveal .5s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    @keyframes card-reveal {
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .fact-card::before {
+      content:'';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(0,180,255,0.06) 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(0,180,255,0.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,180,255,0.1), var(--glow-blue);
+    }
+    .fact-card:hover::before { opacity:1; }
+
+    /* glowing corner accent */
+    .fact-card::after {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--blue-lt), var(--cyan), transparent);
+      opacity:0; transition: opacity .3s;
+    }
+    .fact-card:hover::after { opacity:1; }
+
+    .fact-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(0,120,212,0.15);
+      border: 1px solid rgba(0,120,212,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+      transition: background .3s, box-shadow .3s;
+    }
+    .fact-card:hover .fact-icon-wrap {
+      background: rgba(0,180,255,0.2);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .fact-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--blue-lt);
+      letter-spacing: .5px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .fact-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ═══════════════════════════════════════
+       TIMELINE
+    ═══════════════════════════════════════ */
+    .timeline-wrap {
+      max-width: 900px; margin: 0 auto 90px; position: relative;
+    }
+
+    .timeline-line {
+      position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, transparent, var(--blue) 10%, var(--cyan) 90%, transparent);
+    }
+
+    .tl-items { display: flex; flex-direction: column; gap: 48px; }
+
+    .tl-item {
+      display: grid; grid-template-columns: 1fr 60px 1fr;
+      align-items: center; gap: 0;
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity .5s, transform .5s;
+    }
+    .tl-item:nth-child(even) { transform: translateX(30px); }
+    .tl-item.revealed { opacity:1; transform:translateX(0); }
+
+    .tl-content {
+      background: var(--navy-card);
+      border: 1px solid var(--glass-bd);
+      border-radius: 14px;
+      padding: 22px 24px;
+      transition: all .3s;
+    }
+    .tl-content:hover {
+      border-color: rgba(0,180,255,0.3);
+      transform: scale(1.02);
+      box-shadow: var(--glow-blue);
+    }
+
+    .tl-item:nth-child(even) .tl-content-left { grid-column: 3; }
+    .tl-item:nth-child(even) .tl-empty { grid-column: 1; }
+
+    .tl-dot-wrap {
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .tl-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      border: 3px solid var(--navy);
+      box-shadow: 0 0 0 2px var(--blue), var(--glow-blue);
+      z-index: 2; position: relative;
+    }
+
+    .tl-year {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; font-weight: 700;
+      color: var(--cyan); letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .tl-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700; color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .tl-desc {
+      font-size: 13px; color: var(--text-dim); line-height: 1.65; font-weight: 300;
+    }
+
+    /* ═══════════════════════════════════════
+       STATS
+    ═══════════════════════════════════════ */
+    .stats-wrap {
+      max-width: 860px; margin: 0 auto 90px;
+    }
+
+    .stat-row {
+      margin-bottom: 36px;
+      opacity: 0; transform: translateX(-20px);
+      transition: opacity .5s, transform .5s;
+    }
+    .stat-row.revealed { opacity:1; transform:translateX(0); }
+
+    .stat-meta {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .stat-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text);
+    }
+
+    .stat-pct {
+      font-family: 'Space Mono', monospace;
+      font-size: 20px; font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .stat-track {
+      height: 10px;
+      background: rgba(0,120,212,0.1);
+      border: 1px solid var(--glass-bd);
+      border-radius: 100px; overflow: hidden;
+    }
+
+    .stat-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 100px;
+      transition: width 1.4s cubic-bezier(.22,1,.36,1);
+      position: relative;
+    }
+
+    .stat-fill::after {
+      content: '';
+      position: absolute; right: -1px; top: -1px; bottom: -1px;
+      width: 8px; border-radius: 50%;
+      background: #fff;
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* ═══════════════════════════════════════
+       FEATURES GRID
+    ═══════════════════════════════════════ */
+    .features-wrap {
+      max-width: 1100px; margin: 0 auto 90px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media(max-width:800px){ .features-grid { grid-template-columns: 1fr 1fr; } }
+
+    .feat-box {
+      background: var(--navy-card);
+      border: 1px solid var(--glass-bd);
+      border-radius: 16px;
+      padding: 30px 24px;
+      text-align: center;
+      transition: all .3s cubic-bezier(.22,1,.36,1);
+      opacity: 0; transform: translateY(20px);
+    }
+    .feat-box.revealed {
+      animation: card-reveal .45s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    .feat-box:hover {
+      border-color: rgba(0,180,255,0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4), var(--glow-blue);
+      background: rgba(0,30,80,0.85);
+    }
+
+    .feat-emoji {
+      font-size: 44px; display: block; margin-bottom: 16px;
+      filter: drop-shadow(0 4px 12px rgba(0,120,212,0.4));
+    }
+
+    .feat-box h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--blue-lt);
+      margin-bottom: 8px;
+    }
+
+    .feat-box p {
+      font-size: 13px; color: var(--text-dim); line-height: 1.65; font-weight: 300;
+    }
+
+    /* ═══════════════════════════════════════
+       GALLERY
+    ═══════════════════════════════════════ */
+    .gallery-wrap {
+      max-width: 1200px; margin: 0 auto 60px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media(max-width:900px){ .gallery-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:560px){ .gallery-grid { grid-template-columns: 1fr; } }
+
+    /* first item spans 2 columns */
+    .gallery-grid .gallery-item:first-child {
+      grid-column: span 2;
+    }
+    @media(max-width:900px){ .gallery-grid .gallery-item:first-child { grid-column: span 1; } }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--glass-bd);
+      aspect-ratio: 16/9;
+      background: var(--navy-mid);
+      transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .3s;
+      opacity: 0; transform: scale(.96);
+    }
+    .gallery-item.revealed {
+      animation: gal-reveal .5s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes gal-reveal {
+      to { opacity:1; transform:scale(1); }
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+      border-color: rgba(0,180,255,0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), var(--glow-blue);
+    }
+
+    .gallery-item img {
+      width:100%; height:100%; object-fit:cover;
+      display:block;
+      transition: transform .5s ease, filter .3s;
+      filter: saturate(.85);
+    }
+    .gallery-item:hover img { transform:scale(1.08); filter:saturate(1.1); }
+
+    /* shimmer overlay on hover */
+    .gallery-item::before {
+      content:'';
+      position: absolute; inset:0; z-index:1;
+      background: linear-gradient(135deg, rgba(0,180,255,0.1) 0%, transparent 50%);
+      opacity:0; transition:opacity .3s;
+    }
+    .gallery-item:hover::before { opacity:1; }
+
+    .gallery-cap {
+      position: absolute; bottom:0; left:0; right:0; z-index:2;
+      padding: 36px 18px 16px;
+      background: linear-gradient(transparent, rgba(3,9,22,0.92));
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .gallery-cap-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+      flex-shrink:0;
+    }
+
+    .gallery-cap span {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .5px; color: rgba(255,255,255,0.9);
+    }
+
+    /* ═══════════════════════════════════════
+       PLACEHOLDER SECTIONS
+    ═══════════════════════════════════════ */
+    .ph-wrap {
+      max-width: 700px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding-top: 60px;
+    }
+
+    .ph-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 2px solid rgba(0,180,255,0.2);
+      background: rgba(0,120,212,0.07);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+      margin-bottom: 36px;
+      box-shadow: 0 0 60px rgba(0,120,212,0.2), inset 0 0 30px rgba(0,180,255,0.06);
+      animation: ph-float 4s ease-in-out infinite;
+    }
+    @keyframes ph-float {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-12px); }
+    }
+
+    .ph-wrap h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, var(--cyan) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      margin-bottom: 18px;
+    }
+
+    .ph-wrap p {
+      font-size: 16px; color: var(--text-dim); line-height: 1.75; font-weight: 300;
+      max-width: 520px;
+    }
+
+    .ph-badge {
+      margin-top: 36px;
+      padding: 10px 28px;
+      border: 1px solid rgba(0,180,255,0.25);
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--cyan); text-transform: uppercase;
+      background: rgba(0,180,255,0.05);
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 28px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    footer::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(0,180,255,0.3) 30%, rgba(0,120,212,0.3) 70%, transparent);
+    }
+
+    .ft-left {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 1.5px;
+      color: var(--text-mute);
+    }
+
+    .ft-right {
+      display: flex; gap: 6px;
+    }
+
+    .ft-pane {
+      width: 8px; height: 8px; border-radius: 2px;
+      background: var(--blue); opacity: .5;
+    }
+    .ft-pane:nth-child(1) { opacity:.9; }
+    .ft-pane:nth-child(2) { opacity:.7; }
+    .ft-pane:nth-child(3) { opacity:.5; }
+
+    /* ═══════════════════════════════════════
+       SCROLLBAR
+    ═══════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--blue), var(--cyan));
+      border-radius: 3px;
+    }
+
+    /* ═══════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════ */
+    .mt-section { margin-top: 90px; }
+  </style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+<div class="bg-scan"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <a href="home.html" class="nav-logo">
+    <div class="win-panes">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <span class="nav-brand">Win<span>OS</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="home.html" class="active"><span class="dot"></span>Home</a></li>
+    <li><a href="task.html"><span class="dot"></span>Task Activities</a></li>
+    <li><a href="casestudy.html"><span class="dot"></span>Case Study</a></li>
+    <li><a href="installation.html"><span class="dot"></span>Installation</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<section id="home" class="active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Project Compilation &nbsp;·&nbsp; ITOS220-T</div>
+    <h1>
+      <span class="line1">Operating System</span>
+    </h1>
+    <p class="hero-sub">An in-depth exploration of the world's most widely used operating system — its history, architecture, innovations, and lasting impact on modern computing.</p>
+
+    <!-- Identity Card -->
+    <div class="identity-card">
+      <div class="id-stripe"></div>
+      <div class="id-body">
+        <div class="id-badge">
+          <div class="id-avatar">DO</div>
+        </div>
+        <div class="id-field">
+          <div class="id-label">Student Name</div>
+          <div class="id-value">Dion O. Ongaria</div>
+        </div>
+        <div class="id-field">
+          <div class="id-label">Section</div>
+          <div class="id-value">BSIT-NS-2A-T</div>
+        </div>
+        <div class="id-field">
+          <div class="id-label">Subject</div>
+          <div class="id-value">ITOS220-T</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACTS -->
+  <div class="s-label">Did You Know?</div>
+  <div class="s-title">Key Facts About Windows</div>
+  <div class="s-divider"></div>
+  <div class="facts-wrap">
+    <div class="facts-grid" id="factsGrid">
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🗓️</div>
+        <h3>Born in 1985</h3>
+        <p>Microsoft Windows was first released on November 20, 1985, as a graphical extension of MS-DOS, transforming how users interacted with personal computers.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🌐</div>
+        <h3>Market Dominance</h3>
+        <p>Windows holds over 72% of global desktop OS market share, making it the most widely used operating system on personal computers worldwide as of 2024.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">💻</div>
+        <h3>1.5 Billion Devices</h3>
+        <p>Over 1.5 billion devices worldwide run a version of Windows, spanning consumer PCs, enterprise workstations, laptops, tablets, and embedded systems.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🔢</div>
+        <h3>40+ Years of Updates</h3>
+        <p>From Windows 1.0 to Windows 11, Microsoft has released over 20 major OS versions across four decades, each bringing revolutionary improvements.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🔒</div>
+        <h3>Defender Built-In</h3>
+        <p>Since Windows 8, Microsoft included Windows Defender — a built-in antivirus and antimalware solution — offering baseline security at no extra cost.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🎮</div>
+        <h3>Gaming Powerhouse</h3>
+        <p>Windows is the dominant gaming platform, powering Steam, Xbox Game Pass, and DirectX — the graphics API that revolutionized game development.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🧩</div>
+        <h3>Backward Compatibility</h3>
+        <p>Programs written decades ago often still run on Windows 11 — a feat of engineering that few other operating system families can match.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">☁️</div>
+        <h3>Cloud Integration</h3>
+        <p>Modern Windows integrates deeply with Azure and Microsoft 365, enabling seamless cloud sync, enterprise deployments, and hybrid work.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon-wrap">🪟</div>
+        <h3>Windows 11 — The Latest</h3>
+        <p>Released October 2021, Windows 11 introduced a centered Start Menu, rounded corners, Snap Layouts, and Android app support.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="s-label mt-section">Evolution</div>
+  <div class="s-title">Windows Version Timeline</div>
+  <div class="s-divider"></div>
+  <div class="timeline-wrap">
+    <div class="timeline-line"></div>
+    <div class="tl-items" id="tlItems">
+
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-year">1985</div>
+          <div class="tl-title">Windows 1.0 — The Beginning</div>
+          <p class="tl-desc">The first graphical user interface layered over MS-DOS, featuring overlapping windows and a mouse-driven interface that changed computing forever.</p>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+
+      <div class="tl-item">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-year">1995</div>
+          <div class="tl-title">Windows 95 — The Revolution</div>
+          <p class="tl-desc">Introduced the iconic Start Menu, taskbar, and 32-bit application support. A cultural moment that defined the modern desktop paradigm.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-year">2001</div>
+          <div class="tl-title">Windows XP — The Golden Era</div>
+          <p class="tl-desc">The most successful version ever. Its Luna interface and stability dominated the market for nearly 13 years across home and business users.</p>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+
+      <div class="tl-item">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-year">2009</div>
+          <div class="tl-title">Windows 7 — The Comeback</div>
+          <p class="tl-desc">A refined successor to Vista, featuring the elegant Aero interface, improved performance, and widely loved Snap window management.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-content">
+          <div class="tl-year">2015</div>
+          <div class="tl-title">Windows 10 — The Universal OS</div>
+          <p class="tl-desc">Unified PCs, tablets, phones, and Xbox under one platform. Introduced Cortana, the Edge browser, and a free upgrade path from Windows 7/8.</p>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+
+      <div class="tl-item">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-year">2021</div>
+          <div class="tl-title">Windows 11 — The Modern Era</div>
+          <p class="tl-desc">The latest chapter, featuring a centered Start Menu, rounded UI, Snap Layouts, DirectStorage, and improved Android app integration.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="s-label mt-section">By the Numbers</div>
+  <div class="s-title">Market & Adoption Statistics</div>
+  <div class="s-divider"></div>
+  <div class="stats-wrap" id="statsWrap">
+    <div class="stat-row">
+      <div class="stat-meta">
+        <span class="stat-name">Global Desktop Market Share</span>
+        <span class="stat-pct">72%</span>
+      </div>
+      <div class="stat-track"><div class="stat-fill" data-w="72"></div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-meta">
+        <span class="stat-name">Enterprise Adoption Rate</span>
+        <span class="stat-pct">89%</span>
+      </div>
+      <div class="stat-track"><div class="stat-fill" data-w="89"></div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-meta">
+        <span class="stat-name">Developer Platform Preference</span>
+        <span class="stat-pct">68%</span>
+      </div>
+      <div class="stat-track"><div class="stat-fill" data-w="68"></div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-meta">
+        <span class="stat-name">PC Gaming Platform Market</span>
+        <span class="stat-pct">95%</span>
+      </div>
+      <div class="stat-track"><div class="stat-fill" data-w="95"></div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-meta">
+        <span class="stat-name">Education Sector Usage</span>
+        <span class="stat-pct">82%</span>
+      </div>
+      <div class="stat-track"><div class="stat-fill" data-w="82"></div></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="s-label mt-section">Core Strengths</div>
+  <div class="s-title">Windows Key Features</div>
+  <div class="s-divider"></div>
+  <div class="features-wrap">
+    <div class="features-grid" id="featGrid">
+      <div class="feat-box">
+        <span class="feat-emoji">⚡</span>
+        <h4>High Performance</h4>
+        <p>Optimized kernel architecture delivers responsive speeds and efficient resource management across hardware generations.</p>
+      </div>
+      <div class="feat-box">
+        <span class="feat-emoji">🔐</span>
+        <h4>Security First</h4>
+        <p>Windows Defender, BitLocker encryption, Secure Boot, and continuous security updates protect every user by default.</p>
+      </div>
+      <div class="feat-box">
+        <span class="feat-emoji">🎮</span>
+        <h4>Gaming Ready</h4>
+        <p>DirectX 12 Ultimate, Auto HDR, DirectStorage, and Xbox integration make Windows the ultimate gaming platform.</p>
+      </div>
+      <div class="feat-box">
+        <span class="feat-emoji">☁️</span>
+        <h4>Cloud Integration</h4>
+        <p>Seamless Azure, OneDrive, and Microsoft 365 synchronization keeps your work accessible from anywhere.</p>
+      </div>
+      <div class="feat-box">
+        <span class="feat-emoji">🔄</span>
+        <h4>Backward Compatible</h4>
+        <p>Run decades-old software flawlessly alongside cutting-edge applications — a hallmark of Windows engineering.</p>
+      </div>
+      <div class="feat-box">
+        <span class="feat-emoji">📱</span>
+        <h4>Cross-Device Sync</h4>
+        <p>Phone Link, Bluetooth continuity, and universal clipboard unite your phone, tablet, and PC experience.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="s-label mt-section">Visual History</div>
+  <div class="s-title">Windows Through the Years</div>
+  <div class="s-divider"></div>
+  <div class="gallery-wrap">
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Windows_XP_SP3.png/1200px-Windows_XP_SP3.png" alt="Windows XP"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows XP</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows XP — Luna Interface (2001)</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Windows_7.png/1200px-Windows_7.png" alt="Windows 7"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 7</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 7 — Aero Glass (2009)</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Windows_Vista.png/1280px-Windows_Vista.png" alt="Windows Vista"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows Vista</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows Vista — Aero (2006)</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Windows_8.1_Start_Screen.png/1280px-Windows_8.1_Start_Screen.png" alt="Windows 8"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 8</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 8 — Metro Tiles (2012)</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Windows_10_Desktop.png/1280px-Windows_10_Desktop.png" alt="Windows 10"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 10</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 10 — Fluent Design (2015)</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Windows_11_Desktop.png/1280px-Windows_11_Desktop.png" alt="Windows 11"
+             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 11</text></svg>'"/>
+        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 11 — Modern UI (2021)</span></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════ TASKS ══════════ -->
+<section id="tasks">
+  <div class="ph-wrap">
+    <div class="ph-circle">📋</div>
+    <h2>Task Activities</h2>
+    <p>This section is designated for your Task Activities content. Add your completed tasks, assignments, and activity logs related to the Windows OS project here.</p>
+    <span class="ph-badge">Add Content Here</span>
+  </div>
+</section>
+
+<!-- ══════════ CASE STUDY ══════════ -->
+<section id="casestudy">
+  <div class="ph-wrap">
+    <div class="ph-circle">🔬</div>
+    <h2>Case Study</h2>
+    <p>This section is reserved for your Case Study — document real-world scenarios, analysis, comparative studies, or research findings related to Windows OS.</p>
+    <span class="ph-badge">Add Content Here</span>
+  </div>
+</section>
+
+<!-- ══════════ INSTALLATION ══════════ -->
+<section id="installation">
+  <div class="ph-wrap">
+    <div class="ph-circle">⚙️</div>
+    <h2>Installation</h2>
+    <p>This section covers Windows installation procedures, system requirements, step-by-step guides, troubleshooting tips, and screenshots of the process.</p>
+    <span class="ph-badge">Add Content Here</span>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="ft-left">© 2026 &nbsp;·&nbsp; Windows OS Project Compilation &nbsp;·&nbsp; ITOS220-T</div>
+  <div class="ft-right">
+    <div class="ft-pane"></div>
+    <div class="ft-pane"></div>
+    <div class="ft-pane"></div>
+    <div class="ft-pane"></div>
+  </div>
+</footer>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script>
+/* ── Navigation ── */
+function showSection(id, el) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el && el.tagName === 'A') el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  initObservers();
+}
+
+/* ── Particle Canvas ── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function Particle() {
+    this.reset();
+  }
+  Particle.prototype.reset = function() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.4 + 0.3;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.a = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.5 ? '0,120,212' : '0,200,255';
+  };
+  Particle.prototype.update = function() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  };
+  Particle.prototype.draw = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.a})`;
+    ctx.fill();
+  };
+
+  function init() {
+    resize();
+    particles = Array.from({ length: 110 }, () => new Particle());
+  }
+
+  function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,140,220,${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawLines();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  loop();
+})();
+
+/* ── Scroll reveal via IntersectionObserver ── */
+function initObservers() {
+  // Fact cards staggered
+  const cards = document.querySelectorAll('#factsGrid .fact-card:not(.revealed)');
+  const cardObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.classList.add('revealed');
+          e.target.style.animationDelay = '0s';
+        }, i * 80);
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(c => cardObs.observe(c));
+
+  // Timeline items
+  const tlItems = document.querySelectorAll('#tlItems .tl-item:not(.revealed)');
+  const tlObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        tlObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  tlItems.forEach(t => tlObs.observe(t));
+
+  // Stats bars
+  const statRows = document.querySelectorAll('#statsWrap .stat-row:not(.revealed)');
+  const statObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.classList.add('revealed');
+          const fill = e.target.querySelector('.stat-fill');
+          const w = fill.dataset.w;
+          fill.style.width = w + '%';
+        }, i * 120);
+        statObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  statRows.forEach(s => statObs.observe(s));
+
+  // Feature boxes staggered
+  const feats = document.querySelectorAll('#featGrid .feat-box:not(.revealed)');
+  const featObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('revealed'), i * 80);
+        featObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  feats.forEach(f => featObs.observe(f));
+
+  // Gallery
+  const gals = document.querySelectorAll('#galleryGrid .gallery-item:not(.revealed)');
+  const galObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('revealed'), i * 90);
+        galObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  gals.forEach(g => galObs.observe(g));
+}
+
+// Init on load
+initObservers();
+</script>
+</body>
+</html>
