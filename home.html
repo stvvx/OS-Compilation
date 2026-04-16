@@ -604,86 +604,6 @@
     }
 
     /* ═══════════════════════════════════════
-       GALLERY
-    ═══════════════════════════════════════ */
-    .gallery-wrap {
-      max-width: 1200px; margin: 0 auto 60px;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-    @media(max-width:900px){ .gallery-grid { grid-template-columns: 1fr 1fr; } }
-    @media(max-width:560px){ .gallery-grid { grid-template-columns: 1fr; } }
-
-    /* first item spans 2 columns */
-    .gallery-grid .gallery-item:first-child {
-      grid-column: span 2;
-    }
-    @media(max-width:900px){ .gallery-grid .gallery-item:first-child { grid-column: span 1; } }
-
-    .gallery-item {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--glass-bd);
-      aspect-ratio: 16/9;
-      background: var(--navy-mid);
-      transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .3s;
-      opacity: 0; transform: scale(.96);
-    }
-    .gallery-item.revealed {
-      animation: gal-reveal .5s cubic-bezier(.22,1,.36,1) forwards;
-    }
-    @keyframes gal-reveal {
-      to { opacity:1; transform:scale(1); }
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.03);
-      border-color: rgba(0,180,255,0.4);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5), var(--glow-blue);
-    }
-
-    .gallery-item img {
-      width:100%; height:100%; object-fit:cover;
-      display:block;
-      transition: transform .5s ease, filter .3s;
-      filter: saturate(.85);
-    }
-    .gallery-item:hover img { transform:scale(1.08); filter:saturate(1.1); }
-
-    /* shimmer overlay on hover */
-    .gallery-item::before {
-      content:'';
-      position: absolute; inset:0; z-index:1;
-      background: linear-gradient(135deg, rgba(0,180,255,0.1) 0%, transparent 50%);
-      opacity:0; transition:opacity .3s;
-    }
-    .gallery-item:hover::before { opacity:1; }
-
-    .gallery-cap {
-      position: absolute; bottom:0; left:0; right:0; z-index:2;
-      padding: 36px 18px 16px;
-      background: linear-gradient(transparent, rgba(3,9,22,0.92));
-      display: flex; align-items: center; gap: 8px;
-    }
-
-    .gallery-cap-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--cyan);
-      flex-shrink:0;
-    }
-
-    .gallery-cap span {
-      font-family: 'Syne', sans-serif;
-      font-size: 12px; font-weight: 600;
-      letter-spacing: .5px; color: rgba(255,255,255,0.9);
-    }
-
-    /* ═══════════════════════════════════════
        PLACEHOLDER SECTIONS
     ═══════════════════════════════════════ */
     .ph-wrap {
@@ -1044,45 +964,6 @@
     </div>
   </div>
 
-  <!-- GALLERY -->
-  <div class="s-label mt-section">Visual History</div>
-  <div class="s-title">Windows Through the Years</div>
-  <div class="s-divider"></div>
-  <div class="gallery-wrap">
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Windows_XP_SP3.png/1200px-Windows_XP_SP3.png" alt="Windows XP"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows XP</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows XP — Luna Interface (2001)</span></div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Windows_7.png/1200px-Windows_7.png" alt="Windows 7"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 7</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 7 — Aero Glass (2009)</span></div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Windows_Vista.png/1280px-Windows_Vista.png" alt="Windows Vista"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows Vista</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows Vista — Aero (2006)</span></div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Windows_8.1_Start_Screen.png/1280px-Windows_8.1_Start_Screen.png" alt="Windows 8"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 8</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 8 — Metro Tiles (2012)</span></div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Windows_10_Desktop.png/1280px-Windows_10_Desktop.png" alt="Windows 10"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 10</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 10 — Fluent Design (2015)</span></div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Windows_11_Desktop.png/1280px-Windows_11_Desktop.png" alt="Windows 11"
-             onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22340%22><rect fill=%22%23050b18%22 width=%22100%25%22 height=%22100%25%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%230078d4%22 font-size=%2228%22 font-family=%22sans-serif%22>Windows 11</text></svg>'"/>
-        <div class="gallery-cap"><div class="gallery-cap-dot"></div><span>Windows 11 — Modern UI (2021)</span></div>
-      </div>
-    </div>
-  </div>
-
 </section>
 
 <!-- ══════════ TASKS ══════════ -->
@@ -1265,17 +1146,6 @@ function initObservers() {
   }, { threshold: 0.1 });
   feats.forEach(f => featObs.observe(f));
 
-  // Gallery
-  const gals = document.querySelectorAll('#galleryGrid .gallery-item:not(.revealed)');
-  const galObs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('revealed'), i * 90);
-        galObs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  gals.forEach(g => galObs.observe(g));
 }
 
 // Init on load

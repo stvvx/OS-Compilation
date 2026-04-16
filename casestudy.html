@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Case Study Compilation — ITOS220-T</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue:      #0078d4;
+      --blue-lt:   #2ea8ff;
+      --cyan:      #00d4ff;
+      --accent:    #7b5cf6;
+      --navy:      #030912;
+      --navy-mid:  #060e1d;
+      --navy-card: rgba(6,16,38,0.82);
+      --navy-card2:rgba(4,12,28,0.92);
+      --glass-bd:  rgba(255,255,255,0.07);
+      --glass-bd2: rgba(0,180,255,0.18);
+      --text:      #e8f0ff;
+      --text-dim:  #7a99c0;
+      --text-mute: #3a5070;
+      --glow-blue: 0 0 50px rgba(0,120,212,0.45);
+      --glow-cyan: 0 0 30px rgba(0,212,255,0.3);
+      --glow-acc:  0 0 30px rgba(123,92,246,0.3);
+      --r-card:    20px;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'DM Sans',sans-serif;
+      background:var(--navy);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    #bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+    .bg-base {
+      position:fixed; inset:0; z-index:0;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -10%, rgba(0,90,190,0.28) 0%, transparent 65%),
+        radial-gradient(ellipse 55%  55% at 92%  85%, rgba(0,200,255,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 45%  65% at  8%  65%, rgba(0,50,140,0.15) 0%, transparent 55%),
+        radial-gradient(ellipse 30%  30% at 50%  50%, rgba(123,92,246,0.04) 0%, transparent 60%),
+        linear-gradient(185deg,#030912 0%,#060e1d 40%,#030810 100%);
+      pointer-events:none;
+    }
+
+    .bg-scan {
+      position:fixed; inset:0; z-index:0;
+      background-image:repeating-linear-gradient(
+        0deg,transparent,transparent 3px,
+        rgba(0,100,200,0.015) 3px,rgba(0,100,200,0.015) 4px
+      );
+      pointer-events:none;
+    }
+
+    .bg-grid {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:
+        linear-gradient(rgba(0,120,212,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,120,212,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      height:70px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 52px;
+      background:rgba(3,9,18,0.88);
+      backdrop-filter:blur(32px) saturate(1.6);
+      border-bottom:1px solid rgba(0,180,255,0.08);
+    }
+    nav::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(0,200,255,0.5) 35%,rgba(0,120,212,0.5) 65%,transparent);
+    }
+
+    .nav-logo { display:flex; align-items:center; gap:14px; text-decoration:none; }
+
+    .win-panes {
+      width:28px; height:28px;
+      display:grid; grid-template-columns:1fr 1fr; gap:3px;
+      animation:wlogo-pulse 4s ease-in-out infinite;
+    }
+    @keyframes wlogo-pulse {
+      0%,100%{filter:drop-shadow(0 0 4px rgba(0,180,255,0.4))}
+      50%     {filter:drop-shadow(0 0 14px rgba(0,180,255,1))}
+    }
+    .win-panes span { border-radius:2px; display:block; }
+    .win-panes span:nth-child(1){background:#0095f0}
+    .win-panes span:nth-child(2){background:#0075d0;opacity:.85}
+    .win-panes span:nth-child(3){background:#0075d0;opacity:.85}
+    .win-panes span:nth-child(4){background:#005ab0;opacity:.7}
+
+    .nav-brand {
+      font-family:'Syne',sans-serif; font-weight:800; font-size:15px;
+      letter-spacing:1.8px; text-transform:uppercase; color:#fff;
+    }
+    .nav-brand span { color:var(--cyan); }
+
+    .nav-links { display:flex; gap:2px; list-style:none; }
+    .nav-links a {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:9px 22px;
+      font-family:'Syne',sans-serif; font-size:12.5px; font-weight:600;
+      letter-spacing:0.8px; text-transform:uppercase;
+      color:var(--text-dim); text-decoration:none; border-radius:8px;
+      transition:color .2s,background .2s;
+    }
+    .nav-links a .dot {
+      width:5px; height:5px; border-radius:50%; background:var(--cyan);
+      opacity:0; transform:scale(0); transition:all .2s;
+    }
+    .nav-links a:hover       { color:#fff; background:rgba(0,180,255,0.08); }
+    .nav-links a.active      { color:var(--cyan); background:rgba(0,180,255,0.08); }
+    .nav-links a.active .dot { opacity:1; transform:scale(1); }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      position:relative; z-index:1;
+      padding:110px 60px 90px;
+      max-width:1340px; margin:0 auto;
+    }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      text-align:center; padding:28px 0 70px; position:relative;
+    }
+    .page-hero::before {
+      content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+      width:760px; height:420px;
+      background:radial-gradient(ellipse,rgba(0,100,200,0.22) 0%,transparent 68%);
+      pointer-events:none; z-index:0;
+    }
+
+    .page-eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:7px 22px;
+      border:1px solid rgba(0,212,255,0.28);
+      border-radius:100px;
+      background:rgba(0,212,255,0.06);
+      font-family:'Space Mono',monospace; font-size:11px;
+      letter-spacing:2.5px; color:var(--cyan); text-transform:uppercase;
+      margin-bottom:28px; position:relative; z-index:1;
+      backdrop-filter:blur(10px);
+    }
+    .page-eyebrow::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:var(--cyan); animation:blink 1.8s ease-in-out infinite;
+      box-shadow:0 0 8px var(--cyan);
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+    .page-hero h1 {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(40px,6.5vw,82px); font-weight:800;
+      line-height:1.04; letter-spacing:-2px;
+      position:relative; z-index:1; margin-bottom:20px;
+    }
+    .page-hero h1 .g1 {
+      display:block;
+      background:linear-gradient(110deg,#fff 0%,#c8e4ff 40%,var(--cyan) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .page-hero h1 .g2 {
+      display:block; font-size:.42em; font-weight:600;
+      letter-spacing:5px; margin-top:12px;
+      color:var(--text-dim); -webkit-text-fill-color:var(--text-dim);
+    }
+    .page-hero p {
+      font-size:16px; color:var(--text-dim);
+      max-width:520px; margin:0 auto 8px;
+      line-height:1.8; font-weight:300;
+      position:relative; z-index:1;
+    }
+    .page-hero .student-tag {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Space Mono',monospace; font-size:12px;
+      color:var(--text-mute); letter-spacing:1px;
+      position:relative; z-index:1;
+    }
+    .page-hero .student-tag::before,
+    .page-hero .student-tag::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg,transparent,var(--text-mute));
+    }
+    .page-hero .student-tag::after {
+      background:linear-gradient(90deg,var(--text-mute),transparent);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display:flex; align-items:center; justify-content:center; gap:0;
+      background:var(--navy-card2);
+      border:1px solid rgba(0,180,255,0.14);
+      border-radius:20px;
+      overflow:hidden;
+      margin-bottom:60px;
+      position:relative;
+    }
+    .stats-bar::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),var(--blue),transparent);
+    }
+    .stats-bar::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(0,180,255,0.15),transparent);
+    }
+    .stat-item {
+      flex:1; text-align:center; padding:32px 20px;
+      border-right:1px solid rgba(255,255,255,0.05);
+      position:relative;
+      transition:background .3s;
+    }
+    .stat-item:last-child { border-right:none; }
+    .stat-item:hover { background:rgba(0,120,212,0.06); }
+    .stat-num {
+      font-family:'Space Mono',monospace; font-size:38px; font-weight:700;
+      background:linear-gradient(135deg,var(--cyan),var(--blue-lt));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      display:block; line-height:1;
+    }
+    .stat-lbl {
+      font-family:'Syne',sans-serif; font-size:11px; font-weight:600;
+      letter-spacing:2px; text-transform:uppercase; color:var(--text-mute); margin-top:8px;
+      display:block;
+    }
+    .stat-sub {
+      font-size:11px; color:rgba(0,212,255,0.4);
+      font-family:'Space Mono',monospace; margin-top:4px;
+      letter-spacing:1px;
+    }
+
+    /* ── PART HEADER ── */
+    .part-section { margin-bottom:90px; }
+
+    .part-header {
+      display:flex; align-items:center; gap:20px;
+      margin-bottom:28px;
+    }
+    .part-num-badge {
+      width:48px; height:48px; flex-shrink:0;
+      background:linear-gradient(135deg,rgba(0,120,212,0.25),rgba(0,212,255,0.1));
+      border:1px solid rgba(0,212,255,0.25);
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--cyan);
+      backdrop-filter:blur(10px);
+    }
+    .part-title-group { flex:1; }
+    .part-pill {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:5px 14px;
+      border:1px solid rgba(0,212,255,0.2);
+      border-radius:100px;
+      background:rgba(0,212,255,0.06);
+      font-family:'Space Mono',monospace; font-size:9px;
+      letter-spacing:2.5px; color:var(--cyan); text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    .part-pill::before {
+      content:''; width:5px; height:5px; border-radius:50%;
+      background:var(--cyan); animation:blink 1.8s ease-in-out infinite;
+      box-shadow:0 0 6px var(--cyan);
+    }
+    .part-name {
+      font-family:'Syne',sans-serif; font-size:22px; font-weight:800;
+      color:#fff; letter-spacing:-.5px;
+    }
+    .part-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(0,180,255,0.2),transparent); }
+
+    /* ── DESCRIPTION BOX — enhanced ── */
+    .desc-box {
+      background:var(--navy-card2);
+      border:1px solid rgba(0,180,255,0.13);
+      border-radius:var(--r-card);
+      padding:0;
+      margin-bottom:28px;
+      position:relative; overflow:hidden;
+    }
+    .desc-box::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+      background:linear-gradient(180deg,var(--blue),var(--cyan));
+    }
+    .desc-box-inner {
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:stretch;
+      gap:0;
+    }
+    .desc-icon-wrap {
+      padding:28px 24px;
+      display:flex; align-items:flex-start; justify-content:center;
+      font-size:32px; flex-shrink:0;
+      border-right:1px solid rgba(255,255,255,0.04);
+    }
+    .desc-body-wrap { padding:28px 28px; }
+    .desc-body-wrap h4 {
+      font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+      color:var(--cyan); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px;
+    }
+    .desc-body-wrap .desc-main {
+      font-size:15px; color:var(--text); line-height:1.8; font-weight:300;
+      margin-bottom:14px;
+    }
+    .desc-body-wrap .desc-extra {
+      font-size:13.5px; color:var(--text-dim); line-height:1.75; font-weight:300;
+      border-top:1px solid rgba(255,255,255,0.05); padding-top:14px;
+    }
+    .desc-tags {
+      padding:28px 24px;
+      display:flex; flex-direction:column; align-items:flex-end; justify-content:flex-start;
+      gap:6px; flex-shrink:0; border-left:1px solid rgba(255,255,255,0.04);
+    }
+    .desc-tag {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:4px 12px;
+      background:rgba(0,120,212,0.12);
+      border:1px solid rgba(0,120,212,0.2);
+      border-radius:100px;
+      font-family:'Space Mono',monospace; font-size:9px;
+      letter-spacing:1.5px; color:var(--blue-lt); text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    /* ── VIDEO GRID — one card per row, full width ── */
+    .video-grid {
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      margin-bottom:0;
+    }
+
+    /* Card: horizontal — video LEFT, description RIGHT */
+    .video-card {
+      background:var(--navy-card);
+      border:1px solid var(--glass-bd);
+      border-radius:var(--r-card);
+      overflow:hidden;
+      display:flex;
+      flex-direction:row;          /* ← side by side */
+      min-height:290px;
+      position:relative;
+      transition:transform .38s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;
+      opacity:0; transform:translateY(30px);
+    }
+    .video-card.revealed {
+      animation:card-reveal .55s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes card-reveal { to{opacity:1;transform:translateY(0)} }
+
+    .video-card:hover {
+      transform:translateY(-6px);
+      border-color:rgba(0,200,255,0.38);
+      box-shadow:0 28px 60px rgba(0,0,0,0.55),var(--glow-blue);
+    }
+
+    /* Glowing top accent bar via ::before */
+    .video-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      opacity:0; transition:opacity .3s; z-index:2;
+    }
+    .video-card:hover::before { opacity:1; }
+
+    /* Card accent bar div — hidden in row mode (keep for compat) */
+    .card-accent-bar { display:none; }
+
+    /* === VIDEO LEFT HALF === */
+    .video-frame {
+      flex: 0 0 50%;              /* exactly half the card width */
+      position:relative;
+      background:#000;
+      /* height is driven by the card's min-height */
+    }
+    .video-frame iframe {
+      position:absolute; top:0; left:0; width:100%; height:100%; border:none;
+    }
+    .video-thumb-btn {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:none;
+      padding:0;
+      background:#000;
+      cursor:pointer;
+      z-index:3;
+    }
+    .video-thumb-btn img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      opacity:.9;
+    }
+    .video-thumb-play {
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:74px;
+      height:52px;
+      border-radius:12px;
+      background:rgba(230,0,0,.92);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 10px 30px rgba(0,0,0,.4);
+    }
+    .video-thumb-play::before {
+      content:'';
+      border-left:18px solid #fff;
+      border-top:11px solid transparent;
+      border-bottom:11px solid transparent;
+      margin-left:3px;
+    }
+    .video-frame::after {
+      content:''; position:absolute; inset:0; z-index:1;
+      background:linear-gradient(135deg,rgba(0,100,200,0.1) 0%,transparent 55%);
+      pointer-events:none;
+    }
+    /* vertical separator */
+    .video-frame::before {
+      content:''; position:absolute; top:0; right:0; bottom:0; width:1px; z-index:2;
+      background:linear-gradient(180deg,transparent,rgba(0,200,255,0.2) 40%,rgba(0,200,255,0.2) 60%,transparent);
+    }
+
+    /* === DESCRIPTION RIGHT HALF === */
+    .video-body {
+      flex:1;                      /* takes the other half */
+      display:flex;
+      flex-direction:column;
+      padding:26px 28px 24px;
+      gap:11px;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    /* responsive: stack on narrow screens */
+    @media(max-width:760px){
+      .video-card { flex-direction:column; min-height:unset; }
+      .video-frame { flex:none; width:100%; padding-bottom:56.25%; }
+      .video-frame::before { display:none; }
+    }
+
+    .video-index {
+      font-family:'Space Mono',monospace; font-size:9px;
+      letter-spacing:2.5px; color:var(--cyan); text-transform:uppercase;
+    }
+
+    .video-title {
+      font-family:'Syne',sans-serif; font-size:15.5px; font-weight:800;
+      color:#fff; line-height:1.3;
+    }
+
+    /* Tags row */
+    .video-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .video-tag {
+      padding:3px 10px;
+      background:rgba(0,100,200,0.15);
+      border:1px solid rgba(0,150,230,0.2);
+      border-radius:100px;
+      font-family:'Space Mono',monospace; font-size:8.5px;
+      letter-spacing:1.2px; color:var(--blue-lt); text-transform:uppercase;
+    }
+
+    .video-desc {
+      font-size:13px; color:var(--text-dim); line-height:1.7; font-weight:300;
+      flex:1;                  /* pushes footer to bottom */
+    }
+
+    /* Divider */
+    .video-divider {
+      height:1px;
+      background:linear-gradient(90deg,rgba(0,180,255,0.15),transparent);
+    }
+
+    /* What you'll learn section */
+    .video-learn-title {
+      font-family:'Space Mono',monospace; font-size:8.5px;
+      letter-spacing:2px; text-transform:uppercase; color:var(--cyan);
+      opacity:.7;
+    }
+    .video-learn-list {
+      display:flex; flex-direction:column; gap:5px;
+      list-style:none;
+    }
+    .video-learn-list li {
+      display:flex; align-items:flex-start; gap:8px;
+      font-size:12px; color:var(--text-dim); line-height:1.5; font-weight:300;
+    }
+    .video-learn-list li::before {
+      content:'›'; color:var(--cyan); font-size:14px; line-height:1.2; flex-shrink:0;
+    }
+
+    .video-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      padding-top:4px;
+    }
+    .video-duration {
+      font-family:'Space Mono',monospace; font-size:10px;
+      color:var(--text-mute); letter-spacing:1px;
+    }
+
+    .watch-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 22px;
+      background:linear-gradient(135deg,var(--blue),#0058a8);
+      color:#fff; text-decoration:none;
+      border-radius:10px;
+      font-family:'Syne',sans-serif; font-size:12px; font-weight:700;
+      letter-spacing:.5px; text-transform:uppercase;
+      transition:all .25s;
+      box-shadow:0 4px 18px rgba(0,120,212,0.3);
+    }
+    .watch-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 10px 30px rgba(0,120,212,0.55);
+      background:linear-gradient(135deg,var(--blue-lt),var(--blue));
+    }
+    .watch-btn svg {
+      width:10px; height:10px; fill:#fff;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-track {
+      display:flex; align-items:center; gap:3px;
+      margin-bottom:60px;
+    }
+    .progress-step {
+      flex:1; height:3px; border-radius:2px;
+      background:rgba(0,120,212,0.15);
+      position:relative; overflow:hidden;
+      transition:all .3s;
+    }
+    .progress-step.done { background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+    .progress-step .p-label {
+      position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+      font-family:'Space Mono',monospace; font-size:8px; color:var(--text-mute);
+      white-space:nowrap; letter-spacing:1px;
+      opacity:0; transition:opacity .2s;
+    }
+    .progress-step:hover .p-label { opacity:1; }
+    .progress-step.done .p-label { color:var(--cyan); }
+
+    /* ── FOOTER ── */
+    footer {
+      position:relative; z-index:1;
+      border-top:1px solid rgba(255,255,255,0.05);
+      padding:28px 60px;
+      display:flex; align-items:center; justify-content:space-between;
+      background:rgba(3,9,18,0.5);
+    }
+    footer::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(0,200,255,0.35) 30%,rgba(0,120,212,0.35) 70%,transparent);
+    }
+    .ft-left { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; color:var(--text-mute); }
+    .ft-right { display:flex; gap:5px; }
+    .ft-pane { width:8px; height:8px; border-radius:2px; background:var(--blue); }
+    .ft-pane:nth-child(1){opacity:.9}.ft-pane:nth-child(2){opacity:.65}
+    .ft-pane:nth-child(3){opacity:.4}.ft-pane:nth-child(4){opacity:.2}
+
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue),var(--cyan));border-radius:3px}
+  </style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+<div class="bg-scan"></div>
+<div class="bg-grid"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="home.html" class="nav-logo">
+    <div class="win-panes"><span></span><span></span><span></span><span></span></div>
+    <span class="nav-brand">Win<span>OS</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="home.html"><span class="dot"></span>Home</a></li>
+    <li><a href="task.html"><span class="dot"></span>Task Activities</a></li>
+    <li><a href="casestudy.html" class="active"><span class="dot"></span>Case Study</a></li>
+    <li><a href="installation.html"><span class="dot"></span>Installation</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="page-eyebrow">ITOS220-T &nbsp;·&nbsp; Case Study Compilation</div>
+    <h1>
+      <span class="g1">Case Studies</span>
+      <span class="g2">YouTube Video Tutorials</span>
+    </h1>
+    <p>A comprehensive walkthrough of Windows Server 2008 administration, configuration, and deployment — covering all essential roles and services.</p>
+    <br/>
+    <span class="student-tag">Dion O. Ongaria &nbsp;|&nbsp; BSIT-NS-2A-T</span>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="totalCount">9</span>
+      <span class="stat-lbl">Total Videos</span>
+      <span class="stat-sub">// tutorials</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="partCount">9</span>
+      <span class="stat-lbl">Parts Covered</span>
+      <span class="stat-sub">// modules</span>
+    </div>
+  </div>
+
+  <!-- PROGRESS TRACK -->
+  <div class="progress-track" id="progressTrack">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- PARTS CONTAINER -->
+  <div id="partsContainer"></div>
+
+</div>
+
+<footer>
+  <div class="ft-left">© 2026 &nbsp;·&nbsp; Case Study Compilation &nbsp;·&nbsp; ITOS220-T</div>
+  <div class="ft-right">
+    <div class="ft-pane"></div><div class="ft-pane"></div>
+    <div class="ft-pane"></div><div class="ft-pane"></div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   CASE STUDY DATA
+══════════════════════════════════════ */
+const caseParts = [
+  {
+    part: "Part 1",
+    title: "Setting Up Domain Controller",
+    icon: "🎯",
+    tags: ["Active Directory", "DNS", "ADDS"],
+    description: "Using Windows Server 2008, this tutorial demonstrates the full process of setting up a Domain Controller — the backbone of any enterprise Windows network.",
+    details: "A Domain Controller (DC) is a server that responds to authentication requests and verifies users on a network. It hosts the Active Directory Domain Services (AD DS) role, manages user accounts, enforces security policies, and provides a central repository for all network objects. Without a properly configured DC, users cannot authenticate to the domain or access shared resources.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 1",
+        url: "https://youtu.be/yjg3nbwVQzc?si=1Rwvnl1HVmo0E0DJ",
+        description: "Step-by-step guide to promoting a server to a Domain Controller on Windows Server 2008, including the installation of AD DS, DNS configuration, and the dcpromo wizard walkthrough.",
+        keyPoints: [
+          "Install Active Directory Domain Services role",
+          "Run dcpromo and configure the new forest",
+          "Configure DNS integrated with AD DS",
+          "Verify replication and DC health using dcdiag"
+        ],
+        tags: ["AD DS", "dcpromo", "DNS"],
+        duration: "~10 min"
+      }
+    ]
+  },
+  {
+    part: "Part 2",
+    title: "Adding Domain Users",
+    icon: "👥",
+    tags: ["Active Directory", "Users & Groups", "OU"],
+    description: "Adding Domain Users in Windows Server 2008 means creating accounts for individuals who will be part of the network domain and can access domain-joined resources.",
+    details: "Domain user accounts are stored in Active Directory and can log in to any domain-joined computer. Organizing users into Organizational Units (OUs) enables administrators to delegate control and apply Group Policy Objects selectively. Proper user management is critical for security, resource access, and efficient administration at scale.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 2",
+        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        description: "Learn how to create and manage user accounts and security groups inside Active Directory Users and Computers (ADUC), including setting password policies and organizing accounts into OUs.",
+        keyPoints: [
+          "Open Active Directory Users and Computers (ADUC)",
+          "Create Organizational Units (OUs) for user management",
+          "Add new domain user accounts with proper credentials",
+          "Assign users to appropriate security groups"
+        ],
+        tags: ["ADUC", "OUs", "Security Groups"],
+        duration: "~12 min"
+      }
+    ]
+  },
+  {
+    part: "Part 3",
+    title: "DHCP Server",
+    icon: "🌐",
+    tags: ["DHCP", "IP Management", "Leasing"],
+    description: "A DHCP (Dynamic Host Configuration Protocol) server automatically assigns unique IP addresses and network settings to devices on your network, eliminating the need for manual configuration.",
+    details: "DHCP simplifies IP address management across large networks by maintaining a pool of available addresses and leasing them to clients. It also distributes subnet masks, default gateways, DNS server addresses, and more. In an enterprise environment, DHCP reduces configuration errors and administrative overhead significantly.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 3",
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        keyPoints: [
+          "Install the DHCP Server role via Server Manager",
+          "Create and configure DHCP scopes and address pools",
+          "Set exclusion ranges for static devices",
+          "Authorize the DHCP server in Active Directory"
+        ],
+        tags: ["Scopes", "Leases", "Exclusions"],
+        duration: "~13 min"
+      }
+    ]
+  },
+  {
+    part: "Part 4",
+    title: "File Sharing",
+    icon: "📁",
+    tags: ["SMB", "Permissions", "NTFS"],
+    description: "File sharing in Windows Server 2008 lets multiple users access and exchange files stored on a central server, making collaboration and centralized data management straightforward.",
+    details: "Shared folders in Windows Server 2008 use the Server Message Block (SMB) protocol. Effective file sharing requires a combination of share-level permissions and NTFS permissions to properly control who can read, write, or modify files. Windows Server 2008 also introduces Share and Storage Management for a streamlined administrative experience.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 4",
+        url: "https://www.youtube.com/watch?v=tYzMGcUty6s",
+        description: "Setting up shared folders on Windows Server 2008, managing NTFS and share permissions, mapping network drives for domain users, and controlling access using security groups.",
+        keyPoints: [
+          "Create shared folders and configure share permissions",
+          "Apply NTFS permissions for granular access control",
+          "Map network drives using Group Policy",
+          "Use the Effective Permissions tool to verify access"
+        ],
+        tags: ["SMB", "NTFS", "Share Perms"],
+        duration: "~14 min"
+      }
+    ]
+  },
+  {
+    part: "Part 5",
+    title: "RAID Configuration",
+    icon: "💾",
+    tags: ["RAID", "Disk Management", "Redundancy"],
+    description: "RAID (Redundant Array of Independent Disks) in Windows Server 2008 combines multiple physical disks into a logical unit for redundancy, improved performance, or both.",
+    details: "Windows Server 2008 supports software RAID via Disk Management, including RAID-0 (striping for performance), RAID-1 (mirroring for redundancy), and RAID-5 (striping with parity for balanced performance and fault tolerance). Understanding the right RAID level for different workloads is essential for maintaining data availability and system performance.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 5",
+        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
+        description: "Configuring software RAID levels on Windows Server 2008 using the built-in Disk Management console, comparing RAID-1 and RAID-5 and demonstrating a simulated disk failure recovery.",
+        keyPoints: [
+          "Initialize and convert disks to dynamic storage",
+          "Create a RAID-1 mirrored volume for OS redundancy",
+          "Set up a RAID-5 striped-with-parity volume",
+          "Simulate disk failure and perform volume recovery"
+        ],
+        tags: ["RAID-1", "RAID-5", "Dynamic Disk"],
+        duration: "~16 min"
+      }
+    ]
+  },
+  {
+    part: "Part 6",
+    title: "Remote Desktop Connection",
+    icon: "🔗",
+    tags: ["RDP", "Remote Access", "Terminal Services"],
+    description: "Remote Desktop enables administrators and authorized users to connect to a server or workstation from a different location, as if sitting directly in front of it.",
+    details: "Windows Server 2008 includes Remote Desktop Services (formerly Terminal Services), allowing multiple simultaneous remote sessions. RDP operates over port 3389 and supports high-quality graphics, audio, and clipboard sharing. Properly securing RDP access — through firewall rules, NLA authentication, and certificate deployment — is essential to prevent unauthorized access.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 6",
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        description: "Enabling and securing Remote Desktop on Windows Server 2008, configuring Network Level Authentication (NLA), managing RDP users and groups, and connecting from a client machine.",
+        keyPoints: [
+          "Enable Remote Desktop via System Properties",
+          "Configure Network Level Authentication (NLA)",
+          "Add authorized users to the Remote Desktop Users group",
+          "Connect from a Windows client using mstsc.exe"
+        ],
+        tags: ["RDP", "NLA", "mstsc"],
+        duration: "~11 min"
+      }
+    ]
+  },
+  {
+    part: "Part 7",
+    title: "Web Server (IIS)",
+    icon: "🌍",
+    tags: ["IIS", "HTTP", "Web Hosting"],
+    description: "A web server stores and serves website content to users. Windows Server 2008 includes Internet Information Services (IIS) 7.0, a powerful and flexible web platform.",
+    details: "IIS 7.0 introduced a modular architecture, allowing administrators to install only the components they need. It supports ASP.NET, PHP, static files, and more. Virtual hosting allows a single server to host multiple websites using different IP addresses, ports, or host headers. Application pools provide process isolation between websites for security and stability.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 7",
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        description: "Installing IIS on Windows Server 2008, creating and configuring websites and virtual directories, setting up application pools, and hosting a sample web application accessible from the domain.",
+        keyPoints: [
+          "Install IIS 7.0 via the Web Server (IIS) role",
+          "Create a new website and configure bindings",
+          "Set up application pools for process isolation",
+          "Test internal website access from domain clients"
+        ],
+        tags: ["IIS 7.0", "AppPool", "Bindings"],
+        duration: "~15 min"
+      }
+    ]
+  },
+  {
+    part: "Part 8",
+    title: "Group Policies",
+    icon: "🔐",
+    tags: ["GPO", "Security", "Policy Management"],
+    description: "Group Policy Objects (GPOs) are rules configured by administrators to uniformly control user and computer settings across all machines in a domain.",
+    details: "Group Policy is one of the most powerful tools in an Active Directory environment. GPOs can enforce desktop backgrounds, software restrictions, firewall rules, password complexity requirements, mapped drives, startup scripts, and hundreds more settings. Policies are linked to OUs, sites, or the entire domain and are applied in a defined order: Local → Site → Domain → OU.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 8",
+        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        description: "Creating and linking Group Policy Objects in the Group Policy Management Console (GPMC), configuring common security policies, testing policy application with gpresult, and troubleshooting policy inheritance.",
+        keyPoints: [
+          "Open Group Policy Management Console (GPMC)",
+          "Create and link a GPO to an Organizational Unit",
+          "Configure password policies and desktop restrictions",
+          "Test and verify policy with gpupdate and gpresult"
+        ],
+        tags: ["GPMC", "GPO", "gpresult"],
+        duration: "~17 min"
+      }
+    ]
+  },
+  {
+    part: "Part 9",
+    title: "Windows Deployment Services",
+    icon: "📦",
+    tags: ["WDS", "PXE Boot", "OS Imaging"],
+    description: "Windows Deployment Services (WDS) allows administrators to deploy Windows operating systems remotely over the network to multiple computers simultaneously.",
+    details: "WDS uses PXE (Pre-Boot Execution Environment) to network-boot client machines and present them with OS installation images without needing physical media. It integrates with DHCP and DNS for seamless network booting. WDS significantly reduces the time required to deploy operating systems in large organizations, enabling automated and consistent installations.",
+    videos: [
+      {
+        title: "TUPT Domain: Part 9",
+        url: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+        description: "Setting up Windows Deployment Services on Windows Server 2008, configuring the WDS server, adding boot and install images, and performing a full PXE network boot deployment on a client machine.",
+        keyPoints: [
+          "Install and configure the WDS server role",
+          "Add Windows boot images (WinPE) to WDS",
+          "Import a Windows install image (.wim file)",
+          "Perform a PXE network boot and OS deployment"
+        ],
+        tags: ["WDS", "PXE", "WIM Images"],
+        duration: "~18 min"
+      }
+    ]
+  }
+];
+
+/* ════════════════════════════════════════ */
+
+function getVideoId(url) {
+  const raw = String(url || '').trim();
+  if (!raw) return null;
+  try {
+    const u = new URL(raw);
+    if (u.hostname.includes('youtu.be')) {
+      const id = u.pathname.split('/').filter(Boolean)[0];
+      return id && id.length === 11 ? id : null;
+    }
+    if (u.searchParams.get('v')) {
+      const id = u.searchParams.get('v');
+      return id && id.length === 11 ? id : null;
+    }
+    const parts = u.pathname.split('/').filter(Boolean);
+    const marker = parts.findIndex(p => p === 'embed' || p === 'shorts' || p === 'v');
+    if (marker !== -1 && parts[marker + 1]) {
+      const id = parts[marker + 1];
+      return id.length === 11 ? id : null;
+    }
+  } catch (e) {
+    const m = raw.match(/(?:youtu\.be\/|v\/|watch\?v=|embed\/|shorts\/)([^#&?]{11})/);
+    return m ? m[1] : null;
+  }
+  return null;
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderProgress() {
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = caseParts.map((p, i) => `
+    <div class="progress-step done">
+      <span class="p-label">${p.part}</span>
+    </div>
+  `).join('');
+}
+
+function renderParts() {
+  const container = document.getElementById('partsContainer');
+
+  let totalVideos = caseParts.reduce((acc, p) => acc + p.videos.length, 0);
+  document.getElementById('totalCount').textContent = totalVideos;
+  document.getElementById('partCount').textContent = caseParts.length;
+
+  container.innerHTML = caseParts.map((part, pi) => {
+    const tagsHtml = (part.tags || []).map(t => `<span class="desc-tag">${t}</span>`).join('');
+
+    const videosHtml = part.videos.map((vid, vi) => {
+      const id = getVideoId(vid.url);
+      const vtags = (vid.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
+      const kpHtml = (vid.keyPoints || []).map(k => `<li>${esc(k)}</li>`).join('');
+      const frameHtml = id
+        ? `<button class="video-thumb-btn" type="button" data-video-id="${id}" data-video-title="${esc(vid.title)}" aria-label="Play ${esc(vid.title)}">
+             <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${esc(vid.title)} thumbnail" loading="lazy" />
+             <span class="video-thumb-play"></span>
+           </button>`
+        : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;color:#9fb7d9;font-size:14px;line-height:1.5;">
+             Invalid YouTube link for this part. Please update the video URL.
+           </div>`;
+
+      return `
+        <div class="video-card">
+          <div class="card-accent-bar"></div>
+          <div class="video-frame">
+            ${frameHtml}
+          </div>
+          <div class="video-body">
+            <div class="video-index">${part.part} · Video ${vi + 1}</div>
+            <div class="video-title">${esc(vid.title)}</div>
+            ${vtags ? `<div class="video-tags">${vtags}</div>` : ''}
+            <div class="video-desc">${esc(vid.description)}</div>
+            ${kpHtml ? `
+              <div class="video-divider"></div>
+              <div class="video-learn-title">Key Topics</div>
+              <ul class="video-learn-list">${kpHtml}</ul>
+            ` : ''}
+            <div class="video-footer">
+              <span class="video-duration">${vid.duration || ''}</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="part-section">
+        <div class="part-header">
+          <div class="part-num-badge">P${pi + 1}</div>
+          <div class="part-title-group">
+            <div class="part-pill">${part.part}</div>
+            <div class="part-name">${part.title}</div>
+          </div>
+          <div class="part-line"></div>
+        </div>
+
+        <div class="desc-box">
+          <div class="desc-box-inner">
+            <div class="desc-icon-wrap">${part.icon}</div>
+            <div class="desc-body-wrap">
+              <h4>${part.part} — ${part.title}</h4>
+              <div class="desc-main">${esc(part.description)}</div>
+              <div class="desc-extra">${esc(part.details)}</div>
+            </div>
+            <div class="desc-tags">${tagsHtml}</div>
+          </div>
+        </div>
+
+        <div class="video-grid">
+          ${videosHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  /* Staggered reveal */
+  document.querySelectorAll('.video-card').forEach((card, i) => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('revealed'), (i % 3) * 110);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.06 });
+    obs.observe(card);
+  });
+
+  // Play video inline inside the card when thumbnail is clicked.
+  container.querySelectorAll('.video-thumb-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-video-id');
+      const title = btn.getAttribute('data-video-title') || 'YouTube video';
+      const frame = btn.closest('.video-frame');
+      if (!id || !frame) return;
+      const src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
+      frame.innerHTML = `<iframe src="${src}"
+                          title="${title}"
+                          referrerpolicy="origin"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowfullscreen loading="eager"></iframe>`;
+    });
+  });
+}
+
+/* ── Particle Canvas ── */
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+  function Particle() { this.reset(); }
+  Particle.prototype.reset = function () {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.r  = Math.random() * 1.2 + 0.2;
+    this.vx = (Math.random() - 0.5) * 0.25;
+    this.vy = (Math.random() - 0.5) * 0.25;
+    this.a  = Math.random() * 0.4 + 0.08;
+    this.color = Math.random() > 0.5 ? '0,120,212' : '0,200,255';
+  };
+  Particle.prototype.update = function () {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  };
+  Particle.prototype.draw = function () {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.a})`;
+    ctx.fill();
+  };
+
+  function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 110) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,140,220,${0.05 * (1 - d / 110)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawLines();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  particles = Array.from({ length: 100 }, () => new Particle());
+  loop();
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderProgress();
+  renderParts();
+});
+</script>
+</body>
+</html>
