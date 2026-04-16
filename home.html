@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Windows OS — ITOS220-T Project Compilation</title>
+  <title>Windows OS - ITOS220-T Project Compilation</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
-    /* ═══════════════════════════════════════
+    /* 
        DESIGN TOKENS
-    ═══════════════════════════════════════ */
+     */
     :root {
       --blue:       #0078d4;
       --blue-lt:    #2ea8ff;
@@ -38,9 +38,9 @@
       cursor: default;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        ANIMATED CANVAS BACKGROUND
-    ═══════════════════════════════════════ */
+     */
     #bg-canvas {
       position: fixed; inset: 0; z-index: 0;
       pointer-events: none;
@@ -70,9 +70,9 @@
       pointer-events: none;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        NAV
-    ═══════════════════════════════════════ */
+     */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: 68px;
@@ -157,9 +157,63 @@
     .nav-links a.active .dot { opacity: 1; transform: scale(1); }
     .nav-links a.active { color: var(--cyan); }
 
-    /* ═══════════════════════════════════════
+    .nav-links li { position: relative; }
+
+    .nav-caret {
+      font-size: 11px;
+      line-height: 1;
+      opacity: .75;
+      transition: transform .2s ease;
+    }
+
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform: rotate(180deg);
+    }
+
+    .nav-submenu {
+      list-style: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 230px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,180,255,0.16);
+      background: rgba(5, 14, 34, 0.96);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+      backdrop-filter: blur(12px);
+      display: none;
+      z-index: 230;
+    }
+
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display: block;
+    }
+
+    .nav-submenu a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 7px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .8px;
+      text-transform: none;
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+
+    .nav-submenu a:hover,
+    .nav-submenu a:focus-visible {
+      background: rgba(0,180,255,0.14);
+      color: #fff;
+      outline: none;
+    }
+
+    /* 
        SECTION BASE
-    ═══════════════════════════════════════ */
+     */
     section {
       position: relative; z-index: 1;
       display: none;
@@ -174,9 +228,9 @@
       to   { opacity:1; transform: translateY(0); }
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        HERO
-    ═══════════════════════════════════════ */
+     */
     .hero {
       text-align: center;
       padding: 30px 0 70px;
@@ -251,9 +305,9 @@
       position: relative; z-index:1;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        USER IDENTITY CARD
-    ═══════════════════════════════════════ */
+     */
     .identity-card {
       display: inline-flex; align-items: stretch; gap: 0;
       margin: 48px auto 0;
@@ -312,9 +366,9 @@
       box-shadow: 0 0 0 2px rgba(0,212,255,0.3);
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        SECTION HEADERS
-    ═══════════════════════════════════════ */
+     */
     .s-label {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
@@ -342,9 +396,105 @@
       margin: 14px auto 52px;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
+       HOME OVERVIEW BLOCKS
+     */
+    .overview-wrap {
+      max-width: 1200px;
+      margin: 0 auto 90px;
+    }
+
+    .overview-panel {
+      background: var(--navy-card);
+      border: 1px solid var(--glass-bd);
+      border-radius: 20px;
+      padding: 34px 34px 30px;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.35);
+      margin-bottom: 32px;
+    }
+
+    .overview-panel h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(24px, 3vw, 36px);
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .overview-panel > p {
+      font-size: 24px;
+      color: var(--text-dim);
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    .os-points {
+      list-style: disc;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 34px;
+      padding-left: 28px;
+      color: #dbe7ff;
+    }
+
+    .os-points li {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .sections-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 3.8vw, 46px);
+      color: #fff;
+      margin-bottom: 20px;
+      letter-spacing: -0.6px;
+    }
+
+    .section-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .section-card {
+      background: rgba(9, 24, 56, 0.82);
+      border: 1px solid var(--glass-bd);
+      border-radius: 16px;
+      padding: 24px;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 180, 255, 0.35);
+      box-shadow: var(--glow-blue);
+    }
+
+    .section-card h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 30px;
+      color: #a6c7ff;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    .section-card p {
+      font-size: 20px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    @media(max-width:1000px) {
+      .section-cards { grid-template-columns: 1fr; }
+      .os-points { grid-template-columns: 1fr; }
+      .overview-panel > p { font-size: 19px; }
+      .section-card p { font-size: 17px; }
+      .section-card h4 { font-size: 24px; }
+    }
+
+    /* 
        FACTS GRID
-    ═══════════════════════════════════════ */
+     */
     .facts-wrap {
       max-width: 1200px; margin: 0 auto 90px;
     }
@@ -431,9 +581,9 @@
       font-weight: 300;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        TIMELINE
-    ═══════════════════════════════════════ */
+     */
     .timeline-wrap {
       max-width: 900px; margin: 0 auto 90px; position: relative;
     }
@@ -500,9 +650,9 @@
       font-size: 13px; color: var(--text-dim); line-height: 1.65; font-weight: 300;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        STATS
-    ═══════════════════════════════════════ */
+     */
     .stats-wrap {
       max-width: 860px; margin: 0 auto 90px;
     }
@@ -553,9 +703,9 @@
       box-shadow: var(--glow-cyan);
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        FEATURES GRID
-    ═══════════════════════════════════════ */
+     */
     .features-wrap {
       max-width: 1100px; margin: 0 auto 90px;
     }
@@ -603,9 +753,9 @@
       font-size: 13px; color: var(--text-dim); line-height: 1.65; font-weight: 300;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        PLACEHOLDER SECTIONS
-    ═══════════════════════════════════════ */
+     */
     .ph-wrap {
       max-width: 700px; margin: 0 auto;
       display: flex; flex-direction: column; align-items: center;
@@ -652,9 +802,9 @@
       background: rgba(0,180,255,0.05);
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        FOOTER
-    ═══════════════════════════════════════ */
+     */
     footer {
       position: relative; z-index: 1;
       border-top: 1px solid rgba(255,255,255,0.06);
@@ -686,9 +836,9 @@
     .ft-pane:nth-child(2) { opacity:.7; }
     .ft-pane:nth-child(3) { opacity:.5; }
 
-    /* ═══════════════════════════════════════
+    /* 
        SCROLLBAR
-    ═══════════════════════════════════════ */
+     */
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb {
@@ -696,10 +846,44 @@
       border-radius: 3px;
     }
 
-    /* ═══════════════════════════════════════
+    /* 
        UTILITY
-    ═══════════════════════════════════════ */
+     */
     .mt-section { margin-top: 90px; }
+  
+    .nav-caret {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:14px;
+      height:14px;
+      margin-left:4px;
+      cursor:pointer;
+      opacity:.85;
+      transition:transform .2s ease;
+      vertical-align:middle;
+    }
+
+    .nav-caret::before {
+      content:'';
+      width:0;
+      height:0;
+      border-left:4px solid transparent;
+      border-right:4px solid transparent;
+      border-top:5px solid currentColor;
+    }
+
+    .has-dropdown.open .nav-caret,
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform:rotate(180deg);
+    }
+
+    .has-dropdown.open .nav-submenu,
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display:block;
+    }
   </style>
 </head>
 <body>
@@ -708,7 +892,7 @@
 <div class="bg-scan"></div>
 <canvas id="bg-canvas"></canvas>
 
-<!-- ══════════ NAV ══════════ -->
+<!--  NAV  -->
 <nav>
   <a href="home.html" class="nav-logo">
     <div class="win-panes">
@@ -718,22 +902,64 @@
   </a>
   <ul class="nav-links">
     <li><a href="home.html" class="active"><span class="dot"></span>Home</a></li>
-    <li><a href="task.html"><span class="dot"></span>Task Activities</a></li>
-    <li><a href="casestudy.html"><span class="dot"></span>Case Study</a></li>
-    <li><a href="installation.html"><span class="dot"></span>Installation</a></li>
+    <li class="has-dropdown">
+      <a href="task/task1.html"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="task/task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
+        <li><a href="task/task2.html">Activity 2: Active Directory: Creating Users</a></li>
+        <li><a href="task/task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
+        <li><a href="task/task4.html">Activity 4: RAID Installation</a></li>
+        <li><a href="task/task5.html">Activity 5: Group Policy Management</a></li>
+        <li><a href="task/task6.html">Activity 6: Web Server</a></li>
+        <li><a href="task/task7.html">Activity 7: File Server</a></li>
+        <li><a href="task/task8.html">Activity 8: WDS</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="case study/part1.html"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="case study/part1.html">Part 1: Domain Controller</a></li>
+        <li><a href="case study/part2.html">Part 2: Adding Users</a></li>
+        <li><a href="case study/part3.html">Part 3: DHCP Server</a></li>
+        <li><a href="case study/part4.html">Part 4: File Sharing</a></li>
+        <li><a href="case study/part5.html">Part 5: RAID</a></li>
+        <li><a href="case study/part6.html">Part 6: Remote Desktop</a></li>
+        <li><a href="case study/part7.html">Part 7: Web Server</a></li>
+        <li><a href="case study/part8.html">Part 8: Group Policies</a></li>
+        <li><a href="case study/part9.html">Part 9: Windows Deployment</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+        <li><a href="installation/windows95.html">Windows 95</a></li>
+        <li><a href="installation/windows98.html">Windows 98</a></li>
+        <li><a href="installation/windowsnt.html">Windows NT</a></li>
+        <li><a href="installation/windows2000.html">Windows 2000</a></li>
+        <li><a href="installation/windowsme.html">Windows ME</a></li>
+        <li><a href="installation/windowsxp.html">Windows XP</a></li>
+        <li><a href="installation/windows-server-2003.html">Windows Server 2003</a></li>
+        <li><a href="installation/windows-vista.html">Windows Vista</a></li>
+        <li><a href="installation/windows-server-2008.html">Windows Server 2008</a></li>
+        <li><a href="installation/windows7.html">Windows 7</a></li>
+        <li><a href="installation/windows8.html">Windows 8</a></li>
+        <li><a href="installation/windows10.html">Windows 10</a></li>
+        <li><a href="installation/windows11.html">Windows 11</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
-<!-- ══════════ HOME ══════════ -->
+<!--  HOME  -->
 <section id="home" class="active">
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-eyebrow">Project Compilation &nbsp;·&nbsp; ITOS220-T</div>
+    <div class="hero-eyebrow">Project Compilation &nbsp;&nbsp; ITOS220-T</div>
     <h1>
       <span class="line1">Operating System</span>
     </h1>
-    <p class="hero-sub">An in-depth exploration of the world's most widely used operating system — its history, architecture, innovations, and lasting impact on modern computing.</p>
+    <p class="hero-sub">An in-depth exploration of the world's most widely used operating system - its history, architecture, innovations, and lasting impact on modern computing.</p>
 
     <!-- Identity Card -->
     <div class="identity-card">
@@ -758,6 +984,39 @@
     </div>
   </div>
 
+  <!-- HOMEPAGE DETAILS -->
+  <div class="overview-wrap">
+    <div class="overview-panel">
+      <h3>What is an Operating System?</h3>
+      <p>An Operating System (OS) is system software that manages computer hardware and software resources. It acts as an interface between users and the computer system, ensuring efficient execution of programs and management of memory, storage, and devices.</p>
+      <ul class="os-points">
+        <li>Process management</li>
+        <li>Memory management</li>
+        <li>File system management</li>
+        <li>Device management</li>
+        <li>Security and user management</li>
+      </ul>
+    </div>
+
+    <div class="overview-panel">
+      <h3 class="sections-heading">Website Sections</h3>
+      <div class="section-cards">
+        <article class="section-card">
+          <h4>Windows Installation</h4>
+          <p>Step-by-step guides for installing various Windows versions from Windows 95 to Windows 11, including system requirements and BIOS configuration.</p>
+        </article>
+        <article class="section-card">
+          <h4>Lab Activities</h4>
+          <p>Hands-on exercises including Active Directory setup, DHCP configuration, RAID installation, and file server management.</p>
+        </article>
+        <article class="section-card">
+          <h4>Finals: Domain Project</h4>
+          <p>Comprehensive case study implementation of the TUP-Taguig Domain setup, covering domain controllers, user management, policies, and deployment.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+
   <!-- FACTS -->
   <div class="s-label">Did You Know?</div>
   <div class="s-title">Key Facts About Windows</div>
@@ -765,48 +1024,48 @@
   <div class="facts-wrap">
     <div class="facts-grid" id="factsGrid">
       <div class="fact-card">
-        <div class="fact-icon-wrap">🗓️</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Born in 1985</h3>
         <p>Microsoft Windows was first released on November 20, 1985, as a graphical extension of MS-DOS, transforming how users interacted with personal computers.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🌐</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Market Dominance</h3>
         <p>Windows holds over 72% of global desktop OS market share, making it the most widely used operating system on personal computers worldwide as of 2024.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">💻</div>
+        <div class="fact-icon-wrap"></div>
         <h3>1.5 Billion Devices</h3>
         <p>Over 1.5 billion devices worldwide run a version of Windows, spanning consumer PCs, enterprise workstations, laptops, tablets, and embedded systems.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🔢</div>
+        <div class="fact-icon-wrap"></div>
         <h3>40+ Years of Updates</h3>
         <p>From Windows 1.0 to Windows 11, Microsoft has released over 20 major OS versions across four decades, each bringing revolutionary improvements.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🔒</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Defender Built-In</h3>
-        <p>Since Windows 8, Microsoft included Windows Defender — a built-in antivirus and antimalware solution — offering baseline security at no extra cost.</p>
+        <p>Since Windows 8, Microsoft included Windows Defender - a built-in antivirus and antimalware solution - offering baseline security at no extra cost.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🎮</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Gaming Powerhouse</h3>
-        <p>Windows is the dominant gaming platform, powering Steam, Xbox Game Pass, and DirectX — the graphics API that revolutionized game development.</p>
+        <p>Windows is the dominant gaming platform, powering Steam, Xbox Game Pass, and DirectX - the graphics API that revolutionized game development.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🧩</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Backward Compatibility</h3>
-        <p>Programs written decades ago often still run on Windows 11 — a feat of engineering that few other operating system families can match.</p>
+        <p>Programs written decades ago often still run on Windows 11 - a feat of engineering that few other operating system families can match.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">☁️</div>
+        <div class="fact-icon-wrap"></div>
         <h3>Cloud Integration</h3>
         <p>Modern Windows integrates deeply with Azure and Microsoft 365, enabling seamless cloud sync, enterprise deployments, and hybrid work.</p>
       </div>
       <div class="fact-card">
-        <div class="fact-icon-wrap">🪟</div>
-        <h3>Windows 11 — The Latest</h3>
+        <div class="fact-icon-wrap"></div>
+        <h3>Windows 11 - The Latest</h3>
         <p>Released October 2021, Windows 11 introduced a centered Start Menu, rounded corners, Snap Layouts, and Android app support.</p>
       </div>
     </div>
@@ -823,7 +1082,7 @@
       <div class="tl-item">
         <div class="tl-content">
           <div class="tl-year">1985</div>
-          <div class="tl-title">Windows 1.0 — The Beginning</div>
+          <div class="tl-title">Windows 1.0 - The Beginning</div>
           <p class="tl-desc">The first graphical user interface layered over MS-DOS, featuring overlapping windows and a mouse-driven interface that changed computing forever.</p>
         </div>
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
@@ -835,7 +1094,7 @@
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
         <div class="tl-content">
           <div class="tl-year">1995</div>
-          <div class="tl-title">Windows 95 — The Revolution</div>
+          <div class="tl-title">Windows 95 - The Revolution</div>
           <p class="tl-desc">Introduced the iconic Start Menu, taskbar, and 32-bit application support. A cultural moment that defined the modern desktop paradigm.</p>
         </div>
       </div>
@@ -843,7 +1102,7 @@
       <div class="tl-item">
         <div class="tl-content">
           <div class="tl-year">2001</div>
-          <div class="tl-title">Windows XP — The Golden Era</div>
+          <div class="tl-title">Windows XP - The Golden Era</div>
           <p class="tl-desc">The most successful version ever. Its Luna interface and stability dominated the market for nearly 13 years across home and business users.</p>
         </div>
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
@@ -855,7 +1114,7 @@
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
         <div class="tl-content">
           <div class="tl-year">2009</div>
-          <div class="tl-title">Windows 7 — The Comeback</div>
+          <div class="tl-title">Windows 7 - The Comeback</div>
           <p class="tl-desc">A refined successor to Vista, featuring the elegant Aero interface, improved performance, and widely loved Snap window management.</p>
         </div>
       </div>
@@ -863,7 +1122,7 @@
       <div class="tl-item">
         <div class="tl-content">
           <div class="tl-year">2015</div>
-          <div class="tl-title">Windows 10 — The Universal OS</div>
+          <div class="tl-title">Windows 10 - The Universal OS</div>
           <p class="tl-desc">Unified PCs, tablets, phones, and Xbox under one platform. Introduced Cortana, the Edge browser, and a free upgrade path from Windows 7/8.</p>
         </div>
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
@@ -875,7 +1134,7 @@
         <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
         <div class="tl-content">
           <div class="tl-year">2021</div>
-          <div class="tl-title">Windows 11 — The Modern Era</div>
+          <div class="tl-title">Windows 11 - The Modern Era</div>
           <p class="tl-desc">The latest chapter, featuring a centered Start Menu, rounded UI, Snap Layouts, DirectStorage, and improved Android app integration.</p>
         </div>
       </div>
@@ -932,32 +1191,32 @@
   <div class="features-wrap">
     <div class="features-grid" id="featGrid">
       <div class="feat-box">
-        <span class="feat-emoji">⚡</span>
+        <span class="feat-emoji"></span>
         <h4>High Performance</h4>
         <p>Optimized kernel architecture delivers responsive speeds and efficient resource management across hardware generations.</p>
       </div>
       <div class="feat-box">
-        <span class="feat-emoji">🔐</span>
+        <span class="feat-emoji"></span>
         <h4>Security First</h4>
         <p>Windows Defender, BitLocker encryption, Secure Boot, and continuous security updates protect every user by default.</p>
       </div>
       <div class="feat-box">
-        <span class="feat-emoji">🎮</span>
+        <span class="feat-emoji"></span>
         <h4>Gaming Ready</h4>
         <p>DirectX 12 Ultimate, Auto HDR, DirectStorage, and Xbox integration make Windows the ultimate gaming platform.</p>
       </div>
       <div class="feat-box">
-        <span class="feat-emoji">☁️</span>
+        <span class="feat-emoji"></span>
         <h4>Cloud Integration</h4>
         <p>Seamless Azure, OneDrive, and Microsoft 365 synchronization keeps your work accessible from anywhere.</p>
       </div>
       <div class="feat-box">
-        <span class="feat-emoji">🔄</span>
+        <span class="feat-emoji"></span>
         <h4>Backward Compatible</h4>
-        <p>Run decades-old software flawlessly alongside cutting-edge applications — a hallmark of Windows engineering.</p>
+        <p>Run decades-old software flawlessly alongside cutting-edge applications - a hallmark of Windows engineering.</p>
       </div>
       <div class="feat-box">
-        <span class="feat-emoji">📱</span>
+        <span class="feat-emoji"></span>
         <h4>Cross-Device Sync</h4>
         <p>Phone Link, Bluetooth continuity, and universal clipboard unite your phone, tablet, and PC experience.</p>
       </div>
@@ -966,39 +1225,39 @@
 
 </section>
 
-<!-- ══════════ TASKS ══════════ -->
+<!--  TASKS  -->
 <section id="tasks">
   <div class="ph-wrap">
-    <div class="ph-circle">📋</div>
+    <div class="ph-circle"></div>
     <h2>Task Activities</h2>
     <p>This section is designated for your Task Activities content. Add your completed tasks, assignments, and activity logs related to the Windows OS project here.</p>
     <span class="ph-badge">Add Content Here</span>
   </div>
 </section>
 
-<!-- ══════════ CASE STUDY ══════════ -->
+<!--  CASE STUDY  -->
 <section id="casestudy">
   <div class="ph-wrap">
-    <div class="ph-circle">🔬</div>
+    <div class="ph-circle"></div>
     <h2>Case Study</h2>
-    <p>This section is reserved for your Case Study — document real-world scenarios, analysis, comparative studies, or research findings related to Windows OS.</p>
+    <p>This section is reserved for your Case Study - document real-world scenarios, analysis, comparative studies, or research findings related to Windows OS.</p>
     <span class="ph-badge">Add Content Here</span>
   </div>
 </section>
 
-<!-- ══════════ INSTALLATION ══════════ -->
+<!--  INSTALLATION  -->
 <section id="installation">
   <div class="ph-wrap">
-    <div class="ph-circle">⚙️</div>
+    <div class="ph-circle"></div>
     <h2>Installation</h2>
     <p>This section covers Windows installation procedures, system requirements, step-by-step guides, troubleshooting tips, and screenshots of the process.</p>
     <span class="ph-badge">Add Content Here</span>
   </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!--  FOOTER  -->
 <footer>
-  <div class="ft-left">© 2026 &nbsp;·&nbsp; Windows OS Project Compilation &nbsp;·&nbsp; ITOS220-T</div>
+  <div class="ft-left"> 2026 &nbsp;&nbsp; Windows OS Project Compilation &nbsp;&nbsp; ITOS220-T</div>
   <div class="ft-right">
     <div class="ft-pane"></div>
     <div class="ft-pane"></div>
@@ -1007,9 +1266,9 @@
   </div>
 </footer>
 
-<!-- ══════════ SCRIPTS ══════════ -->
+<!--  SCRIPTS  -->
 <script>
-/* ── Navigation ── */
+/*  Navigation  */
 function showSection(id, el) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -1019,7 +1278,7 @@ function showSection(id, el) {
   initObservers();
 }
 
-/* ── Particle Canvas ── */
+/*  Particle Canvas  */
 (function() {
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
@@ -1088,7 +1347,7 @@ function showSection(id, el) {
   loop();
 })();
 
-/* ── Scroll reveal via IntersectionObserver ── */
+/*  Scroll reveal via IntersectionObserver  */
 function initObservers() {
   // Fact cards staggered
   const cards = document.querySelectorAll('#factsGrid .fact-card:not(.revealed)');
@@ -1150,6 +1409,46 @@ function initObservers() {
 
 // Init on load
 initObservers();
+
+function initDropdownMenus() {
+  const dropdowns = document.querySelectorAll('.has-dropdown');
+  if (!dropdowns.length) return;
+
+  dropdowns.forEach((dd) => {
+    const caret = dd.querySelector('.nav-caret');
+    if (!caret) return;
+
+    caret.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const shouldOpen = !dd.classList.contains('open');
+      dropdowns.forEach((item) => item.classList.remove('open'));
+      if (shouldOpen) dd.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.has-dropdown')) {
+      dropdowns.forEach((item) => item.classList.remove('open'));
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDropdownMenus);
+} else {
+  initDropdownMenus();
+}
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

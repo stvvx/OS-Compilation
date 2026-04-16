@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Case Study Compilation — ITOS220-T</title>
+  <title>Case Study Compilation - ITOS220-T</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -37,7 +37,7 @@
       overflow-x:hidden;
     }
 
-    /* ── BACKGROUND ── */
+    /*  BACKGROUND  */
     #bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
     .bg-base {
@@ -69,7 +69,7 @@
       mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
     }
 
-    /* ── NAV ── */
+    /*  NAV  */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
       height:70px; display:flex; align-items:center; justify-content:space-between;
@@ -123,14 +123,68 @@
     .nav-links a.active      { color:var(--cyan); background:rgba(0,180,255,0.08); }
     .nav-links a.active .dot { opacity:1; transform:scale(1); }
 
-    /* ── PAGE WRAPPER ── */
+    .nav-links li { position:relative; }
+
+    .nav-caret {
+      font-size:11px;
+      line-height:1;
+      opacity:.75;
+      transition:transform .2s ease;
+    }
+
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform:rotate(180deg);
+    }
+
+    .nav-submenu {
+      list-style:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      min-width:230px;
+      padding:8px;
+      border-radius:10px;
+      border:1px solid rgba(0,180,255,0.16);
+      background:rgba(5,14,34,0.96);
+      box-shadow:0 16px 36px rgba(0,0,0,0.45);
+      backdrop-filter:blur(12px);
+      display:none;
+      z-index:230;
+    }
+
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display:block;
+    }
+
+    .nav-submenu a {
+      display:block;
+      padding:8px 10px;
+      border-radius:7px;
+      font-family:'Space Mono',monospace;
+      font-size:10px;
+      letter-spacing:.8px;
+      text-transform:none;
+      color:var(--text-dim);
+      text-decoration:none;
+    }
+
+    .nav-submenu a:hover,
+    .nav-submenu a:focus-visible {
+      background:rgba(0,180,255,0.14);
+      color:#fff;
+      outline:none;
+    }
+
+    /*  PAGE WRAPPER  */
     .page {
       position:relative; z-index:1;
       padding:110px 60px 90px;
       max-width:1340px; margin:0 auto;
     }
 
-    /* ── PAGE HERO ── */
+    /*  PAGE HERO  */
     .page-hero {
       text-align:center; padding:28px 0 70px; position:relative;
     }
@@ -196,7 +250,7 @@
       background:linear-gradient(90deg,var(--text-mute),transparent);
     }
 
-    /* ── STATS BAR ── */
+    /*  STATS BAR  */
     .stats-bar {
       display:flex; align-items:center; justify-content:center; gap:0;
       background:var(--navy-card2);
@@ -239,7 +293,7 @@
       letter-spacing:1px;
     }
 
-    /* ── PART HEADER ── */
+    /*  PART HEADER  */
     .part-section { margin-bottom:90px; }
 
     .part-header {
@@ -277,7 +331,7 @@
     }
     .part-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(0,180,255,0.2),transparent); }
 
-    /* ── DESCRIPTION BOX — enhanced ── */
+    /*  DESCRIPTION BOX - enhanced  */
     .desc-box {
       background:var(--navy-card2);
       border:1px solid rgba(0,180,255,0.13);
@@ -331,7 +385,7 @@
       white-space:nowrap;
     }
 
-    /* ── VIDEO GRID — one card per row, full width ── */
+    /*  VIDEO GRID - one card per row, full width  */
     .video-grid {
       display:flex;
       flex-direction:column;
@@ -339,14 +393,14 @@
       margin-bottom:0;
     }
 
-    /* Card: horizontal — video LEFT, description RIGHT */
+    /* Card: horizontal - video LEFT, description RIGHT */
     .video-card {
       background:var(--navy-card);
       border:1px solid var(--glass-bd);
       border-radius:var(--r-card);
       overflow:hidden;
       display:flex;
-      flex-direction:row;          /* ← side by side */
+      flex-direction:row;          /*  side by side */
       min-height:290px;
       position:relative;
       transition:transform .38s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;
@@ -371,7 +425,7 @@
     }
     .video-card:hover::before { opacity:1; }
 
-    /* Card accent bar div — hidden in row mode (keep for compat) */
+    /* Card accent bar div - hidden in row mode (keep for compat) */
     .card-accent-bar { display:none; }
 
     /* === VIDEO LEFT HALF === */
@@ -499,7 +553,7 @@
       font-size:12px; color:var(--text-dim); line-height:1.5; font-weight:300;
     }
     .video-learn-list li::before {
-      content:'›'; color:var(--cyan); font-size:14px; line-height:1.2; flex-shrink:0;
+      content:''; color:var(--cyan); font-size:14px; line-height:1.2; flex-shrink:0;
     }
 
     .video-footer {
@@ -531,7 +585,7 @@
       width:10px; height:10px; fill:#fff;
     }
 
-    /* ── PROGRESS BAR ── */
+    /*  PROGRESS BAR  */
     .progress-track {
       display:flex; align-items:center; gap:3px;
       margin-bottom:60px;
@@ -552,7 +606,7 @@
     .progress-step:hover .p-label { opacity:1; }
     .progress-step.done .p-label { color:var(--cyan); }
 
-    /* ── FOOTER ── */
+    /*  FOOTER  */
     footer {
       position:relative; z-index:1;
       border-top:1px solid rgba(255,255,255,0.05);
@@ -573,6 +627,40 @@
     ::-webkit-scrollbar{width:5px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue),var(--cyan));border-radius:3px}
+  
+    .nav-caret {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:14px;
+      height:14px;
+      margin-left:4px;
+      cursor:pointer;
+      opacity:.85;
+      transition:transform .2s ease;
+      vertical-align:middle;
+    }
+
+    .nav-caret::before {
+      content:'';
+      width:0;
+      height:0;
+      border-left:4px solid transparent;
+      border-right:4px solid transparent;
+      border-top:5px solid currentColor;
+    }
+
+    .has-dropdown.open .nav-caret,
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform:rotate(180deg);
+    }
+
+    .has-dropdown.open .nav-submenu,
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display:block;
+    }
   </style>
 </head>
 <body>
@@ -590,9 +678,51 @@
   </a>
   <ul class="nav-links">
     <li><a href="home.html"><span class="dot"></span>Home</a></li>
-    <li><a href="task.html"><span class="dot"></span>Task Activities</a></li>
-    <li><a href="casestudy.html" class="active"><span class="dot"></span>Case Study</a></li>
-    <li><a href="installation.html"><span class="dot"></span>Installation</a></li>
+    <li class="has-dropdown">
+      <a href="task/task1.html"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="task/task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
+        <li><a href="task/task2.html">Activity 2: Active Directory: Creating Users</a></li>
+        <li><a href="task/task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
+        <li><a href="task/task4.html">Activity 4: RAID Installation</a></li>
+        <li><a href="task/task5.html">Activity 5: Group Policy Management</a></li>
+        <li><a href="task/task6.html">Activity 6: Web Server</a></li>
+        <li><a href="task/task7.html">Activity 7: File Server</a></li>
+        <li><a href="task/task8.html">Activity 8: WDS</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="case study/part1.html" class="active"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="case study/part1.html">Part 1: Domain Controller</a></li>
+        <li><a href="case study/part2.html">Part 2: Adding Users</a></li>
+        <li><a href="case study/part3.html">Part 3: DHCP Server</a></li>
+        <li><a href="case study/part4.html">Part 4: File Sharing</a></li>
+        <li><a href="case study/part5.html">Part 5: RAID</a></li>
+        <li><a href="case study/part6.html">Part 6: Remote Desktop</a></li>
+        <li><a href="case study/part7.html">Part 7: Web Server</a></li>
+        <li><a href="case study/part8.html">Part 8: Group Policies</a></li>
+        <li><a href="case study/part9.html">Part 9: Windows Deployment</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+        <li><a href="installation/windows95.html">Windows 95</a></li>
+        <li><a href="installation/windows98.html">Windows 98</a></li>
+        <li><a href="installation/windowsnt.html">Windows NT</a></li>
+        <li><a href="installation/windows2000.html">Windows 2000</a></li>
+        <li><a href="installation/windowsme.html">Windows ME</a></li>
+        <li><a href="installation/windowsxp.html">Windows XP</a></li>
+        <li><a href="installation/windows-server-2003.html">Windows Server 2003</a></li>
+        <li><a href="installation/windows-vista.html">Windows Vista</a></li>
+        <li><a href="installation/windows-server-2008.html">Windows Server 2008</a></li>
+        <li><a href="installation/windows7.html">Windows 7</a></li>
+        <li><a href="installation/windows8.html">Windows 8</a></li>
+        <li><a href="installation/windows10.html">Windows 10</a></li>
+        <li><a href="installation/windows11.html">Windows 11</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -601,24 +731,17 @@
 
   <!-- HERO -->
   <div class="page-hero">
-    <div class="page-eyebrow">ITOS220-T &nbsp;·&nbsp; Case Study Compilation</div>
+    <div class="page-eyebrow">ITOS220-T &nbsp;&nbsp; Case Study Compilation</div>
     <h1>
       <span class="g1">Case Studies</span>
       <span class="g2">YouTube Video Tutorials</span>
     </h1>
-    <p>A comprehensive walkthrough of Windows Server 2008 administration, configuration, and deployment — covering all essential roles and services.</p>
+    <p>A comprehensive walkthrough of Windows Server 2008 administration, configuration, and deployment - covering all essential roles and services.</p>
     <br/>
     <span class="student-tag">Dion O. Ongaria &nbsp;|&nbsp; BSIT-NS-2A-T</span>
   </div>
 
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <span class="stat-num" id="totalCount">9</span>
-      <span class="stat-lbl">Total Videos</span>
-      <span class="stat-sub">// tutorials</span>
-    </div>
-    <div class="stat-item">
+  <!-- STATS BAR --><div class="stat-item">
       <span class="stat-num" id="partCount">9</span>
       <span class="stat-lbl">Parts Covered</span>
       <span class="stat-sub">// modules</span>
@@ -636,7 +759,7 @@
 </div>
 
 <footer>
-  <div class="ft-left">© 2026 &nbsp;·&nbsp; Case Study Compilation &nbsp;·&nbsp; ITOS220-T</div>
+  <div class="ft-left"> 2026 &nbsp;&nbsp; Case Study Compilation &nbsp;&nbsp; ITOS220-T</div>
   <div class="ft-right">
     <div class="ft-pane"></div><div class="ft-pane"></div>
     <div class="ft-pane"></div><div class="ft-pane"></div>
@@ -644,16 +767,16 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════
+/* 
    CASE STUDY DATA
-══════════════════════════════════════ */
+ */
 const caseParts = [
   {
     part: "Part 1",
     title: "Setting Up Domain Controller",
-    icon: "🎯",
+    icon: "[+]",
     tags: ["Active Directory", "DNS", "ADDS"],
-    description: "Using Windows Server 2008, this tutorial demonstrates the full process of setting up a Domain Controller — the backbone of any enterprise Windows network.",
+    description: "Using Windows Server 2008, this tutorial demonstrates the full process of setting up a Domain Controller - the backbone of any enterprise Windows network.",
     details: "A Domain Controller (DC) is a server that responds to authentication requests and verifies users on a network. It hosts the Active Directory Domain Services (AD DS) role, manages user accounts, enforces security policies, and provides a central repository for all network objects. Without a properly configured DC, users cannot authenticate to the domain or access shared resources.",
     videos: [
       {
@@ -666,15 +789,14 @@ const caseParts = [
           "Configure DNS integrated with AD DS",
           "Verify replication and DC health using dcdiag"
         ],
-        tags: ["AD DS", "dcpromo", "DNS"],
-        duration: "~10 min"
+        tags: ["AD DS", "dcpromo", "DNS"]
       }
     ]
   },
   {
     part: "Part 2",
     title: "Adding Domain Users",
-    icon: "👥",
+    icon: "[@]",
     tags: ["Active Directory", "Users & Groups", "OU"],
     description: "Adding Domain Users in Windows Server 2008 means creating accounts for individuals who will be part of the network domain and can access domain-joined resources.",
     details: "Domain user accounts are stored in Active Directory and can log in to any domain-joined computer. Organizing users into Organizational Units (OUs) enables administrators to delegate control and apply Group Policy Objects selectively. Proper user management is critical for security, resource access, and efficient administration at scale.",
@@ -689,15 +811,14 @@ const caseParts = [
           "Add new domain user accounts with proper credentials",
           "Assign users to appropriate security groups"
         ],
-        tags: ["ADUC", "OUs", "Security Groups"],
-        duration: "~12 min"
+        tags: ["ADUC", "OUs", "Security Groups"]
       }
     ]
   },
   {
     part: "Part 3",
     title: "DHCP Server",
-    icon: "🌐",
+    icon: "[*]",
     tags: ["DHCP", "IP Management", "Leasing"],
     description: "A DHCP (Dynamic Host Configuration Protocol) server automatically assigns unique IP addresses and network settings to devices on your network, eliminating the need for manual configuration.",
     details: "DHCP simplifies IP address management across large networks by maintaining a pool of available addresses and leasing them to clients. It also distributes subnet masks, default gateways, DNS server addresses, and more. In an enterprise environment, DHCP reduces configuration errors and administrative overhead significantly.",
@@ -711,15 +832,14 @@ const caseParts = [
           "Set exclusion ranges for static devices",
           "Authorize the DHCP server in Active Directory"
         ],
-        tags: ["Scopes", "Leases", "Exclusions"],
-        duration: "~13 min"
+        tags: ["Scopes", "Leases", "Exclusions"]
       }
     ]
   },
   {
     part: "Part 4",
     title: "File Sharing",
-    icon: "📁",
+    icon: "[F]",
     tags: ["SMB", "Permissions", "NTFS"],
     description: "File sharing in Windows Server 2008 lets multiple users access and exchange files stored on a central server, making collaboration and centralized data management straightforward.",
     details: "Shared folders in Windows Server 2008 use the Server Message Block (SMB) protocol. Effective file sharing requires a combination of share-level permissions and NTFS permissions to properly control who can read, write, or modify files. Windows Server 2008 also introduces Share and Storage Management for a streamlined administrative experience.",
@@ -734,15 +854,14 @@ const caseParts = [
           "Map network drives using Group Policy",
           "Use the Effective Permissions tool to verify access"
         ],
-        tags: ["SMB", "NTFS", "Share Perms"],
-        duration: "~14 min"
+        tags: ["SMB", "NTFS", "Share Perms"]
       }
     ]
   },
   {
     part: "Part 5",
     title: "RAID Configuration",
-    icon: "💾",
+    icon: "[=]",
     tags: ["RAID", "Disk Management", "Redundancy"],
     description: "RAID (Redundant Array of Independent Disks) in Windows Server 2008 combines multiple physical disks into a logical unit for redundancy, improved performance, or both.",
     details: "Windows Server 2008 supports software RAID via Disk Management, including RAID-0 (striping for performance), RAID-1 (mirroring for redundancy), and RAID-5 (striping with parity for balanced performance and fault tolerance). Understanding the right RAID level for different workloads is essential for maintaining data availability and system performance.",
@@ -757,18 +876,17 @@ const caseParts = [
           "Set up a RAID-5 striped-with-parity volume",
           "Simulate disk failure and perform volume recovery"
         ],
-        tags: ["RAID-1", "RAID-5", "Dynamic Disk"],
-        duration: "~16 min"
+        tags: ["RAID-1", "RAID-5", "Dynamic Disk"]
       }
     ]
   },
   {
     part: "Part 6",
     title: "Remote Desktop Connection",
-    icon: "🔗",
+    icon: "[>]",
     tags: ["RDP", "Remote Access", "Terminal Services"],
     description: "Remote Desktop enables administrators and authorized users to connect to a server or workstation from a different location, as if sitting directly in front of it.",
-    details: "Windows Server 2008 includes Remote Desktop Services (formerly Terminal Services), allowing multiple simultaneous remote sessions. RDP operates over port 3389 and supports high-quality graphics, audio, and clipboard sharing. Properly securing RDP access — through firewall rules, NLA authentication, and certificate deployment — is essential to prevent unauthorized access.",
+    details: "Windows Server 2008 includes Remote Desktop Services (formerly Terminal Services), allowing multiple simultaneous remote sessions. RDP operates over port 3389 and supports high-quality graphics, audio, and clipboard sharing. Properly securing RDP access - through firewall rules, NLA authentication, and certificate deployment - is essential to prevent unauthorized access.",
     videos: [
       {
         title: "TUPT Domain: Part 6",
@@ -780,15 +898,14 @@ const caseParts = [
           "Add authorized users to the Remote Desktop Users group",
           "Connect from a Windows client using mstsc.exe"
         ],
-        tags: ["RDP", "NLA", "mstsc"],
-        duration: "~11 min"
+        tags: ["RDP", "NLA", "mstsc"]
       }
     ]
   },
   {
     part: "Part 7",
     title: "Web Server (IIS)",
-    icon: "🌍",
+    icon: "[W]",
     tags: ["IIS", "HTTP", "Web Hosting"],
     description: "A web server stores and serves website content to users. Windows Server 2008 includes Internet Information Services (IIS) 7.0, a powerful and flexible web platform.",
     details: "IIS 7.0 introduced a modular architecture, allowing administrators to install only the components they need. It supports ASP.NET, PHP, static files, and more. Virtual hosting allows a single server to host multiple websites using different IP addresses, ports, or host headers. Application pools provide process isolation between websites for security and stability.",
@@ -803,18 +920,17 @@ const caseParts = [
           "Set up application pools for process isolation",
           "Test internal website access from domain clients"
         ],
-        tags: ["IIS 7.0", "AppPool", "Bindings"],
-        duration: "~15 min"
+        tags: ["IIS 7.0", "AppPool", "Bindings"]
       }
     ]
   },
   {
     part: "Part 8",
     title: "Group Policies",
-    icon: "🔐",
+    icon: "[#]",
     tags: ["GPO", "Security", "Policy Management"],
     description: "Group Policy Objects (GPOs) are rules configured by administrators to uniformly control user and computer settings across all machines in a domain.",
-    details: "Group Policy is one of the most powerful tools in an Active Directory environment. GPOs can enforce desktop backgrounds, software restrictions, firewall rules, password complexity requirements, mapped drives, startup scripts, and hundreds more settings. Policies are linked to OUs, sites, or the entire domain and are applied in a defined order: Local → Site → Domain → OU.",
+    details: "Group Policy is one of the most powerful tools in an Active Directory environment. GPOs can enforce desktop backgrounds, software restrictions, firewall rules, password complexity requirements, mapped drives, startup scripts, and hundreds more settings. Policies are linked to OUs, sites, or the entire domain and are applied in a defined order: Local  Site  Domain  OU.",
     videos: [
       {
         title: "TUPT Domain: Part 8",
@@ -826,15 +942,14 @@ const caseParts = [
           "Configure password policies and desktop restrictions",
           "Test and verify policy with gpupdate and gpresult"
         ],
-        tags: ["GPMC", "GPO", "gpresult"],
-        duration: "~17 min"
+        tags: ["GPMC", "GPO", "gpresult"]
       }
     ]
   },
   {
     part: "Part 9",
     title: "Windows Deployment Services",
-    icon: "📦",
+    icon: "[X]",
     tags: ["WDS", "PXE Boot", "OS Imaging"],
     description: "Windows Deployment Services (WDS) allows administrators to deploy Windows operating systems remotely over the network to multiple computers simultaneously.",
     details: "WDS uses PXE (Pre-Boot Execution Environment) to network-boot client machines and present them with OS installation images without needing physical media. It integrates with DHCP and DNS for seamless network booting. WDS significantly reduces the time required to deploy operating systems in large organizations, enabling automated and consistent installations.",
@@ -849,14 +964,20 @@ const caseParts = [
           "Import a Windows install image (.wim file)",
           "Perform a PXE network boot and OS deployment"
         ],
-        tags: ["WDS", "PXE", "WIM Images"],
-        duration: "~18 min"
+        tags: ["WDS", "PXE", "WIM Images"]
       }
     ]
   }
 ];
 
-/* ════════════════════════════════════════ */
+const indexedCaseParts = caseParts.map((part, idx) => ({ ...part, partId: idx + 1 }));
+const caseStudyPageMatch = window.location.pathname.match(/part(\d+)\.html$/i);
+const caseStudyPageIndex = caseStudyPageMatch ? Number(caseStudyPageMatch[1]) : null;
+const visibleCaseParts = Number.isInteger(caseStudyPageIndex)
+  ? indexedCaseParts.filter((part) => part.partId === caseStudyPageIndex)
+  : indexedCaseParts;
+
+/*  */
 
 function getVideoId(url) {
   const raw = String(url || '').trim();
@@ -892,7 +1013,7 @@ function esc(s) {
 
 function renderProgress() {
   const track = document.getElementById('progressTrack');
-  track.innerHTML = caseParts.map((p, i) => `
+  track.innerHTML = visibleCaseParts.map((p, i) => `
     <div class="progress-step done">
       <span class="p-label">${p.part}</span>
     </div>
@@ -902,11 +1023,11 @@ function renderProgress() {
 function renderParts() {
   const container = document.getElementById('partsContainer');
 
-  let totalVideos = caseParts.reduce((acc, p) => acc + p.videos.length, 0);
+  let totalVideos = visibleCaseParts.reduce((acc, p) => acc + p.videos.length, 0);
   document.getElementById('totalCount').textContent = totalVideos;
-  document.getElementById('partCount').textContent = caseParts.length;
+  document.getElementById('partCount').textContent = visibleCaseParts.length;
 
-  container.innerHTML = caseParts.map((part, pi) => {
+  container.innerHTML = visibleCaseParts.map((part) => {
     const tagsHtml = (part.tags || []).map(t => `<span class="desc-tag">${t}</span>`).join('');
 
     const videosHtml = part.videos.map((vid, vi) => {
@@ -929,7 +1050,7 @@ function renderParts() {
             ${frameHtml}
           </div>
           <div class="video-body">
-            <div class="video-index">${part.part} · Video ${vi + 1}</div>
+            <div class="video-index">${part.part}  Video ${vi + 1}</div>
             <div class="video-title">${esc(vid.title)}</div>
             ${vtags ? `<div class="video-tags">${vtags}</div>` : ''}
             <div class="video-desc">${esc(vid.description)}</div>
@@ -946,9 +1067,9 @@ function renderParts() {
     }).join('');
 
     return `
-      <div class="part-section">
+      <div class="part-section" id="part-${part.partId}">
         <div class="part-header">
-          <div class="part-num-badge">P${pi + 1}</div>
+          <div class="part-num-badge">P${part.partId}</div>
           <div class="part-title-group">
             <div class="part-pill">${part.part}</div>
             <div class="part-name">${part.title}</div>
@@ -958,9 +1079,9 @@ function renderParts() {
 
         <div class="desc-box">
           <div class="desc-box-inner">
-            <div class="desc-icon-wrap">${part.icon}</div>
+            <div class="desc-icon-wrap">${part.icon || "[*]"}</div>
             <div class="desc-body-wrap">
-              <h4>${part.part} — ${part.title}</h4>
+              <h4>${part.part} - ${part.title}</h4>
               <div class="desc-main">${esc(part.description)}</div>
               <div class="desc-extra">${esc(part.details)}</div>
             </div>
@@ -1005,7 +1126,7 @@ function renderParts() {
   });
 }
 
-/* ── Particle Canvas ── */
+/*  Particle Canvas  */
 (function () {
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
@@ -1069,6 +1190,50 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProgress();
   renderParts();
 });
+
+function initDropdownMenus() {
+  const dropdowns = document.querySelectorAll('.has-dropdown');
+  if (!dropdowns.length) return;
+
+  dropdowns.forEach((dd) => {
+    const caret = dd.querySelector('.nav-caret');
+    if (!caret) return;
+
+    caret.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const shouldOpen = !dd.classList.contains('open');
+      dropdowns.forEach((item) => item.classList.remove('open'));
+      if (shouldOpen) dd.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.has-dropdown')) {
+      dropdowns.forEach((item) => item.classList.remove('open'));
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDropdownMenus);
+} else {
+  initDropdownMenus();
+}
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Task Activities — ITOS220-T</title>
+  <title>Task Activities - ITOS220-T</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -37,7 +37,7 @@
       overflow-x:hidden;
     }
 
-    /* ── BACKGROUND ── */
+    /*  BACKGROUND  */
     #bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
     .bg-base {
@@ -69,7 +69,7 @@
       mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
     }
 
-    /* ── NAV ── */
+    /*  NAV  */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
       height:70px; display:flex; align-items:center; justify-content:space-between;
@@ -123,14 +123,68 @@
     .nav-links a.active      { color:var(--cyan); background:rgba(0,180,255,0.08); }
     .nav-links a.active .dot { opacity:1; transform:scale(1); }
 
-    /* ── PAGE WRAPPER ── */
+    .nav-links li { position:relative; }
+
+    .nav-caret {
+      font-size:11px;
+      line-height:1;
+      opacity:.75;
+      transition:transform .2s ease;
+    }
+
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform:rotate(180deg);
+    }
+
+    .nav-submenu {
+      list-style:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      min-width:230px;
+      padding:8px;
+      border-radius:10px;
+      border:1px solid rgba(0,180,255,0.16);
+      background:rgba(5,14,34,0.96);
+      box-shadow:0 16px 36px rgba(0,0,0,0.45);
+      backdrop-filter:blur(12px);
+      display:none;
+      z-index:230;
+    }
+
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display:block;
+    }
+
+    .nav-submenu a {
+      display:block;
+      padding:8px 10px;
+      border-radius:7px;
+      font-family:'Space Mono',monospace;
+      font-size:10px;
+      letter-spacing:.8px;
+      text-transform:none;
+      color:var(--text-dim);
+      text-decoration:none;
+    }
+
+    .nav-submenu a:hover,
+    .nav-submenu a:focus-visible {
+      background:rgba(0,180,255,0.14);
+      color:#fff;
+      outline:none;
+    }
+
+    /*  PAGE WRAPPER  */
     .page {
       position:relative; z-index:1;
       padding:110px 60px 90px;
       max-width:1340px; margin:0 auto;
     }
 
-    /* ── PAGE HERO ── */
+    /*  PAGE HERO  */
     .page-hero {
       text-align:center; padding:28px 0 70px; position:relative;
     }
@@ -196,7 +250,7 @@
       background:linear-gradient(90deg,var(--text-mute),transparent);
     }
 
-    /* ── STATS BAR ── */
+    /*  STATS BAR  */
     .stats-bar {
       display:flex; align-items:center; justify-content:center; gap:0;
       background:var(--navy-card2);
@@ -239,7 +293,7 @@
       letter-spacing:1px;
     }
 
-    /* ── PART HEADER ── */
+    /*  PART HEADER  */
     .part-section { margin-bottom:90px; }
 
     .part-header {
@@ -277,7 +331,7 @@
     }
     .part-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(0,180,255,0.2),transparent); }
 
-    /* ── DESCRIPTION BOX — enhanced ── */
+    /*  DESCRIPTION BOX - enhanced  */
     .desc-box {
       background:var(--navy-card2);
       border:1px solid rgba(0,180,255,0.13);
@@ -331,7 +385,7 @@
       white-space:nowrap;
     }
 
-    /* ── VIDEO GRID — one card per row, full width ── */
+    /*  VIDEO GRID - one card per row, full width  */
     .video-grid {
       display:flex;
       flex-direction:column;
@@ -339,14 +393,14 @@
       margin-bottom:0;
     }
 
-    /* Card: horizontal — video LEFT, description RIGHT */
+    /* Card: horizontal - video LEFT, description RIGHT */
     .video-card {
       background:var(--navy-card);
       border:1px solid var(--glass-bd);
       border-radius:var(--r-card);
       overflow:hidden;
       display:flex;
-      flex-direction:row;          /* ← side by side */
+      flex-direction:row;          /*  side by side */
       min-height:290px;
       position:relative;
       transition:transform .38s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;
@@ -371,7 +425,7 @@
     }
     .video-card:hover::before { opacity:1; }
 
-    /* Card accent bar div — hidden in row mode (keep for compat) */
+    /* Card accent bar div - hidden in row mode (keep for compat) */
     .card-accent-bar { display:none; }
 
     /* === VIDEO LEFT HALF === */
@@ -499,7 +553,7 @@
       font-size:12px; color:var(--text-dim); line-height:1.5; font-weight:300;
     }
     .video-learn-list li::before {
-      content:'›'; color:var(--cyan); font-size:14px; line-height:1.2; flex-shrink:0;
+      content:''; color:var(--cyan); font-size:14px; line-height:1.2; flex-shrink:0;
     }
 
     .video-footer {
@@ -531,7 +585,7 @@
       width:10px; height:10px; fill:#fff;
     }
 
-    /* ── PROGRESS BAR ── */
+    /*  PROGRESS BAR  */
     .progress-track {
       display:flex; align-items:center; gap:3px;
       margin-bottom:60px;
@@ -552,7 +606,7 @@
     .progress-step:hover .p-label { opacity:1; }
     .progress-step.done .p-label { color:var(--cyan); }
 
-    /* ── FOOTER ── */
+    /*  FOOTER  */
     footer {
       position:relative; z-index:1;
       border-top:1px solid rgba(255,255,255,0.05);
@@ -573,6 +627,40 @@
     ::-webkit-scrollbar{width:5px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue),var(--cyan));border-radius:3px}
+  
+    .nav-caret {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:14px;
+      height:14px;
+      margin-left:4px;
+      cursor:pointer;
+      opacity:.85;
+      transition:transform .2s ease;
+      vertical-align:middle;
+    }
+
+    .nav-caret::before {
+      content:'';
+      width:0;
+      height:0;
+      border-left:4px solid transparent;
+      border-right:4px solid transparent;
+      border-top:5px solid currentColor;
+    }
+
+    .has-dropdown.open .nav-caret,
+    .has-dropdown:hover .nav-caret,
+    .has-dropdown:focus-within .nav-caret {
+      transform:rotate(180deg);
+    }
+
+    .has-dropdown.open .nav-submenu,
+    .has-dropdown:hover .nav-submenu,
+    .has-dropdown:focus-within .nav-submenu {
+      display:block;
+    }
   </style>
 </head>
 <body>
@@ -584,15 +672,57 @@
 
 <!-- NAV -->
 <nav>
-  <a href="home.html" class="nav-logo">
+  <a href="../home.html" class="nav-logo">
     <div class="win-panes"><span></span><span></span><span></span><span></span></div>
     <span class="nav-brand">Win<span>OS</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="home.html"><span class="dot"></span>Home</a></li>
-    <li><a href="task.html" class="active"><span class="dot"></span>Task Activities</a></li>
-    <li><a href="casestudy.html"><span class="dot"></span>Case Study</a></li>
-    <li><a href="installation.html"><span class="dot"></span>Installation</a></li>
+    <li><a href="../home.html"><span class="dot"></span>Home</a></li>
+    <li class="has-dropdown">
+      <a href="task1.html" class="active"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
+        <li><a href="task2.html">Activity 2: Active Directory: Creating Users</a></li>
+        <li><a href="task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
+        <li><a href="task4.html">Activity 4: RAID Installation</a></li>
+        <li><a href="task5.html">Activity 5: Group Policy Management</a></li>
+        <li><a href="task6.html">Activity 6: Web Server</a></li>
+        <li><a href="task7.html">Activity 7: File Server</a></li>
+        <li><a href="task8.html">Activity 8: WDS</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="../case study/part1.html"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+<li><a href="../case study/part1.html">Part 1: Domain Controller</a></li>
+        <li><a href="../case study/part2.html">Part 2: Adding Users</a></li>
+        <li><a href="../case study/part3.html">Part 3: DHCP Server</a></li>
+        <li><a href="../case study/part4.html">Part 4: File Sharing</a></li>
+        <li><a href="../case study/part5.html">Part 5: RAID</a></li>
+        <li><a href="../case study/part6.html">Part 6: Remote Desktop</a></li>
+        <li><a href="../case study/part7.html">Part 7: Web Server</a></li>
+        <li><a href="../case study/part8.html">Part 8: Group Policies</a></li>
+        <li><a href="../case study/part9.html">Part 9: Windows Deployment</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="../installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
+      <ul class="nav-submenu">
+        <li><a href="../installation/windows95.html">Windows 95</a></li>
+        <li><a href="../installation/windows98.html">Windows 98</a></li>
+        <li><a href="../installation/windowsnt.html">Windows NT</a></li>
+        <li><a href="../installation/windows2000.html">Windows 2000</a></li>
+        <li><a href="../installation/windowsme.html">Windows ME</a></li>
+        <li><a href="../installation/windowsxp.html">Windows XP</a></li>
+        <li><a href="../installation/windows-server-2003.html">Windows Server 2003</a></li>
+        <li><a href="../installation/windows-vista.html">Windows Vista</a></li>
+        <li><a href="../installation/windows-server-2008.html">Windows Server 2008</a></li>
+        <li><a href="../installation/windows7.html">Windows 7</a></li>
+        <li><a href="../installation/windows8.html">Windows 8</a></li>
+        <li><a href="../installation/windows10.html">Windows 10</a></li>
+        <li><a href="../installation/windows11.html">Windows 11</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -601,30 +731,13 @@
 
   <!-- HERO -->
   <div class="page-hero">
-    <div class="page-eyebrow">ITOS220-T &nbsp;·&nbsp; Laboratory Task Activities</div>
+    <div class="page-eyebrow">ITOS220-T &nbsp;&nbsp; Laboratory Task Activities</div>
     <h1>
       <span class="g1">Task Activities</span>
       <span class="g2">Hands-On Lab Modules</span>
-    </h1>
-    <p>Practical Windows Server 2008 lab activities focused on configuration, troubleshooting, and validation of core network services.</p>
-    <br/>
+    </h1>    <br/>
     <span class="student-tag">Dion O. Ongaria &nbsp;|&nbsp; BSIT-NS-2A-T</span>
   </div>
-
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <span class="stat-num" id="totalCount">9</span>
-      <span class="stat-lbl">Total Activities</span>
-      <span class="stat-sub">// practical labs</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" id="partCount">9</span>
-      <span class="stat-lbl">Lab Modules</span>
-      <span class="stat-sub">// competency units</span>
-    </div>
-  </div>
-
   <!-- PROGRESS TRACK -->
   <div class="progress-track" id="progressTrack">
     <!-- Rendered by JS -->
@@ -636,7 +749,7 @@
 </div>
 
 <footer>
-  <div class="ft-left">© 2026 &nbsp;·&nbsp; Task Activities &nbsp;·&nbsp; ITOS220-T</div>
+  <div class="ft-left"> 2026 &nbsp;&nbsp; Task Activities &nbsp;&nbsp; ITOS220-T</div>
   <div class="ft-right">
     <div class="ft-pane"></div><div class="ft-pane"></div>
     <div class="ft-pane"></div><div class="ft-pane"></div>
@@ -644,37 +757,46 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════
+/* 
    TASK ACTIVITIES DATA
-══════════════════════════════════════ */
+ */
 const caseParts = [
   {
     part: "Part 1",
-    title: "User and Group Administration",
-    icon: "👤",
-    tags: ["ADUC", "Users", "Groups"],
-    description: "Create users, security groups, and Organizational Units as foundational Active Directory administration tasks.",
-    details: "This activity builds confidence with account lifecycle management, password policies, and group-based permissions needed for secure domain operations.",
+    title: "Installation and Activation of Windows Server 2008",
+    icon: "",
+    tags: ["VirtualBox", "Windows Server 2008", "Installation"],
+    description: "Step-by-step virtual machine setup and installation guide for Windows Server 2008 using Oracle VirtualBox, intended for educational and laboratory use.",
+    details: "This activity covers software requirements, VM creation, ISO attachment, operating system installation, initial administrator setup, Guest Additions, and activation options.",
     videos: [
       {
         title: "Task Activity 1",
         url: "https://youtu.be/yjg3nbwVQzc?si=1Rwvnl1HVmo0E0DJ",
-        description: "Lab execution for account creation, OU structure, and delegation-ready group setup.",
+        description: "Windows Server 2008 Installation Guide (Oracle VirtualBox): complete walk-through from prerequisites to activation and post-install reminders.",
         keyPoints: [
-          "Create domain users and set initial password rules",
-          "Organize objects inside OUs",
-          "Create and assign security groups",
-          "Validate logon permissions"
+          "Requirements: install Oracle VirtualBox and matching VirtualBox Extension Pack from https://www.virtualbox.org/.",
+          "Prepare a Windows Server 2008 ISO from Microsoft evaluation downloads, academic software portals, or your school-provided installer.",
+          "Recommended VM specs: RAM 2 GB, CPU 2 cores, Storage 40 GB virtual disk, Graphics 128 MB video memory.",
+          "Step 1 - Create VM: open VirtualBox, click New, set Name to Windows Server 2008, Type to Microsoft Windows, Version to Windows 2008 (64-bit), then click Next.",
+          "Step 2 - Allocate memory: set RAM to 2048 MB (2 GB), then click Next.",
+          "Step 3 - Create virtual hard disk: choose Create a virtual hard disk now, select VDI, choose Dynamically Allocated, set disk size to 40 GB, then click Create.",
+          "Step 4 - Attach ISO: select VM, open Settings > Storage, under Controller IDE select Empty, click the disk icon, choose a disk file, select the Windows Server 2008 ISO, then click OK.",
+          "Step 5 - Start installation: click Start, wait for setup to load, choose language and time format, then click Next.",
+          "Step 6 - Install Windows: click Install Now, select edition (for example Windows Server 2008 Standard or Enterprise), accept license terms, then choose Custom (Advanced) installation.",
+          "Step 7 - Partition disk: select virtual disk, click New, create partition, click Next, then wait while Windows installs and restarts several times.",
+          "Step 8 - Administrator setup: after installation, create an Administrator password and log in to reach the Windows Server 2008 desktop.",
+          "Step 9 - Install VirtualBox Guest Additions (recommended): click Devices > Insert Guest Additions CD Image, run VBoxWindowsAdditions.exe, then restart the VM.",
+          "Activation options: use a valid Microsoft product key, a school or enterprise volume license, or a time-limited Microsoft evaluation license; activate through Control Panel > System > Activate Windows.",
+          "Reminder: this setup is for educational and laboratory learning such as Active Directory, DHCP, Web Server (IIS), and Group Policy."
         ],
-        tags: ["ADUC", "OU", "RBAC"],
-        duration: "~10 min"
+        tags: ["VM Setup", "Server Install", "Activation"]
       }
     ]
   },
   {
     part: "Part 2",
     title: "DNS Records and Name Resolution",
-    icon: "🧭",
+    icon: "",
     tags: ["DNS", "A Record", "Troubleshooting"],
     description: "Configure forward lookup zones and validate hostname resolution across domain clients.",
     details: "The lab covers DNS service checks, record creation, and resolution testing with nslookup and ping to ensure directory-dependent services work correctly.",
@@ -689,38 +811,45 @@ const caseParts = [
           "Flush and test client resolver cache",
           "Troubleshoot failed name resolution"
         ],
-        tags: ["DNS", "nslookup", "Records"],
-        duration: "~12 min"
+        tags: ["DNS", "nslookup", "Records"]
       }
     ]
   },
   {
     part: "Part 3",
-    title: "DHCP Scope Configuration",
-    icon: "🌐",
-    tags: ["DHCP", "Scope", "Lease"],
-    description: "Deploy a DHCP scope and ensure clients receive correct IP, gateway, and DNS options.",
-    details: "This module emphasizes scope design, exclusions, lease timing, and conflict prevention so network clients can connect with minimal manual intervention.",
+    title: "DHCP Joining Workstation in Domain",
+    icon: "[*]",
+    tags: ["DHCP", "Network Scopes", "Domain Join"],
+    description: "Install and configure a DHCP Server, set up network scopes for different student groups, and connect client computers to the domain. Ensures proper IP address assignment and domain connectivity for Windows XP and Windows 7 clients.",
+    details: "This activity focuses on deploying DHCP infrastructure with segregated scopes for male and female students, configuring exclusion ranges, setting lease times, and joining multiple client workstations to the tup.local domain.",
     videos: [
       {
         title: "Task Activity 3",
         url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        description: "Configure and validate DHCP behavior from both server and client perspectives.",
+        description: "Installing and configuring DHCP Server with network scopes and joining Windows XP and Windows 7 workstations to the domain.",
         keyPoints: [
-          "Create scope ranges and exclusions",
-          "Set option 003 (gateway) and 006 (DNS)",
-          "Authorize DHCP in Active Directory",
-          "Test client lease renewal"
+          "Role Installed: DHCP Server",
+          "Class A Network: 10.0.0.0/8 (Male students)",
+          "Class B Network: 172.16.0.0/16 (Female students)",
+          "Server IP: Last usable IP address",
+          "Exclusion: First & Last 10 usable IP addresses",
+          "Lease Time: 16 hours",
+          "Router: Server IP Address",
+          "DNS: Server IP Address & 8.8.8.8",
+          "Client Systems - Windows XP: LASTNAME-XP naming convention",
+          "Client Systems - Windows 7: LASTNAME-WIN7 naming convention",
+          "Windows XP must receive Class A IP Address (10.x.x.x)",
+          "Windows 7 must receive Class B IP Address (172.16.x.x)",
+          "Login 5 student accounts per section per OS"
         ],
-        tags: ["Scope", "Lease", "IPAM"],
-        duration: "~13 min"
+        tags: ["DHCP", "Scopes", "Domain Join", "Client Setup"]
       }
     ]
   },
   {
     part: "Part 4",
     title: "File Sharing and Permission Matrix",
-    icon: "📁",
+    icon: "[F]",
     tags: ["SMB", "NTFS", "ACL"],
     description: "Build shared folders and apply layered share and NTFS permissions for controlled access.",
     details: "The objective is to understand effective permissions by combining security groups, share rights, and NTFS ACLs while avoiding over-permissioned folders.",
@@ -735,15 +864,14 @@ const caseParts = [
           "Map network drives using Group Policy",
           "Verify effective permissions with test accounts"
         ],
-        tags: ["SMB", "NTFS", "ACL"],
-        duration: "~14 min"
+        tags: ["SMB", "NTFS", "ACL"]
       }
     ]
   },
   {
     part: "Part 5",
     title: "Group Policy Enforcement",
-    icon: "🔐",
+    icon: "[#]",
     tags: ["GPO", "Security", "Policy"],
     description: "Create and link GPOs to enforce account, desktop, and security standards across domain clients.",
     details: "This activity focuses on policy scoping, inheritance, and validation so administrators can apply consistent controls without manual per-device configuration.",
@@ -758,15 +886,14 @@ const caseParts = [
           "Configure desktop restriction examples",
           "Validate with gpupdate and gpresult"
         ],
-        tags: ["GPMC", "GPO", "gpresult"],
-        duration: "~16 min"
+        tags: ["GPMC", "GPO", "gpresult"]
       }
     ]
   },
   {
     part: "Part 6",
     title: "IIS Website Deployment",
-    icon: "🌍",
+    icon: "[W]",
     tags: ["IIS", "Bindings", "Web"],
     description: "Install IIS role services and publish a test site accessible from clients in the domain.",
     details: "The module teaches role installation, site binding, and basic troubleshooting of HTTP access and firewall policy interactions.",
@@ -781,15 +908,14 @@ const caseParts = [
           "Set NTFS permissions on web root",
           "Validate access from domain clients"
         ],
-        tags: ["IIS", "HTTP", "Bindings"],
-        duration: "~11 min"
+        tags: ["IIS", "HTTP", "Bindings"]
       }
     ]
   },
   {
     part: "Part 7",
     title: "Remote Desktop Security",
-    icon: "🖥️",
+    icon: "[>]",
     tags: ["RDP", "NLA", "Remote Access"],
     description: "Enable secure remote administration with RDP while restricting exposure and enforcing least privilege.",
     details: "RDP is useful for administration but must be hardened using NLA, firewall scoping, and role-based access to reduce brute-force and lateral movement risk.",
@@ -804,15 +930,14 @@ const caseParts = [
           "Assign Remote Desktop Users membership",
           "Test successful and failed login scenarios"
         ],
-        tags: ["RDP", "NLA", "Hardening"],
-        duration: "~15 min"
+        tags: ["RDP", "NLA", "Hardening"]
       }
     ]
   },
   {
     part: "Part 8",
     title: "Backup and Recovery Validation",
-    icon: "🗄️",
+    icon: "[=]",
     tags: ["Backup", "Restore", "Validation"],
     description: "Create backup jobs and perform restore tests to confirm recovery readiness.",
     details: "The final activity verifies operational resilience by backing up system state and key data, then restoring to a test environment for proof of recoverability.",
@@ -827,14 +952,20 @@ const caseParts = [
           "Restore selected files and system state in lab",
           "Document recovery time and outcomes"
         ],
-        tags: ["BCDR", "Restore", "Audit"],
-        duration: "~17 min"
+        tags: ["BCDR", "Restore", "Audit"]
       }
     ]
   }
 ];
 
-/* ════════════════════════════════════════ */
+const indexedCaseParts = caseParts.map((part, idx) => ({ ...part, partId: idx + 1 }));
+const taskPageMatch = window.location.pathname.match(/task(\d+)\.html$/i);
+const taskPageIndex = taskPageMatch ? Number(taskPageMatch[1]) : null;
+const visibleCaseParts = Number.isInteger(taskPageIndex)
+  ? indexedCaseParts.filter((part) => part.partId === taskPageIndex)
+  : indexedCaseParts;
+
+/*  */
 
 function getVideoId(url) {
   const raw = String(url || '').trim();
@@ -870,7 +1001,7 @@ function esc(s) {
 
 function renderProgress() {
   const track = document.getElementById('progressTrack');
-  track.innerHTML = caseParts.map((p, i) => `
+  track.innerHTML = visibleCaseParts.map((p, i) => `
     <div class="progress-step done">
       <span class="p-label">${p.part}</span>
     </div>
@@ -880,11 +1011,13 @@ function renderProgress() {
 function renderParts() {
   const container = document.getElementById('partsContainer');
 
-  let totalVideos = caseParts.reduce((acc, p) => acc + p.videos.length, 0);
-  document.getElementById('totalCount').textContent = totalVideos;
-  document.getElementById('partCount').textContent = caseParts.length;
+  let totalVideos = visibleCaseParts.reduce((acc, p) => acc + p.videos.length, 0);
+  const totalCountEl = document.getElementById('totalCount');
+  const partCountEl = document.getElementById('partCount');
+  if (totalCountEl) totalCountEl.textContent = totalVideos;
+  if (partCountEl) partCountEl.textContent = visibleCaseParts.length;
 
-  container.innerHTML = caseParts.map((part, pi) => {
+  container.innerHTML = visibleCaseParts.map((part) => {
     const tagsHtml = (part.tags || []).map(t => `<span class="desc-tag">${t}</span>`).join('');
 
     const videosHtml = part.videos.map((vid, vi) => {
@@ -907,7 +1040,7 @@ function renderParts() {
             ${frameHtml}
           </div>
           <div class="video-body">
-            <div class="video-index">${part.part} · Video ${vi + 1}</div>
+            <div class="video-index">${part.part}  Video ${vi + 1}</div>
             <div class="video-title">${esc(vid.title)}</div>
             ${vtags ? `<div class="video-tags">${vtags}</div>` : ''}
             <div class="video-desc">${esc(vid.description)}</div>
@@ -924,9 +1057,9 @@ function renderParts() {
     }).join('');
 
     return `
-      <div class="part-section">
+      <div class="part-section" id="part-${part.partId}">
         <div class="part-header">
-          <div class="part-num-badge">P${pi + 1}</div>
+          <div class="part-num-badge">P${part.partId}</div>
           <div class="part-title-group">
             <div class="part-pill">${part.part}</div>
             <div class="part-name">${part.title}</div>
@@ -936,9 +1069,9 @@ function renderParts() {
 
         <div class="desc-box">
           <div class="desc-box-inner">
-            <div class="desc-icon-wrap">${part.icon}</div>
+            <div class="desc-icon-wrap">${part.icon || "[*]"}</div>
             <div class="desc-body-wrap">
-              <h4>${part.part} — ${part.title}</h4>
+              <h4>${part.part} - ${part.title}</h4>
               <div class="desc-main">${esc(part.description)}</div>
               <div class="desc-extra">${esc(part.details)}</div>
             </div>
@@ -968,22 +1101,37 @@ function renderParts() {
 
   // Play video inline inside the card when thumbnail is clicked.
   container.querySelectorAll('.video-thumb-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       const id = btn.getAttribute('data-video-id');
       const title = btn.getAttribute('data-video-title') || 'YouTube video';
       const frame = btn.closest('.video-frame');
       if (!id || !frame) return;
-      const src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
+
+      const params = new URLSearchParams({
+        autoplay: '1',
+        rel: '0',
+        modestbranding: '1',
+        playsinline: '1'
+      });
+
+      // Only send origin when served via http(s); local file preview can break embeds with origin=null.
+      if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        params.set('origin', window.location.origin);
+      }
+
+      const src = `https://www.youtube.com/embed/${id}?${params.toString()}`;
       frame.innerHTML = `<iframe src="${src}"
                           title="${title}"
-                          referrerpolicy="origin"
+              referrerpolicy="strict-origin-when-cross-origin"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                           allowfullscreen loading="eager"></iframe>`;
     });
   });
 }
 
-/* ── Particle Canvas ── */
+/*  Particle Canvas  */
 (function () {
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
@@ -1047,6 +1195,51 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProgress();
   renderParts();
 });
+
+function initDropdownMenus() {
+  const dropdowns = document.querySelectorAll('.has-dropdown');
+  if (!dropdowns.length) return;
+
+  dropdowns.forEach((dd) => {
+    const caret = dd.querySelector('.nav-caret');
+    if (!caret) return;
+
+    caret.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const shouldOpen = !dd.classList.contains('open');
+      dropdowns.forEach((item) => item.classList.remove('open'));
+      if (shouldOpen) dd.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.has-dropdown')) {
+      dropdowns.forEach((item) => item.classList.remove('open'));
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDropdownMenus);
+} else {
+  initDropdownMenus();
+}
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
