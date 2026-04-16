@@ -671,60 +671,26 @@
 <canvas id="bg-canvas"></canvas>
 
 <!-- NAV -->
-<nav>
-  <a href="../home.html" class="nav-logo">
-    <div class="win-panes"><span></span><span></span><span></span><span></span></div>
-    <span class="nav-brand">Win<span>OS</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="../home.html"><span class="dot"></span>Home</a></li>
-    <li class="has-dropdown">
-      <a href="../task/task1.html"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="../task/task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
-        <li><a href="../task/task2.html">Activity 2: Active Directory: Creating Users</a></li>
-        <li><a href="../task/task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
-        <li><a href="../task/task4.html">Activity 4: RAID Installation</a></li>
-        <li><a href="../task/task5.html">Activity 5: Group Policy Management</a></li>
-        <li><a href="../task/task6.html">Activity 6: Web Server</a></li>
-        <li><a href="../task/task7.html">Activity 7: File Server</a></li>
-        <li><a href="../task/task8.html">Activity 8: WDS</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../case study/part1.html"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="../case study/part1.html">Part 1: Domain Controller</a></li>
-        <li><a href="../case study/part2.html">Part 2: Adding Users</a></li>
-        <li><a href="../case study/part3.html">Part 3: DHCP Server</a></li>
-        <li><a href="../case study/part4.html">Part 4: File Sharing</a></li>
-        <li><a href="../case study/part5.html">Part 5: RAID</a></li>
-        <li><a href="../case study/part6.html">Part 6: Remote Desktop</a></li>
-        <li><a href="../case study/part7.html">Part 7: Web Server</a></li>
-        <li><a href="../case study/part8.html">Part 8: Group Policies</a></li>
-        <li><a href="../case study/part9.html">Part 9: Windows Deployment</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="windows95.html" class="active"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-        <li><a href="windows95.html">Windows 95</a></li>
-        <li><a href="windows98.html">Windows 98</a></li>
-        <li><a href="windowsnt.html">Windows NT</a></li>
-        <li><a href="windows2000.html">Windows 2000</a></li>
-        <li><a href="windowsme.html">Windows ME</a></li>
-        <li><a href="windowsxp.html">Windows XP</a></li>
-        <li><a href="windows-server-2003.html">Windows Server 2003</a></li>
-        <li><a href="windows-vista.html">Windows Vista</a></li>
-        <li><a href="windows-server-2008.html">Windows Server 2008</a></li>
-        <li><a href="windows7.html">Windows 7</a></li>
-        <li><a href="windows8.html">Windows 8</a></li>
-        <li><a href="windows10.html">Windows 10</a></li>
-        <li><a href="windows11.html">Windows 11</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+<div id="siteHeader"></div>
+<script>
+(function () {
+  fetch('/header.html')
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var host = document.getElementById('siteHeader');
+      if (!host) return;
+      host.innerHTML = html;
+      var path = window.location.pathname.toLowerCase();
+      var active = 'home';
+      if (path.indexOf('/task/') !== -1) active = 'task';
+      else if (path.indexOf('/case%20study/') !== -1 || path.indexOf('/case study/') !== -1) active = 'case';
+      else if (path.indexOf('/installation/') !== -1) active = 'installation';
+      var link = host.querySelector('[data-nav="' + active + '"]');
+      if (link) link.classList.add('active');
+    })
+    .catch(function () {});
+})();
+</script>
 
 <!-- PAGE -->
 <div class="page">
@@ -740,15 +706,7 @@
     <br/>
     <span class="student-tag">Dion O. Ongaria &nbsp;|&nbsp; BSIT-NS-2A-T</span>
   </div>
-
-  <!-- STATS BAR --><div class="stat-item">
-      <span class="stat-num" id="partCount">9</span>
-      <span class="stat-lbl">Install Phases</span>
-      <span class="stat-sub">// checklist</span>
-    </div>
-  </div>
-
-  <!-- PROGRESS TRACK -->
+<!-- PROGRESS TRACK -->
   <div class="progress-track" id="progressTrack">
     <!-- Rendered by JS -->
   </div>
@@ -773,177 +731,357 @@
 const caseParts = [
   {
     part: "Part 1",
-    title: "Pre-Installation Requirements",
-    icon: "[-]",
-    tags: ["Checklist", "Hardware", "Backup"],
-    description: "Before installation, validate hardware, collect drivers, and secure data backups to avoid setup failures and data loss.",
-    details: "This phase confirms CPU architecture, RAM, disk capacity, and BIOS compatibility. It also includes preparing product keys, collecting required NIC/storage drivers, and backing up existing data so rollback is possible if setup errors occur.",
+    title: "Windows 95 Installation",
+    icon: "[*]",
+    tags: ["Windows 95", "VirtualBox", "Legacy OS"],
+    description: "Experience the beginning of the modern Windows era with Windows 95. This tutorial demonstrates how to install this classic operating system inside a Virtual Machine and explore its iconic Start Menu and retro interface.",
+    details: "Quick Installation Guide (VirtualBox): Create a VM, mount your Windows 95 setup media, complete setup, and verify the desktop environment. Download links are provided below for required tools and materials.",
     videos: [
       {
-        title: "Windows Install: Part 1",
+        title: "Windows 95 Installation Guide",
         url: "https://youtu.be/yjg3nbwVQzc?si=1Rwvnl1HVmo0E0DJ",
-        description: "Prepare your installation environment by validating specs, creating backups, and collecting all prerequisites before booting setup media.",
+        description: "Step-by-step Windows 95 VM setup and installation walkthrough.",
         keyPoints: [
-          "Check minimum and recommended system requirements",
-          "Back up user data and current system images",
-          "Collect motherboard and network drivers",
-          "Prepare product key and edition plan"
+          "1. Important Download Links:",
+          "2. VirtualBox: <a href=\"https://www.virtualbox.org/wiki/Downloads\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.virtualbox.org/wiki/Downloads</a>",
+          "3. VirtualBox Extension Pack (same page): <a href=\"https://www.virtualbox.org/wiki/Downloads\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.virtualbox.org/wiki/Downloads</a>",
+          "4. Floppy boot disk reference: <a href=\"https://www.allbootdisks.com/download/95.html\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.allbootdisks.com/download/95.html</a>",
+          "5. ISO tool (for creating image from your licensed media): <a href=\"https://anytoiso-converter.en.download.it/\" target=\"_blank\" rel=\"noopener noreferrer\">https://anytoiso-converter.en.download.it/</a>",
+          "6. Open VirtualBox and click New.",
+          "7. Name the VM Windows 95 and set type to Windows.",
+          "8. Allocate 64 to 128 MB RAM.",
+          "9. Create a 2 GB virtual hard disk (VDI).",
+          "10. Mount your Windows 95 setup media in Storage settings.",
+          "11. Start the VM and follow the Windows Setup Wizard.",
+          "12. Complete installation and restart the VM."
         ],
-        tags: ["Prep", "Requirements", "Backup"]
+        tags: ["VirtualBox", "Windows 95", "Setup"]
       }
     ]
   },
   {
     part: "Part 2",
-    title: "Create Bootable Installation Media",
+    title: "Windows 98 Installation",
     icon: "[*]",
-    tags: ["ISO", "USB", "Boot Media"],
-    description: "Build reliable USB/DVD installation media from a verified Windows Server ISO image.",
-    details: "Use checksum verification to confirm ISO integrity, then write the image to USB/DVD. Correct partition style and boot mode (Legacy BIOS vs UEFI) are essential so the installer can start on target hardware.",
+    tags: ["Windows 98", "VirtualBox", "Legacy OS"],
+    description: "Windows 98 improved hardware compatibility and internet features. This tutorial shows how to run this nostalgic operating system using virtualization.",
+    details: "Quick Installation Guide: set up a VirtualBox VM, attach a Windows 98 ISO, run setup, and complete post-install basics.",
     videos: [
       {
-        title: "Windows Install: Part 2",
+        title: "Windows 98 Installation Guide",
         url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Generate bootable setup media and verify that your device can boot from it successfully.",
+        description: "Step-by-step Windows 98 VM setup and installation walkthrough.",
         keyPoints: [
-          "Download and verify Windows Server ISO hash",
-          "Create bootable USB using reliable tooling",
-          "Choose proper file system and partition style",
-          "Test media on a non-production machine"
+          "1. Important Download Link:",
+          "2. Windows 98 ISO: <a href=\"https://winworldpc.com/product/windows-98/98-second-edition\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-98/98-second-edition</a>",
+          "3. Create a new VM in VirtualBox.",
+          "4. Select Windows as type and Windows 98 as version.",
+          "5. Allocate 128 MB RAM.",
+          "6. Create a 4 GB virtual hard disk.",
+          "7. Insert the Windows 98 ISO file.",
+          "8. Start the VM and begin the Windows 98 setup process.",
+          "9. Follow the prompts until installation completes."
         ],
-        tags: ["ISO", "USB", "UEFI"]
+        tags: ["Windows 98", "ISO", "Setup"]
       }
     ]
   },
   {
     part: "Part 3",
-    title: "Boot Configuration and Setup Launch",
-    icon: "[>]",
-    tags: ["BIOS", "UEFI", "Boot Order"],
-    description: "Configure firmware settings so the installer launches from your prepared media.",
-    details: "This stage covers entering BIOS/UEFI, selecting boot priority, and disabling conflicting options where needed. Correct boot mode alignment prevents common errors during partitioning and setup initialization.",
+    title: "Windows NT Installation",
+    icon: "[*]",
+    tags: ["Windows NT 4.0", "VirtualBox", "Enterprise"],
+    description: "Windows NT introduced a more stable and secure architecture designed for professional systems. This tutorial guides you through installing this enterprise-focused OS in a Virtual Machine.",
+    details: "Quick Installation Guide: create VM, mount Windows NT 4.0 media, run text-mode setup, and finish basic configuration.",
     videos: [
       {
-        title: "Windows Install: Part 3",
+        title: "Windows NT Installation Guide",
         url: "https://www.youtube.com/watch?v=tYzMGcUty6s",
-        description: "Adjust firmware and boot sequence to start the Windows installer correctly on first attempt.",
+        description: "Step-by-step Windows NT VM installation walkthrough.",
         keyPoints: [
-          "Open BIOS/UEFI and set removable media first",
-          "Match boot mode with target partition format",
-          "Save changes and start setup wizard",
-          "Confirm installer language and keyboard options"
+          "1. Important Download Link:",
+          "2. Windows NT 4.0 ISO: <a href=\"https://winworldpc.com/product/windows-nt-40/40\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-nt-40/40</a>",
+          "3. Open VirtualBox and create a new VM.",
+          "4. Select Windows NT as the version.",
+          "5. Allocate 128 to 256 MB RAM.",
+          "6. Create a 4 GB virtual disk.",
+          "7. Mount the Windows NT ISO file.",
+          "8. Start the VM and follow the text-based setup installer.",
+          "9. Finish installation and restart."
         ],
-        tags: ["Boot", "Firmware", "Setup"]
+        tags: ["Windows NT", "ISO", "Text Setup"]
       }
     ]
   },
   {
     part: "Part 4",
-    title: "Disk Selection and Partitioning",
-    icon: "[|]",
-    tags: ["Storage", "Partition", "NTFS"],
-    description: "Choose installation target disks and create partitions suited for system and data separation.",
-    details: "Partitioning defines where the OS and workloads will reside. Separating system and data volumes improves maintainability, backup strategy, and recovery performance in production environments.",
+    title: "Windows 2000 Installation",
+    icon: "[*]",
+    tags: ["Windows 2000", "VirtualBox", "Legacy OS"],
+    description: "Windows 2000 improved stability and security while maintaining a familiar interface. This tutorial shows how to deploy it in a Virtual Machine for learning legacy systems.",
+    details: "Quick Installation Guide: create VM, attach Windows 2000 ISO, complete setup sequence, and apply basic system settings.",
     videos: [
       {
-        title: "Windows Install: Part 4",
-        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
-        description: "Walk through partition planning and safe disk selection during Windows setup.",
+        title: "Windows 2000 Installation Guide",
+        url: "https://youtu.be/cjiYXPwAv8c?si=sce2rlyvVUsVPUHW",
+        description: "Step-by-step Windows 2000 VM setup and installation walkthrough.",
         keyPoints: [
-          "Select correct destination disk",
-          "Create system and data partitions",
-          "Format with NTFS and apply labels",
-          "Proceed with clean installation"
+          "1. Important Download Link:",
+          "2. Windows 2000 ISO: <a href=\"https://winworldpc.com/product/windows-2000/professional\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-2000/professional</a>",
+          "3. Create a new VirtualBox VM.",
+          "4. Choose Windows 2000 as the OS type/version.",
+          "5. Allocate 256 MB RAM.",
+          "6. Create a 10 GB virtual disk.",
+          "7. Mount the Windows 2000 ISO.",
+          "8. Start the VM and follow Windows Setup installation.",
+          "9. Configure basic system settings."
         ],
-        tags: ["Disk", "Partition", "Format"]
+        tags: ["Windows 2000", "ISO", "Setup"]
       }
     ]
   },
   {
     part: "Part 5",
-    title: "Initial Windows Configuration",
-    icon: "[@]",
-    tags: ["Administrator", "Hostname", "Locale"],
-    description: "Complete first boot setup by assigning secure credentials and baseline system identity.",
-    details: "After file copy and reboot, finalize administrator password, server name, date/time, and regional settings. These values impact security posture, audit trails, and service compatibility.",
+    title: "Windows ME Installation",
+    icon: "[*]",
+    tags: ["Windows ME", "VirtualBox", "Legacy OS"],
+    description: "Windows ME was designed for home users with multimedia improvements and system restore features. This tutorial explains how to install and explore this operating system inside a Virtual Machine.",
+    details: "Quick Installation Guide: build a VM, attach Windows ME image, run setup, and complete initial boot configuration.",
     videos: [
       {
-        title: "Windows Install: Part 5",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Finalize out-of-box settings and secure the first administrator session.",
+        title: "Windows ME Installation Guide",
+        url: "https://www.youtube.com/watch?v=eNJf2Q6AosA",
+        description: "Step-by-step Windows ME VM installation walkthrough.",
         keyPoints: [
-          "Set strong Administrator password",
-          "Rename computer following naming standards",
-          "Set timezone and clock synchronization",
-          "Confirm edition activation status"
+          "1. Important Download Links:",
+          "2. Windows ME ISO (Archive.org): <a href=\"https://archive.org/details/windows-me-bootable-iso\" target=\"_blank\" rel=\"noopener noreferrer\">https://archive.org/details/windows-me-bootable-iso</a>",
+          "3. Windows ME ISO (WinWorldPC): <a href=\"https://winworldpc.com/product/windows-me/final\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-me/final</a>",
+          "4. Create a Windows ME VM in VirtualBox.",
+          "5. Allocate 128 to 256 MB RAM.",
+          "6. Create a 4 GB virtual disk.",
+          "7. Mount the Windows ME ISO.",
+          "8. Start the VM and run Windows ME setup.",
+          "9. Follow installation instructions and restart after completion."
         ],
-        tags: ["OOBE", "Admin", "Identity"]
+        tags: ["Windows ME", "ISO", "Setup"]
       }
     ]
   },
   {
     part: "Part 6",
-    title: "Drivers, Updates, and Network Setup",
-    icon: "[+]",
-    tags: ["Drivers", "Windows Update", "Network"],
-    description: "Install missing drivers, patch the OS, and configure stable network settings immediately after setup.",
-    details: "A newly installed OS is not production-ready until network, chipset, storage, and security updates are complete. This phase ensures stability and closes known vulnerabilities before role deployment.",
+    title: "Windows XP Installation",
+    icon: "[*]",
+    tags: ["Windows XP", "VirtualBox", "Classic OS"],
+    description: "Windows XP is one of the most iconic Windows versions known for its stability and user-friendly interface. This tutorial demonstrates how to install Windows XP inside VirtualBox for learning and nostalgia.",
+    details: "Quick Installation Guide (VirtualBox): create a VM, attach XP ISO, complete setup, and install Guest Additions for better performance.",
     videos: [
       {
-        title: "Windows Install: Part 6",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        description: "Bring the server online safely by completing update, driver, and network configuration tasks.",
+        title: "Windows XP Installation Guide",
+        url: "https://youtu.be/-01RAdgTCT0?si=5q8w88Q53snYeTOE",
+        description: "Step-by-step Windows XP VM setup and installation walkthrough.",
         keyPoints: [
-          "Install required NIC and storage drivers",
-          "Run Windows Update until fully patched",
-          "Assign static IP, DNS, and gateway",
-          "Validate connectivity and name resolution"
+          "1. Important Download Link:",
+          "2. Windows XP ISO: <a href=\"https://winworldpc.com/product/windows-xp/final\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-xp/final</a>",
+          "3. Open VirtualBox and create a new VM.",
+          "4. Select Windows XP as the version.",
+          "5. Allocate 512 MB to 1 GB RAM.",
+          "6. Create a 20 GB virtual hard disk.",
+          "7. Insert the Windows XP ISO.",
+          "8. Start the VM and follow the graphical installer.",
+          "9. Finish setup and install Guest Additions for better performance."
         ],
-        tags: ["Patch", "Drivers", "TCP/IP"]
+        tags: ["Windows XP", "ISO", "VirtualBox"]
       }
     ]
   },
   {
     part: "Part 7",
-    title: "Role Preparation and Domain Join",
-    icon: "[=]",
-    tags: ["Domain", "Server Roles", "Naming"],
-    description: "Prepare the new server for enterprise use by joining the domain and planning role assignments.",
-    details: "At this point, the OS is installed and updated. Now integrate it into organizational infrastructure by joining Active Directory, validating DNS registration, and confirming role prerequisites.",
+    title: "Windows Server 2003 Installation",
+    icon: "[*]",
+    tags: ["Server 2003", "VirtualBox", "Server OS"],
+    description: "Windows Server 2003 is designed for enterprise networking and server management. This tutorial shows how to install and configure it in a VirtualBox lab environment.",
+    details: "Quick Installation Guide: create VM, attach Server 2003 ISO, complete setup, and configure administrator basics.",
     videos: [
       {
-        title: "Windows Install: Part 7",
-        url: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-        description: "Join the server to the domain and confirm readiness for AD, DHCP, file, or web roles.",
+        title: "Windows Server 2003 Installation Guide",
+        url: "https://youtu.be/1OfB3diSYOA?si=PdXjgoplaDqUZXtM",
+        description: "Step-by-step Server 2003 VM installation walkthrough.",
         keyPoints: [
-          "Rename and reboot if required",
-          "Join Active Directory domain",
-          "Validate DNS and secure channel",
-          "Document baseline server configuration"
+          "1. Important Download Link:",
+          "2. Windows Server 2003 ISO: <a href=\"https://winworldpc.com/product/windows-server-2003/3031\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-server-2003/3031</a>",
+          "3. Create a new VM in VirtualBox.",
+          "4. Select Windows Server 2003.",
+          "5. Allocate 1 GB RAM.",
+          "6. Create a 20 GB virtual disk.",
+          "7. Mount the Server 2003 ISO.",
+          "8. Start the VM and follow server setup instructions.",
+          "9. Configure administrator settings and restart."
         ],
-        tags: ["Domain Join", "AD", "Baseline"]
+        tags: ["Server 2003", "ISO", "Setup"]
       }
     ]
   },
   {
     part: "Part 8",
-    title: "Post-Installation Hardening",
-    icon: "[#]",
-    tags: ["Security", "Firewall", "Audit"],
-    description: "Apply baseline security controls so the server is hardened before production workloads begin.",
-    details: "Hardening includes firewall review, service minimization, account policy tightening, and enabling logging. This reduces attack surface and aligns the new server with security standards.",
+    title: "Windows Vista Installation",
+    icon: "[*]",
+    tags: ["Windows Vista", "VirtualBox", "Aero"],
+    description: "Windows Vista introduced the Aero interface and enhanced security features. This tutorial walks through installing Vista inside a Virtual Machine.",
+    details: "Quick Installation Guide: create Vista VM, allocate resources, mount ISO, run setup, and complete restart.",
     videos: [
       {
-        title: "Windows Install: Part 8",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Perform post-install hardening and verification checks before handing over to operations.",
+        title: "Windows Vista Installation Guide",
+        url: "https://youtu.be/UlQPLKNrwyI?si=l7FBEjJUMQDvVXiM",
+        description: "Step-by-step Windows Vista VM installation walkthrough.",
         keyPoints: [
-          "Enable and tune Windows Firewall profiles",
-          "Disable unused local services",
-          "Set password, lockout, and audit policies",
-          "Create restore point and backup baseline"
+          "1. Important Download Links:",
+          "2. Windows Vista SP2 x64 ISO: <a href=\"https://archive.org/details/windows-vista-sp2-x64\" target=\"_blank\" rel=\"noopener noreferrer\">https://archive.org/details/windows-vista-sp2-x64</a>",
+          "3. Windows Vista Collection: <a href=\"https://winworldpc.com/product/windows-vista/final\" target=\"_blank\" rel=\"noopener noreferrer\">https://winworldpc.com/product/windows-vista/final</a>",
+          "4. Create a Windows Vista VM.",
+          "5. Allocate 2 GB RAM.",
+          "6. Create a 30 GB virtual disk.",
+          "7. Mount the Vista ISO.",
+          "8. Start the VM and run the Vista installation wizard.",
+          "9. Choose system preferences and install.",
+          "10. Restart to complete setup."
         ],
-        tags: ["Hardening", "Audit", "Compliance"]
+        tags: ["Vista", "ISO", "Aero"]
+      }
+    ]
+  },
+  {
+    part: "Part 9",
+    title: "Windows Server 2008 Installation",
+    icon: "[*]",
+    tags: ["Server 2008", "VirtualBox", "AD Ready"],
+    description: "Windows Server 2008 provides advanced server features including Active Directory and improved security. This tutorial demonstrates installing it inside VirtualBox for IT laboratory exercises.",
+    details: "Quick Installation Guide: build VM, attach Server 2008 ISO, run setup, and complete administrator configuration.",
+    videos: [
+      {
+        title: "Windows Server 2008 Installation Guide",
+        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
+        description: "Step-by-step Server 2008 VM setup for lab deployment.",
+        keyPoints: [
+          "1. Important Download Links:",
+          "2. Windows Server 2008 R2 x64 ISO: <a href=\"https://archive.org/details/windows-server-2008-r2\" target=\"_blank\" rel=\"noopener noreferrer\">https://archive.org/details/windows-server-2008-r2</a>",
+          "3. Windows Loader by DAZ (GitHub): <a href=\"https://github.com/topics/windows-loader\" target=\"_blank\" rel=\"noopener noreferrer\">https://github.com/topics/windows-loader</a>",
+          "4. Create a Windows Server 2008 VM.",
+          "5. Allocate 2 GB RAM.",
+          "6. Create a 40 GB virtual disk.",
+          "7. Insert the Server 2008 ISO.",
+          "8. Start the VM and run the installation wizard.",
+          "9. Set administrator password.",
+          "10. Complete configuration and restart."
+        ],
+        tags: ["Server 2008", "ISO", "Setup"]
+      }
+    ]
+  },
+  {
+    part: "Part 10",
+    title: "Windows 7 Installation",
+    icon: "[*]",
+    tags: ["Windows 7", "VirtualBox", "ISO"],
+    description: "Windows 7 became one of Microsoft's most popular operating systems due to its performance and reliability. This tutorial demonstrates how to install it inside a Virtual Machine environment.",
+    details: "Quick Installation Guide: create VM, assign resources, mount ISO, and complete setup with Guest Additions.",
+    videos: [
+      {
+        title: "Windows 7 Installation Guide",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Step-by-step Windows 7 installation in VirtualBox.",
+        keyPoints: [
+          "1. Important Download Link:",
+          "2. Windows 7 Pro 32/64-bit ISO: <a href=\"https://archive.org/details/windows-7-iso\" target=\"_blank\" rel=\"noopener noreferrer\">https://archive.org/details/windows-7-iso</a>",
+          "3. Create a Windows 7 VM in VirtualBox.",
+          "4. Allocate 2 GB RAM.",
+          "5. Create a 40 GB virtual disk.",
+          "6. Mount the Windows 7 ISO.",
+          "7. Start the VM and begin installation.",
+          "8. Follow setup instructions.",
+          "9. Install Guest Additions after installation."
+        ],
+        tags: ["Windows 7", "VirtualBox", "Setup"]
+      }
+    ]
+  },
+  {
+    part: "Part 11",
+    title: "Windows 8 Installation",
+    icon: "[*]",
+    tags: ["Windows 8", "VirtualBox", "ISO"],
+    description: "Windows 8 introduced a modern tile interface and optimized performance for new devices. This tutorial shows how to install and explore Windows 8 using VirtualBox.",
+    details: "Quick Installation Guide: prepare VM, mount ISO, complete installation wizard, and configure account setup.",
+    videos: [
+      {
+        title: "Windows 8 Installation Guide",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Step-by-step Windows 8 installation in VirtualBox.",
+        keyPoints: [
+          "1. Important Download Link:",
+          "2. Windows 8.1 English x64 ISO: <a href=\"https://archive.org/details/windows-8.1-x64-english\" target=\"_blank\" rel=\"noopener noreferrer\">https://archive.org/details/windows-8.1-x64-english</a>",
+          "3. Create a Windows 8 VM.",
+          "4. Allocate 2 to 4 GB RAM.",
+          "5. Create a 40 GB virtual disk.",
+          "6. Insert the Windows 8 ISO.",
+          "7. Start the VM and follow the installation wizard.",
+          "8. Set user account details.",
+          "9. Finish setup and restart."
+        ],
+        tags: ["Windows 8", "ISO", "Setup"]
+      }
+    ]
+  },
+  {
+    part: "Part 12",
+    title: "Windows 10 Installation",
+    icon: "[*]",
+    tags: ["Windows 10", "VirtualBox", "Official ISO"],
+    description: "Windows 10 provides improved performance, security, and compatibility for modern computing. This tutorial guides you through installing it in a VirtualBox virtual machine.",
+    details: "Quick Installation Guide: create VM, allocate resources, mount official ISO, run setup, and finalize user configuration.",
+    videos: [
+      {
+        title: "Windows 10 Installation Guide",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Step-by-step Windows 10 setup and installation.",
+        keyPoints: [
+          "1. Important Download Link:",
+          "2. Windows 10 Official Download: <a href=\"https://www.microsoft.com/software-download/windows10\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.microsoft.com/software-download/windows10</a>",
+          "3. Create a Windows 10 VM.",
+          "4. Allocate 4 GB RAM.",
+          "5. Create a 50 GB virtual disk.",
+          "6. Mount the Windows 10 ISO.",
+          "7. Start the VM and run the installer.",
+          "8. Configure user and system settings.",
+          "9. Install Guest Additions for improved display."
+        ],
+        tags: ["Windows 10", "Official", "Setup"]
+      }
+    ]
+  },
+  {
+    part: "Part 13",
+    title: "Windows 11 Installation",
+    icon: "[*]",
+    tags: ["Windows 11", "VirtualBox", "Official ISO"],
+    description: "Windows 11 introduces a refreshed interface, improved productivity tools, and modern system features. This tutorial demonstrates installing Windows 11 inside a Virtual Machine environment.",
+    details: "Quick Installation Guide: build VM, assign higher resources, mount official ISO, run setup, and complete restart.",
+    videos: [
+      {
+        title: "Windows 11 Installation Guide",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Step-by-step Windows 11 setup in VirtualBox.",
+        keyPoints: [
+          "1. Important Download Link:",
+          "2. Windows 11 Official Download: <a href=\"https://www.microsoft.com/software-download/windows11\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.microsoft.com/software-download/windows11</a>",
+          "3. Create a Windows 11 VM in VirtualBox.",
+          "4. Allocate 4 to 8 GB RAM.",
+          "5. Create a 60 GB virtual disk.",
+          "6. Mount the Windows 11 ISO.",
+          "7. Start the VM and bypass TPM if required.",
+          "8. Follow the installation wizard.",
+          "9. Complete setup and restart."
+        ],
+        tags: ["Windows 11", "Official", "Setup"]
       }
     ]
   }
@@ -954,18 +1092,18 @@ const installPageMatch = window.location.pathname.match(/(windows95|windows98|wi
 const installPageKey = installPageMatch ? installPageMatch[1].toLowerCase() : null;
 const installPageMap = {
   windows95: 1,
-  windows98: 1,
-  windowsnt: 2,
-  windows2000: 2,
-  windowsme: 3,
-  windowsxp: 4,
-  "windows-server-2003": 5,
-  "windows-vista": 6,
-  "windows-server-2008": 7,
-  windows7: 8,
-  windows8: 8,
-  windows10: 8,
-  windows11: 8
+  windows98: 2,
+  windowsnt: 3,
+  windows2000: 4,
+  windowsme: 5,
+  windowsxp: 6,
+  "windows-server-2003": 7,
+  "windows-vista": 8,
+  "windows-server-2008": 9,
+  windows7: 10,
+  windows8: 11,
+  windows10: 12,
+  windows11: 13
 };
 const installPageIndex = installPageKey && installPageMap[installPageKey] ? installPageMap[installPageKey] : null;
 const visibleCaseParts = Number.isInteger(installPageIndex)
@@ -1006,6 +1144,29 @@ function esc(s) {
   return d.innerHTML;
 }
 
+function keyPointToHtml(k) {
+  let text = String(k || '');
+  const links = [];
+
+  text = text.replace(/<a\s+href="(https?:\/\/[^\"]+)"[^>]*>(.*?)<\/a>/gi, function (_, url, label) {
+    const token = `__KP_LINK_${links.length}__`;
+    links.push(`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label || url)}</a>`);
+    return token;
+  });
+
+  text = text.replace(/(https?:\/\/[^\s<>\"]+)/gi, function (url) {
+    const token = `__KP_LINK_${links.length}__`;
+    links.push(`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(url)}</a>`);
+    return token;
+  });
+
+  let safe = esc(text);
+  links.forEach(function (html, i) {
+    safe = safe.replace(`__KP_LINK_${i}__`, html);
+  });
+  return safe;
+}
+
 function renderProgress() {
   const track = document.getElementById('progressTrack');
   track.innerHTML = visibleCaseParts.map((p, i) => `
@@ -1019,8 +1180,11 @@ function renderParts() {
   const container = document.getElementById('partsContainer');
 
   let totalVideos = visibleCaseParts.reduce((acc, p) => acc + p.videos.length, 0);
-  document.getElementById('totalCount').textContent = totalVideos;
-  document.getElementById('partCount').textContent = visibleCaseParts.length;
+  const totalCountEl = document.getElementById('totalCount');
+  const partCountEl = document.getElementById('partCount');
+  if (totalCountEl) totalCountEl.textContent = totalVideos;
+  if (partCountEl) partCountEl.textContent = visibleCaseParts.length;
+  
 
   container.innerHTML = visibleCaseParts.map((part) => {
     const tagsHtml = (part.tags || []).map(t => `<span class="desc-tag">${t}</span>`).join('');
@@ -1028,7 +1192,7 @@ function renderParts() {
     const videosHtml = part.videos.map((vid, vi) => {
       const id = getVideoId(vid.url);
       const vtags = (vid.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
-      const kpHtml = (vid.keyPoints || []).map(k => `<li>${esc(k)}</li>`).join('');
+      const kpHtml = (vid.keyPoints || []).map(k => `<li>${keyPointToHtml(k)}</li>`).join('');
       const frameHtml = id
         ? `<button class="video-thumb-btn" type="button" data-video-id="${id}" data-video-title="${esc(vid.title)}" aria-label="Play ${esc(vid.title)}">
              <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${esc(vid.title)} thumbnail" loading="lazy" />
@@ -1219,6 +1383,25 @@ if (document.readyState === 'loading') {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

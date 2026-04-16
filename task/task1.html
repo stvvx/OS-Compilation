@@ -670,60 +670,26 @@
 <canvas id="bg-canvas"></canvas>
 
 <!-- NAV -->
-<nav>
-  <a href="../home.html" class="nav-logo">
-    <div class="win-panes"><span></span><span></span><span></span><span></span></div>
-    <span class="nav-brand">Win<span>OS</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="../home.html"><span class="dot"></span>Home</a></li>
-    <li class="has-dropdown">
-      <a href="task1.html" class="active"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
-        <li><a href="task2.html">Activity 2: Active Directory: Creating Users</a></li>
-        <li><a href="task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
-        <li><a href="task4.html">Activity 4: RAID Installation</a></li>
-        <li><a href="task5.html">Activity 5: Group Policy Management</a></li>
-        <li><a href="task6.html">Activity 6: Web Server</a></li>
-        <li><a href="task7.html">Activity 7: File Server</a></li>
-        <li><a href="task8.html">Activity 8: WDS</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../case study/part1.html"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="../case study/part1.html">Part 1: Domain Controller</a></li>
-        <li><a href="../case study/part2.html">Part 2: Adding Users</a></li>
-        <li><a href="../case study/part3.html">Part 3: DHCP Server</a></li>
-        <li><a href="../case study/part4.html">Part 4: File Sharing</a></li>
-        <li><a href="../case study/part5.html">Part 5: RAID</a></li>
-        <li><a href="../case study/part6.html">Part 6: Remote Desktop</a></li>
-        <li><a href="../case study/part7.html">Part 7: Web Server</a></li>
-        <li><a href="../case study/part8.html">Part 8: Group Policies</a></li>
-        <li><a href="../case study/part9.html">Part 9: Windows Deployment</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-        <li><a href="../installation/windows95.html">Windows 95</a></li>
-        <li><a href="../installation/windows98.html">Windows 98</a></li>
-        <li><a href="../installation/windowsnt.html">Windows NT</a></li>
-        <li><a href="../installation/windows2000.html">Windows 2000</a></li>
-        <li><a href="../installation/windowsme.html">Windows ME</a></li>
-        <li><a href="../installation/windowsxp.html">Windows XP</a></li>
-        <li><a href="../installation/windows-server-2003.html">Windows Server 2003</a></li>
-        <li><a href="../installation/windows-vista.html">Windows Vista</a></li>
-        <li><a href="../installation/windows-server-2008.html">Windows Server 2008</a></li>
-        <li><a href="../installation/windows7.html">Windows 7</a></li>
-        <li><a href="../installation/windows8.html">Windows 8</a></li>
-        <li><a href="../installation/windows10.html">Windows 10</a></li>
-        <li><a href="../installation/windows11.html">Windows 11</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+<div id="siteHeader"></div>
+<script>
+(function () {
+  fetch('/header.html')
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var host = document.getElementById('siteHeader');
+      if (!host) return;
+      host.innerHTML = html;
+      var path = window.location.pathname.toLowerCase();
+      var active = 'home';
+      if (path.indexOf('/task/') !== -1) active = 'task';
+      else if (path.indexOf('/case%20study/') !== -1 || path.indexOf('/case study/') !== -1) active = 'case';
+      else if (path.indexOf('/installation/') !== -1) active = 'installation';
+      var link = host.querySelector('[data-nav="' + active + '"]');
+      if (link) link.classList.add('active');
+    })
+    .catch(function () {});
+})();
+</script>
 
 <!-- PAGE -->
 <div class="page">
@@ -845,7 +811,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 4",
-        url: "https://www.youtube.com/watch?v=tYzMGcUty6s",
+        url: "https://youtu.be/hDUjPztHtaw?si=eAfmOR8I0_CYOqZy",
         description: "Hands-on permission design for secure shared resources and mapped network drives.",
         keyPoints: [
           "Create shared folders and configure share permissions",
@@ -1218,6 +1184,9 @@ if (document.readyState === 'loading') {
 </script>
 </body>
 </html>
+
+
+
 
 
 

@@ -671,60 +671,26 @@
 <canvas id="bg-canvas"></canvas>
 
 <!-- NAV -->
-<nav>
-  <a href="../home.html" class="nav-logo">
-    <div class="win-panes"><span></span><span></span><span></span><span></span></div>
-    <span class="nav-brand">Win<span>OS</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="../home.html"><span class="dot"></span>Home</a></li>
-    <li class="has-dropdown">
-      <a href="../task/task1.html"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="../task/task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
-        <li><a href="../task/task2.html">Activity 2: Active Directory: Creating Users</a></li>
-        <li><a href="../task/task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
-        <li><a href="../task/task4.html">Activity 4: RAID Installation</a></li>
-        <li><a href="../task/task5.html">Activity 5: Group Policy Management</a></li>
-        <li><a href="../task/task6.html">Activity 6: Web Server</a></li>
-        <li><a href="../task/task7.html">Activity 7: File Server</a></li>
-        <li><a href="../task/task8.html">Activity 8: WDS</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="part1.html" class="active"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="part1.html">Part 1: Domain Controller</a></li>
-        <li><a href="part2.html">Part 2: Adding Users</a></li>
-        <li><a href="part3.html">Part 3: DHCP Server</a></li>
-        <li><a href="part4.html">Part 4: File Sharing</a></li>
-        <li><a href="part5.html">Part 5: RAID</a></li>
-        <li><a href="part6.html">Part 6: Remote Desktop</a></li>
-        <li><a href="part7.html">Part 7: Web Server</a></li>
-        <li><a href="part8.html">Part 8: Group Policies</a></li>
-        <li><a href="part9.html">Part 9: Windows Deployment</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-        <li><a href="../installation/windows95.html">Windows 95</a></li>
-        <li><a href="../installation/windows98.html">Windows 98</a></li>
-        <li><a href="../installation/windowsnt.html">Windows NT</a></li>
-        <li><a href="../installation/windows2000.html">Windows 2000</a></li>
-        <li><a href="../installation/windowsme.html">Windows ME</a></li>
-        <li><a href="../installation/windowsxp.html">Windows XP</a></li>
-        <li><a href="../installation/windows-server-2003.html">Windows Server 2003</a></li>
-        <li><a href="../installation/windows-vista.html">Windows Vista</a></li>
-        <li><a href="../installation/windows-server-2008.html">Windows Server 2008</a></li>
-        <li><a href="../installation/windows7.html">Windows 7</a></li>
-        <li><a href="../installation/windows8.html">Windows 8</a></li>
-        <li><a href="../installation/windows10.html">Windows 10</a></li>
-        <li><a href="../installation/windows11.html">Windows 11</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+<div id="siteHeader"></div>
+<script>
+(function () {
+  fetch('/header.html')
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var host = document.getElementById('siteHeader');
+      if (!host) return;
+      host.innerHTML = html;
+      var path = window.location.pathname.toLowerCase();
+      var active = 'home';
+      if (path.indexOf('/task/') !== -1) active = 'task';
+      else if (path.indexOf('/case%20study/') !== -1 || path.indexOf('/case study/') !== -1) active = 'case';
+      else if (path.indexOf('/installation/') !== -1) active = 'installation';
+      var link = host.querySelector('[data-nav="' + active + '"]');
+      if (link) link.classList.add('active');
+    })
+    .catch(function () {});
+})();
+</script>
 
 <!-- PAGE -->
 <div class="page">
@@ -736,19 +702,11 @@
       <span class="g1">Case Studies</span>
       <span class="g2">YouTube Video Tutorials</span>
     </h1>
-    <p>A comprehensive walkthrough of Windows Server 2008 administration, configuration, and deployment - covering all essential roles and services.</p>
+    
     <br/>
     <span class="student-tag">Dion O. Ongaria &nbsp;|&nbsp; BSIT-NS-2A-T</span>
   </div>
-
-  <!-- STATS BAR --><div class="stat-item">
-      <span class="stat-num" id="partCount">9</span>
-      <span class="stat-lbl">Parts Covered</span>
-      <span class="stat-sub">// modules</span>
-    </div>
-  </div>
-
-  <!-- PROGRESS TRACK -->
+<!-- PROGRESS TRACK -->
   <div class="progress-track" id="progressTrack">
     <!-- Rendered by JS -->
   </div>
@@ -773,198 +731,258 @@
 const caseParts = [
   {
     part: "Part 1",
-    title: "Setting Up Domain Controller",
-    icon: "",
-    tags: ["Active Directory", "DNS", "ADDS"],
-    description: "Using Windows Server 2008, this tutorial demonstrates the full process of setting up a Domain Controller - the backbone of any enterprise Windows network.",
-    details: "A Domain Controller (DC) is a server that responds to authentication requests and verifies users on a network. It hosts the Active Directory Domain Services (AD DS) role, manages user accounts, enforces security policies, and provides a central repository for all network objects. Without a properly configured DC, users cannot authenticate to the domain or access shared resources.",
+    title: "Domain Controller (tupt.edu.ph)",
+    icon: "[+]",
+    tags: ["Active Directory", "Domain Controller", "WS 2008"],
+    description: "Deploying and configuring the primary Domain Controller for the TUP-Taguig domain. Design domain layout, OU structure, and initial roles.",
+    details: "Domain Controller (tupt.edu.ph)",
     videos: [
       {
         title: "TUPT Domain: Part 1",
-        url: "https://youtu.be/yjg3nbwVQzc?si=1Rwvnl1HVmo0E0DJ",
-        description: "Step-by-step guide to promoting a server to a Domain Controller on Windows Server 2008, including the installation of AD DS, DNS configuration, and the dcpromo wizard walkthrough.",
+        url: "https://www.youtube.com/watch?v=yjg3nbwVQzc",
+        description: "Primary Domain Controller deployment and configuration for tupt.edu.ph.",
         keyPoints: [
-          "Install Active Directory Domain Services role",
-          "Run dcpromo and configure the new forest",
-          "Configure DNS integrated with AD DS",
-          "Verify replication and DC health using dcdiag"
+          "1. Set time zone",
+          "2. Add roles -> Active Directory Domain Services -> add required features -> install",
+          "3. Click \"close this wizard and launch ADCSIW\"",
+          "4. Create a new domain in a new forest",
+          "5. Name: tupt.edu.ph",
+          "6. Forest functional level: WS 2008",
+          "7. Set Directory Services Restore Mode password",
+          "8. Wait for installation",
+          "9. Finish"
         ],
-        tags: ["AD DS", "dcpromo", "DNS"]
+        tags: ["AD DS", "Forest", "ADCSIW", "DSRM"]
       }
     ]
   },
   {
     part: "Part 2",
-    title: "Adding Domain Users",
-    icon: "",
-    tags: ["Active Directory", "Users & Groups", "OU"],
-    description: "Adding Domain Users in Windows Server 2008 means creating accounts for individuals who will be part of the network domain and can access domain-joined resources.",
-    details: "Domain user accounts are stored in Active Directory and can log in to any domain-joined computer. Organizing users into Organizational Units (OUs) enables administrators to delegate control and apply Group Policy Objects selectively. Proper user management is critical for security, resource access, and efficient administration at scale.",
+    title: "Adding Users",
+    icon: "[@]",
+    tags: ["Active Directory", "OU", "Group Policy"],
+    description: "Hands-on: creating user accounts, organizational units, and basic user management in Active Directory. Implement OU, users, and Group Policies for the scenario.",
+    details: "Domain Users and Organizational Units setup for academic departments, engineering sections, and administrative offices with workstation restrictions, password policies, and logon-hour controls.",
     videos: [
       {
         title: "TUPT Domain: Part 2",
         url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Learn how to create and manage user accounts and security groups inside Active Directory Users and Computers (ADUC), including setting password policies and organizing accounts into OUs.",
+        description: "Create and organize domain users, OUs, GPOs, workstation restrictions, and logon-hour policies for the TUP Taguig scenario.",
         keyPoints: [
-          "Open Active Directory Users and Computers (ADUC)",
-          "Create Organizational Units (OUs) for user management",
-          "Add new domain user accounts with proper credentials",
-          "Assign users to appropriate security groups"
+          "1. Add Domain Users (distribute IT student names) to: Academic Department, Basic Art and Sciences Department, BTVTE Electrical, BTVTE Electronics, BTVTE Computer Hardware, BTVTE Computer Software, Electrical and Allied Department, Information Technology, Electrical Engineering, Electronics Engineering, Instrumentation and Control Technology, BET Mechatronics, Mechanical and Allied Department, Mechanical Engineering Technology, RAC Engineering Technology, Non Destructive Engineering Technology, Electromechanical Engineering Technology, Automotive Engineering Technology, BET ElectroMechanical, Civil and Allied Department, Civil Engineering, Civil Engineering Technology, Environmental Science, Chemical Engineering Technology, Administrative Department, Registrar's Office, Director's Office, Research and Extension, Human Resource and Management Office, Finance Office, Supply and Procurement, Records Office, Library Services",
+          "2. Create domain users for each department, office, and technology section using real names for domain accounts",
+          "3. Create an organizational unit for each technology section or office (for example: computer engineering, electronics, registrar, research)",
+          "4. Allow users to log on only to assigned workstations (XP Class A network, Windows 7 Class B network): Users -> Properties -> Computer Restrictions -> select which computer",
+          "5. Require password changes every 30 days using Group Policy Management",
+          "6. Create GPOs for org units Academic and Administrative: Academic Password and Administrative Password",
+          "7. Set policy path: Edit -> Computer Config -> Security Settings -> Account Policies -> Password Policies -> Maximum Password Age -> Properties -> 30 days -> Apply -> OK",
+          "8. Set logon hours: Academic users 7:30 AM to 8:45 AM; Administrative users 7:00 AM to 7:00 PM",
+          "9. Apply logon-hour control per user: User Properties -> Account -> Check Log on hours -> select permitted time range"
         ],
-        tags: ["ADUC", "OUs", "Security Groups"]
+        tags: ["Domain Users", "Organizational Units", "GPO", "Password Policy", "Logon Hours"]
       }
     ]
   },
   {
     part: "Part 3",
     title: "DHCP Server",
-    icon: "",
-    tags: ["DHCP", "IP Management", "Leasing"],
-    description: "A DHCP (Dynamic Host Configuration Protocol) server automatically assigns unique IP addresses and network settings to devices on your network, eliminating the need for manual configuration.",
-    details: "DHCP simplifies IP address management across large networks by maintaining a pool of available addresses and leasing them to clients. It also distributes subnet masks, default gateways, DNS server addresses, and more. In an enterprise environment, DHCP reduces configuration errors and administrative overhead significantly.",
+    icon: "[*]",
+    tags: ["DHCP", "Scopes", "Reservations", "Network Addressing"],
+    description: "Configure DHCP services, scopes, and reservations to provide network addressing for the domain. Configure network roles and ensure clients receive proper settings.",
+    details: "DHCP Server Requirements: IP Block: 172.31.0.0 /16 and 10.0.0.0 /8. Router IP address is valid IP address. DNS server IP address: same as DHCP server plus Google (8.8.8.8, 8.8.4.4) and OpenDNS (208.67.222.222, 208.67.220.220). IP address lease expires every 8 hours. Do NOT distribute first 30 and last 30 valid IP addresses.",
     videos: [
       {
         title: "TUPT Domain: Part 3",
         url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        description: "End-to-end DHCP setup for Class A (XP Female) and Class B (Windows 7 Male) networks, including exclusions, DNS options, domain join, lease verification, and troubleshooting.",
         keyPoints: [
-          "Install the DHCP Server role via Server Manager",
-          "Create and configure DHCP scopes and address pools",
-          "Set exclusion ranges for static devices",
-          "Authorize the DHCP server in Active Directory"
+          "1. Setup steps: clone Windows Server 2008, clone Windows 7 and XP, and set WS2008 Adapter 1 and 2 to Internal Network",
+          "2. Configure adapter naming: WS2008 Adapter 1 = XPFEMALENET, Adapter 2 = 7MALENET; WXP Adapter 1 = XPFEMALENET; W7 Adapter 1 = 7MALENET",
+          "3. Configure WS2008 IPv4: Female NIC IP 172.31.0.31 / 255.255.255.0 / GW 172.31.0.32 / DNS 127.0.0.1; Male NIC IP 10.0.0.31 / 255.0.0.0 / GW 10.0.0.32 / DNS 127.0.0.1",
+          "4. Add DHCP Server role: Start -> Administrative Tools -> Server Manager -> Roles -> Add Roles -> DHCP SERVER; validate settings and install",
+          "5. Open DHCP console: Start -> Administrative Tools -> DHCP",
+          "6. Create Scope Class A Female-XP: Start 172.31.0.1 End 172.31.0.254, Mask 255.255.255.0, Exclusions 172.31.0.1-30 and 172.31.0.225-254, Lease 8 hours, Gateway 172.31.0.32, Domain tupt.edu.ph",
+          "7. Create Scope Class B Male-7: Start 10.0.0.1 End 10.0.0.254, Mask 255.0.0.0, Exclusions 10.0.0.1-30 and 10.0.0.225-254, Lease 8 hours, Gateway 10.0.0.32, Domain tupt.edu.ph",
+          "8. Configure DNS for both scopes (remove 127.0.0.1): 8.8.8.8, 8.8.4.4, 208.67.222.222, 208.67.220.220",
+          "9. Configure Windows XP: rename to LASTNAME_CS-XP, join domain tupt.edu.ph, use Administrator credentials, restart, log in as TUPT\\administrator and test domain user",
+          "10. Configure Windows 7: repeat XP steps, rename to LASTNAME_CS-WIN7, join tupt.edu.ph, log in as TUPT\\administrator and test domain user",
+          "11. Verify DHCP leases: WS2008 -> DHCP -> IPv4 -> Address Leases; Class B shows W7 and Class A shows WXP",
+          "12. Verify clients with ipconfig /all: W7 receives Class B lease, WXP receives Class A lease",
+          "13. Troubleshooting domain errors: ensure Scope Option 006 DNS has no 127.0.0.1, then run ipconfig /release, ipconfig /renew, ipconfig /all and reconnect to domain"
         ],
-        tags: ["Scopes", "Leases", "Exclusions"]
+        tags: ["DHCP", "Class A", "Class B", "Domain Join", "Troubleshooting"]
       }
     ]
   },
   {
     part: "Part 4",
     title: "File Sharing",
-    icon: "",
-    tags: ["SMB", "Permissions", "NTFS"],
-    description: "File sharing in Windows Server 2008 lets multiple users access and exchange files stored on a central server, making collaboration and centralized data management straightforward.",
-    details: "Shared folders in Windows Server 2008 use the Server Message Block (SMB) protocol. Effective file sharing requires a combination of share-level permissions and NTFS permissions to properly control who can read, write, or modify files. Windows Server 2008 also introduces Share and Storage Management for a streamlined administrative experience.",
+    icon: "[F]",
+    tags: ["File Services", "NTFS", "Share Permissions"],
+    description: "Design and deploy file shares, NTFS permissions, and access controls for departmental resources. Design file shares and set NTFS and share permissions for groups.",
+    details: "File Services Requirements: departmental public folders (read/write) with restricted cross-access, one university public folder (read/write for all domain users), one installer folder for administrator-only access, file-screening rules by department, 1GB quota per folder, and mapped shares on each client workstation.",
     videos: [
       {
         title: "TUPT Domain: Part 4",
-        url: "https://www.youtube.com/watch?v=tYzMGcUty6s",
-        description: "Setting up shared folders on Windows Server 2008, managing NTFS and share permissions, mapping network drives for domain users, and controlling access using security groups.",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "End-to-end file services deployment with quotas, file screening, share provisioning, and mapped network drives.",
         keyPoints: [
-          "Create shared folders and configure share permissions",
-          "Apply NTFS permissions for granular access control",
-          "Map network drives using Group Policy",
-          "Use the Effective Permissions tool to verify access"
+          "1. Create folders: build directories for all departments/sections from Part 2, then create University and Installer folders (optional script automation allowed).",
+          "2. Install File Services: Server Manager -> Roles -> Add Roles -> File Services -> Next -> Next -> check all options except Windows Server 2003 File Services -> DFS Namespace Name: NameSpace1 -> provide domain admin credentials -> choose local disk C -> complete install -> restart.",
+          "3. Configure quota template: Start -> Administrative Tools -> File Server Resource Manager -> Quota Management -> Quota Templates -> Create New Quota Template -> Template Name: 1GB -> Space Limit: 1 GB -> Add.",
+          "4. Configure file screening templates: General template (read/write, all users, office docs only such as .ppt, .doc, .docx, .xls, .pptx, .pdf) and IT template (Information Technology users, all except executable files).",
+          "5. Build file groups and templates: File Groups -> Create File Group; File Template -> Create File Template with restrictions per requirement.",
+          "6. Provision shares: Server Manager -> Roles -> File Services -> Share and Storage Management -> Create Provision Share -> select folder and C drive -> enable SMB -> assign group permissions -> apply 1GB quota -> apply file screen template -> Create -> Close.",
+          "7. Create University share: SMB name University, permissions read/write, users All Domain Users, file screen template General.",
+          "8. Create Installer share: SMB name Installer$, permissions read/write, users Administrator only, file screen template General.",
+          "9. Create department shares: permissions read/write for respective department users only; apply General template for most departments, All Files for Computer Engineering, and IT template for Information Technology.",
+          "10. Map shared folders on clients: on each Windows XP/7 workstation open File Explorer/My Computer -> Map Network Drive -> choose drive letter -> path \\\\ServerName\\ShareName -> check Reconnect at logon -> Finish -> verify mapped drives appear."
         ],
-        tags: ["SMB", "NTFS", "Share Perms"]
+        tags: ["SMB", "NTFS", "Quota", "File Screening", "Mapped Drives"]
       }
     ]
   },
   {
     part: "Part 5",
-    title: "RAID Configuration",
-    icon: "",
-    tags: ["RAID", "Disk Management", "Redundancy"],
-    description: "RAID (Redundant Array of Independent Disks) in Windows Server 2008 combines multiple physical disks into a logical unit for redundancy, improved performance, or both.",
-    details: "Windows Server 2008 supports software RAID via Disk Management, including RAID-0 (striping for performance), RAID-1 (mirroring for redundancy), and RAID-5 (striping with parity for balanced performance and fault tolerance). Understanding the right RAID level for different workloads is essential for maintaining data availability and system performance.",
+    title: "RAID",
+    icon: "[=]",
+    tags: ["RAID 0", "RAID 1", "Spanned", "RAID 5"],
+    description: "Implement RAID configurations for redundancy and performance in the server environment. Apply security baseline policies and deploy scripts via GPO.",
+    details: "Install and configure RAID 0 (striped), RAID 1 (mirrored), Spanned volume, and RAID 5 (parity) using 10 attached virtual disks on cloned Windows Server 2008.",
     videos: [
       {
         title: "TUPT Domain: Part 5",
-        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
-        description: "Configuring software RAID levels on Windows Server 2008 using the built-in Disk Management console, comparing RAID-1 and RAID-5 and demonstrating a simulated disk failure recovery.",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Step-by-step virtual disk preparation, initialization, and RAID volume creation in Disk Management.",
         keyPoints: [
-          "Initialize and convert disks to dynamic storage",
-          "Create a RAID-1 mirrored volume for OS redundancy",
-          "Set up a RAID-5 striped-with-parity volume",
-          "Simulate disk failure and perform volume recovery"
+          "1. Prepare virtual disks: clone the Windows Server 2008 DHCP VM, open Settings -> Storage -> Add Hard Disk -> Create -> check Pre-allocate full size -> set 50 MB -> Finish.",
+          "2. Repeat disk creation until you have 10 additional virtual hard disks.",
+          "3. Attach all disks: Settings -> Storage -> attach Disk 1 to Disk 10 to the WS2008 VM.",
+          "4. Initialize disks: start WS2008 -> Server Manager -> Storage -> Disk Management -> Initialize Disk dialog -> set partition style to MBR -> OK.",
+          "5. Create RAID 0 (Striped): right-click Disk 1 -> New Striped Volume -> add Disk 2 -> Next -> assign name RAID0/striped -> quick format -> Finish -> confirm Yes.",
+          "6. Create RAID 1 (Mirrored): right-click Disk 3 -> New Mirrored Volume -> add Disk 4 -> Next -> name RAID1/mirrored -> quick format -> Finish -> confirm Yes.",
+          "7. Create Spanned volume: right-click Disk 5 -> New Spanned Volume -> add Disk 6 and Disk 7 -> Next -> name spanned -> quick format -> Finish -> confirm Yes.",
+          "8. Create RAID 5: right-click Disk 8 -> New RAID 5 Volume -> add Disk 9 and Disk 10 -> Next -> name RAID5 -> quick format -> Finish -> confirm Yes.",
+          "9. Verify final setup: RAID0 uses Disks 1-2 (performance), RAID1 uses Disks 3-4 (fault tolerance), Spanned uses Disks 5-7 (capacity), RAID5 uses Disks 8-10 (balanced performance and fault tolerance).",
+          "10. Confirm all volumes show healthy status in Disk Management before proceeding to policy deployment tasks."
         ],
-        tags: ["RAID-1", "RAID-5", "Dynamic Disk"]
+        tags: ["Disk Management", "MBR", "Volume Wizard", "Fault Tolerance"]
       }
     ]
   },
   {
     part: "Part 6",
-    title: "Remote Desktop Connection",
-    icon: "",
-    tags: ["RDP", "Remote Access", "Terminal Services"],
-    description: "Remote Desktop enables administrators and authorized users to connect to a server or workstation from a different location, as if sitting directly in front of it.",
-    details: "Windows Server 2008 includes Remote Desktop Services (formerly Terminal Services), allowing multiple simultaneous remote sessions. RDP operates over port 3389 and supports high-quality graphics, audio, and clipboard sharing. Properly securing RDP access - through firewall rules, NLA authentication, and certificate deployment - is essential to prevent unauthorized access.",
+    title: "Remote Desktop",
+    icon: "[>]",
+    tags: ["RDP", "Remote Administration", "Access Control"],
+    description: "Configure Remote Desktop services for remote administration and secure access. Design backup schedules and verify recovery procedures.",
+    details: "Enable and validate Remote Desktop connectivity from Windows Server 2008 to both Windows 7 and Windows XP with proper prerequisites and session-handling practices.",
     videos: [
       {
         title: "TUPT Domain: Part 6",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        description: "Enabling and securing Remote Desktop on Windows Server 2008, configuring Network Level Authentication (NLA), managing RDP users and groups, and connecting from a client machine.",
+        url: "https://youtu.be/Koqh-Y1OQzk",
+        description: "Enable RDP settings on clients and verify remote access sessions from the server.",
         keyPoints: [
-          "Enable Remote Desktop via System Properties",
-          "Configure Network Level Authentication (NLA)",
-          "Add authorized users to the Remote Desktop Users group",
-          "Connect from a Windows client using mstsc.exe"
+          "1. Start required VMs: Windows XP, Windows 7, and Windows Server 2008.",
+          "2. Enable RDP on Windows 7: in AD Users & Computers open Computers container -> open Windows 7 computer properties -> Remote Settings -> Allow connections from any version of Remote Desktop -> Apply -> OK.",
+          "3. Connect from WS2008 to Windows 7: open Remote Desktop Connection -> enter Windows 7 hostname -> Connect -> enter credentials -> accept prompt on Windows 7 -> verify desktop access.",
+          "4. Verify Windows 7 remote session success: WS2008 should now manage the Windows 7 workstation remotely.",
+          "5. Enable RDP on Windows XP: right-click My Computer -> Properties -> Remote tab -> ensure Allow users to connect remotely to this computer is checked -> OK.",
+          "6. Important prerequisite for XP: log off the local Windows XP user session before starting remote connection.",
+          "7. Connect from WS2008 to Windows XP: open Remote Desktop Connection -> enter XP hostname -> Connect -> accept prompt on XP -> enter credentials -> verify desktop access.",
+          "8. Validate remote management scope: confirm WS2008 can access resources and applications on both remote clients.",
+          "9. Enforce operational rule: do not keep the same XP user logged in locally while attempting simultaneous RDP access.",
+          "10. Final verification: confirm Remote Desktop setup complete for both Windows 7 and Windows XP endpoints."
         ],
-        tags: ["RDP", "NLA", "mstsc"]
+        tags: ["Windows 7", "Windows XP", "Remote Connection", "Verification"]
       }
     ]
   },
   {
     part: "Part 7",
-    title: "Web Server (IIS)",
-    icon: "",
-    tags: ["IIS", "HTTP", "Web Hosting"],
-    description: "A web server stores and serves website content to users. Windows Server 2008 includes Internet Information Services (IIS) 7.0, a powerful and flexible web platform.",
-    details: "IIS 7.0 introduced a modular architecture, allowing administrators to install only the components they need. It supports ASP.NET, PHP, static files, and more. Virtual hosting allows a single server to host multiple websites using different IP addresses, ports, or host headers. Application pools provide process isolation between websites for security and stability.",
+    title: "Web Server",
+    icon: "[W]",
+    tags: ["IIS 7", "Web Hosting", "Output Caching"],
+    description: "Deploy and configure web server roles (IIS) to host academic web applications and services. Implement security baselines and plan patch deployment.",
+    details: "Requirements: create a simple university website on IIS 7, create a simple site for each department, and create subdirectories for each department in the wwwroot folder.",
     videos: [
       {
         title: "TUPT Domain: Part 7",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        description: "Installing IIS on Windows Server 2008, creating and configuring websites and virtual directories, setting up application pools, and hosting a sample web application accessible from the domain.",
+        url: "https://youtu.be/nMsShHE3Ueg",
+        description: "Install IIS, configure the tupt.edu.ph site, apply output caching, organize department folders, and validate client access.",
         keyPoints: [
-          "Install IIS 7.0 via the Web Server (IIS) role",
-          "Create a new website and configure bindings",
-          "Set up application pools for process isolation",
-          "Test internal website access from domain clients"
+          "1. Install Web Server role: open Server Manager -> Roles -> Add Role -> select Web Server (IIS) -> Next -> complete installation.",
+          "2. Add required features during IIS install: Application Development, IIS 6 Management Compatibility, and FTP Server.",
+          "3. Download AnyToISO Converter from https://anytoiso-converter.en.download.it/ and install it for website content management.",
+          "4. Create university website in IIS Manager: right-click Sites -> Add Website -> Site Name: tupt -> Physical Path: C:\\inetpub\\wwwroot\\tupt -> IP: 172.31.0.31 -> Host Name: tupt.edu.ph -> OK.",
+          "5. Configure Output Caching for the tupt site: open Output Caching -> Add -> File extension .aspx -> enable User Mode Caching -> OK.",
+          "6. Prepare content structure in C:\\inetpub\\wwwroot\\tupt: copy iisstart file and create subdirectories Academics, Administrative, and each department from Part 2.",
+          "7. Add appropriate HTML/ASP.NET content in each department subdirectory.",
+          "8. Test local browse in IIS: Sites -> right-click tupt -> Browse and verify homepage and folders load.",
+          "9. Test access from multiple machines: WS2008, Windows 7, and Windows XP using http://tupt.edu.ph/.",
+          "10. Final verification: confirm TUPT site hosting, department content availability, .aspx caching, and workstation accessibility."
         ],
-        tags: ["IIS 7.0", "AppPool", "Bindings"]
+        tags: ["IIS", "Website", "Caching", "Department Folders"]
       }
     ]
   },
   {
     part: "Part 8",
     title: "Group Policies",
-    icon: "",
-    tags: ["GPO", "Security", "Policy Management"],
-    description: "Group Policy Objects (GPOs) are rules configured by administrators to uniformly control user and computer settings across all machines in a domain.",
-    details: "Group Policy is one of the most powerful tools in an Active Directory environment. GPOs can enforce desktop backgrounds, software restrictions, firewall rules, password complexity requirements, mapped drives, startup scripts, and hundreds more settings. Policies are linked to OUs, sites, or the entire domain and are applied in a defined order: Local  Site  Domain  OU.",
+    icon: "[#]",
+    tags: ["GPO", "Security Baseline", "Standardization"],
+    description: "Design and deploy Group Policy Objects to standardize configuration and security across clients. Implement basic monitoring and define incident response steps.",
+    details: "Create department wallpaper policies and apply security restrictions through Users Policy and Admin Policy with opposite enable/disable behavior where required.",
     videos: [
       {
         title: "TUPT Domain: Part 8",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Creating and linking Group Policy Objects in the Group Policy Management Console (GPMC), configuring common security policies, testing policy application with gpresult, and troubleshooting policy inheritance.",
+        url: "https://youtu.be/RH-DVE1_hfo",
+        description: "Implement department-specific GPOs and enforce desktop, account, update, device, and security restrictions.",
         keyPoints: [
-          "Open Group Policy Management Console (GPMC)",
-          "Create and link a GPO to an Organizational Unit",
-          "Configure password policies and desktop restrictions",
-          "Test and verify policy with gpupdate and gpresult"
+          "1. Create department wallpaper GPOs (example: ACADEMIC WALLPAPER) and configure: User Configuration -> Policies -> Administrative Templates -> Desktop -> Desktop -> Desktop Wallpaper -> Enable -> set wallpaper path -> Apply -> OK.",
+          "2. Repeat wallpaper policy creation for each department with corresponding wallpaper assets.",
+          "3. Create two domain GPOs: Users Policy and Admin Policy.",
+          "4. Apply rule baseline: if setting is enabled in Users Policy, set corresponding Admin Policy state to disabled where required.",
+          "5. Enable in Users Policy: Prohibit access to Control Panel and PC settings.",
+          "6. Enable: Do not store LAN Manager hash value on next password change.",
+          "7. Enable: Prevent access to the command prompt.",
+          "8. Enable: No auto-restart with logged-on users for scheduled automatic updates installations.",
+          "9. Enable: All removable storage classes -> Deny all access.",
+          "10. Enable: Prohibit user install (Windows Installer policy).",
+          "11. Disable Guest account status and enforce password baseline: minimum length 12, maximum age 42 days.",
+          "12. Enable audit and lockout controls: Audit directory service access (success), lockout duration 30 minutes, lockout threshold 3 attempts, reset counter after 30 minutes.",
+          "13. Remove links and UI entries from Start Menu and Taskbar: Windows Update, Network Connections, Help, Run, My Pictures, My Music, and My Network Places.",
+          "14. Enable Add Logoff on Start Menu and remove Task Manager from Ctrl+Alt+Del options.",
+          "15. Configure Internet Explorer browser title with domain name and enforce network controls: prohibit LAN connection property access, prevent registry editing tools, prevent command prompt access, and prohibit Control Panel access.",
+          "16. Validate each setting path in both Users Policy and Admin Policy and ensure intended scope is linked to correct OUs."
         ],
-        tags: ["GPMC", "GPO", "gpresult"]
+        tags: ["Desktop Policy", "Security", "Audit", "Lockout", "Restrictions"]
       }
     ]
   },
   {
     part: "Part 9",
-    title: "Windows Deployment Services",
-    icon: "",
-    tags: ["WDS", "PXE Boot", "OS Imaging"],
-    description: "Windows Deployment Services (WDS) allows administrators to deploy Windows operating systems remotely over the network to multiple computers simultaneously.",
-    details: "WDS uses PXE (Pre-Boot Execution Environment) to network-boot client machines and present them with OS installation images without needing physical media. It integrates with DHCP and DNS for seamless network booting. WDS significantly reduces the time required to deploy operating systems in large organizations, enabling automated and consistent installations.",
+    title: "Windows Deployment",
+    icon: "[X]",
+    tags: ["Imaging", "Unattended Install", "Deployment"],
+    description: "Plan and execute Windows deployment strategies, including imaging, unattended installs, and deployment best practices. Finalize documentation, record video demonstrations, and submit.",
+    details: "Complete the final deployment phase with standardized imaging flow, unattended setup planning, validation checks, and submission requirements.",
     videos: [
       {
         title: "TUPT Domain: Part 9",
-        url: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-        description: "Setting up Windows Deployment Services on Windows Server 2008, configuring the WDS server, adding boot and install images, and performing a full PXE network boot deployment on a client machine.",
+        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        description: "Finalize deployment workflow, evidence collection, and submission outputs.",
         keyPoints: [
-          "Install and configure the WDS server role",
-          "Add Windows boot images (WinPE) to WDS",
-          "Import a Windows install image (.wim file)",
-          "Perform a PXE network boot and OS deployment"
+          "1. Plan deployment strategy: choose imaging or unattended install approach per target workstation profile.",
+          "2. Prepare master image with required drivers, updates, security baseline, and domain-ready configuration.",
+          "3. Define unattended answer file settings for hostname, networking, locale, and user setup consistency.",
+          "4. Execute pilot deployment to a small workstation set and validate post-install functionality.",
+          "5. Verify domain join, policy application, shared-drive mapping, and application readiness.",
+          "6. Record deployment best practices, known issues, and remediation steps in technical documentation.",
+          "7. Capture proof-of-work: screenshots, logs, and short video demonstrations of successful deployment.",
+          "8. Finalize all documentation and submit complete deliverables based on project requirements."
         ],
-        tags: ["WDS", "PXE", "WIM Images"]
+        tags: ["Deployment Plan", "Imaging", "Validation", "Submission"]
       }
     ]
   }
@@ -1024,8 +1042,11 @@ function renderParts() {
   const container = document.getElementById('partsContainer');
 
   let totalVideos = visibleCaseParts.reduce((acc, p) => acc + p.videos.length, 0);
-  document.getElementById('totalCount').textContent = totalVideos;
-  document.getElementById('partCount').textContent = visibleCaseParts.length;
+  const totalCountEl = document.getElementById('totalCount');
+  const partCountEl = document.getElementById('partCount');
+  if (totalCountEl) totalCountEl.textContent = totalVideos;
+  if (partCountEl) partCountEl.textContent = visibleCaseParts.length;
+  
 
   container.innerHTML = visibleCaseParts.map((part) => {
     const tagsHtml = (part.tags || []).map(t => `<span class="desc-tag">${t}</span>`).join('');
@@ -1224,6 +1245,26 @@ if (document.readyState === 'loading') {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

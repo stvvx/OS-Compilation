@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Task Activities - ITOS220-T</title>
+  <title>Task Activities ITOS220-T</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -69,7 +69,6 @@
       mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
     }
 
-    /*  NAV  */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
       height:70px; display:flex; align-items:center; justify-content:space-between;
@@ -671,60 +670,26 @@
 <canvas id="bg-canvas"></canvas>
 
 <!-- NAV -->
-<nav>
-  <a href="../home.html" class="nav-logo">
-    <div class="win-panes"><span></span><span></span><span></span><span></span></div>
-    <span class="nav-brand">Win<span>OS</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="../home.html"><span class="dot"></span>Home</a></li>
-    <li class="has-dropdown">
-      <a href="task1.html" class="active"><span class="dot"></span>Task Activities <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="task1.html">Activity 1: Installation and Activation of Windows Server 2008</a></li>
-        <li><a href="task2.html">Activity 2: Active Directory: Creating Users</a></li>
-        <li><a href="task3.html">Activity 3: DHCP Joining Wordstation in Domgin</a></li>
-        <li><a href="task4.html">Activity 4: RAID Installation</a></li>
-        <li><a href="task5.html">Activity 5: Group Policy Management</a></li>
-        <li><a href="task6.html">Activity 6: Web Server</a></li>
-        <li><a href="task7.html">Activity 7: File Server</a></li>
-        <li><a href="task8.html">Activity 8: WDS</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../case study/part1.html"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-<li><a href="../case study/part1.html">Part 1: Domain Controller</a></li>
-        <li><a href="../case study/part2.html">Part 2: Adding Users</a></li>
-        <li><a href="../case study/part3.html">Part 3: DHCP Server</a></li>
-        <li><a href="../case study/part4.html">Part 4: File Sharing</a></li>
-        <li><a href="../case study/part5.html">Part 5: RAID</a></li>
-        <li><a href="../case study/part6.html">Part 6: Remote Desktop</a></li>
-        <li><a href="../case study/part7.html">Part 7: Web Server</a></li>
-        <li><a href="../case study/part8.html">Part 8: Group Policies</a></li>
-        <li><a href="../case study/part9.html">Part 9: Windows Deployment</a></li>
-      </ul>
-    </li>
-    <li class="has-dropdown">
-      <a href="../installation/windows95.html"><span class="dot"></span>Installation <span class="nav-caret" aria-hidden="true"></span></a>
-      <ul class="nav-submenu">
-        <li><a href="../installation/windows95.html">Windows 95</a></li>
-        <li><a href="../installation/windows98.html">Windows 98</a></li>
-        <li><a href="../installation/windowsnt.html">Windows NT</a></li>
-        <li><a href="../installation/windows2000.html">Windows 2000</a></li>
-        <li><a href="../installation/windowsme.html">Windows ME</a></li>
-        <li><a href="../installation/windowsxp.html">Windows XP</a></li>
-        <li><a href="../installation/windows-server-2003.html">Windows Server 2003</a></li>
-        <li><a href="../installation/windows-vista.html">Windows Vista</a></li>
-        <li><a href="../installation/windows-server-2008.html">Windows Server 2008</a></li>
-        <li><a href="../installation/windows7.html">Windows 7</a></li>
-        <li><a href="../installation/windows8.html">Windows 8</a></li>
-        <li><a href="../installation/windows10.html">Windows 10</a></li>
-        <li><a href="../installation/windows11.html">Windows 11</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+<div id="siteHeader"></div>
+<script>
+(function () {
+  fetch('/header.html')
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var host = document.getElementById('siteHeader');
+      if (!host) return;
+      host.innerHTML = html;
+      var path = window.location.pathname.toLowerCase();
+      var active = 'home';
+      if (path.indexOf('/task/') !== -1) active = 'task';
+      else if (path.indexOf('/case%20study/') !== -1 || path.indexOf('/case study/') !== -1) active = 'case';
+      else if (path.indexOf('/installation/') !== -1) active = 'installation';
+      var link = host.querySelector('[data-nav="' + active + '"]');
+      if (link) link.classList.add('active');
+    })
+    .catch(function () {});
+})();
+</script>
 
 <!-- PAGE -->
 <div class="page">
@@ -764,7 +729,6 @@ const caseParts = [
   {
     part: "Part 1",
     title: "Installation and Activation of Windows Server 2008",
-    icon: "",
     tags: ["VirtualBox", "Windows Server 2008", "Installation"],
     description: "Step-by-step virtual machine setup and installation guide for Windows Server 2008 using Oracle VirtualBox, intended for educational and laboratory use.",
     details: "This activity covers software requirements, VM creation, ISO attachment, operating system installation, initial administrator setup, Guest Additions, and activation options.",
@@ -796,7 +760,7 @@ const caseParts = [
   {
     part: "Part 2",
     title: "DNS Records and Name Resolution",
-    icon: "",
+    icon: "[~]",
     tags: ["DNS", "A Record", "Troubleshooting"],
     description: "Configure forward lookup zones and validate hostname resolution across domain clients.",
     details: "The lab covers DNS service checks, record creation, and resolution testing with nslookup and ping to ensure directory-dependent services work correctly.",
@@ -818,7 +782,7 @@ const caseParts = [
   {
     part: "Part 3",
     title: "DHCP Scope Configuration",
-    icon: "",
+    icon: "[*]",
     tags: ["DHCP", "Scope", "Lease"],
     description: "Deploy a DHCP scope and ensure clients receive correct IP, gateway, and DNS options.",
     details: "This module emphasizes scope design, exclusions, lease timing, and conflict prevention so network clients can connect with minimal manual intervention.",
@@ -840,14 +804,14 @@ const caseParts = [
   {
     part: "Part 4",
     title: "File Sharing and Permission Matrix",
-    icon: "",
+    icon: "[F]",
     tags: ["SMB", "NTFS", "ACL"],
     description: "Build shared folders and apply layered share and NTFS permissions for controlled access.",
     details: "The objective is to understand effective permissions by combining security groups, share rights, and NTFS ACLs while avoiding over-permissioned folders.",
     videos: [
       {
         title: "Task Activity 4",
-        url: "https://www.youtube.com/watch?v=tYzMGcUty6s",
+        url: "https://youtu.be/hDUjPztHtaw?si=eAfmOR8I0_CYOqZy",
         description: "Hands-on permission design for secure shared resources and mapped network drives.",
         keyPoints: [
           "Create shared folders and configure share permissions",
@@ -862,7 +826,7 @@ const caseParts = [
   {
     part: "Part 5",
     title: "Group Policy Enforcement",
-    icon: "",
+    icon: "[#]",
     tags: ["GPO", "Security", "Policy"],
     description: "Create and link GPOs to enforce account, desktop, and security standards across domain clients.",
     details: "This activity focuses on policy scoping, inheritance, and validation so administrators can apply consistent controls without manual per-device configuration.",
@@ -883,28 +847,23 @@ const caseParts = [
   },
   {
     part: "Part 6",
-    title: "Web Server",
+    title: "IIS Website Deployment",
     icon: "[W]",
-    tags: ["IIS", "Application Server", "ASP.NET"],
-    description: "Install and configure Internet Information Services (IIS) to host a simple web application inside the Windows Server environment. This demonstrates how servers can provide web services to client computers within a domain network.",
-    details: "We install and configure Application Server and Web Server (IIS) roles with ASP.NET support enabled. Tasks include installing both roles, configuring IIS features and components, creating a simple ASP.NET web application, and verifying accessibility from client browsers using the domain name.",
+    tags: ["IIS", "Bindings", "Web"],
+    description: "Install IIS role services and publish a test site accessible from clients in the domain.",
+    details: "The module teaches role installation, site binding, and basic troubleshooting of HTTP access and firewall policy interactions.",
     videos: [
       {
         title: "Task Activity 6",
         url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        description: "Install and configure IIS with Application Server role and create an ASP.NET web application.",
+        description: "Publish and verify a web application using IIS on Windows Server 2008.",
         keyPoints: [
-          "Installed Roles: Application Server",
-          "Installed Roles: Web Server (IIS)",
-          "Enabled Features: ASP.NET",
-          "Install the Application Server Role",
-          "Install the Web Server Role",
-          "Enable required IIS features and components",
-          "Create a simple ASP.NET web application after installation",
-          "Verify that the web page is accessible from the client browser",
-          "Access the website using the domain name instead of the server IP address"
+          "Install IIS 7.0 web role",
+          "Create website and configure bindings",
+          "Set NTFS permissions on web root",
+          "Validate access from domain clients"
         ],
-        tags: ["IIS", "Application Server", "ASP.NET"]
+        tags: ["IIS", "HTTP", "Bindings"]
       }
     ]
   },
@@ -1225,6 +1184,9 @@ if (document.readyState === 'loading') {
 </script>
 </body>
 </html>
+
+
+
 
 
 
