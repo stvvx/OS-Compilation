@@ -254,6 +254,7 @@
       padding: 104px 60px 80px;
       animation: sec-in .5s cubic-bezier(.22,1,.36,1);
     }
+    #home { display: block; }
     section.active { display: block; }
 
     @keyframes sec-in {
@@ -1529,7 +1530,7 @@
 <div id="siteHeader"></div>
 <script>
 (function () {
-  fetch('/header.html')
+  fetch('header.html')
     .then(function (r) { return r.text(); })
     .then(function (html) {
       var host = document.getElementById('siteHeader');
