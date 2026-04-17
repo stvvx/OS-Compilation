@@ -660,6 +660,234 @@
     .has-dropdown:focus-within .nav-submenu {
       display:block;
     }
+
+    /* Mobile Menu Toggle Button */
+    .nav-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      z-index: 210;
+    }
+
+    .nav-menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2.5px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .nav-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media(max-width: 768px) {
+      nav {
+        padding: 0 24px;
+        height: 62px;
+      }
+
+      .nav-menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(3, 9, 18, 0.98);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 180, 255, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.mobile-open {
+        max-height: 600px;
+      }
+
+      .nav-links li {
+        border-bottom: 1px solid rgba(0, 180, 255, 0.05);
+      }
+
+      .nav-links a {
+        display: flex;
+        padding: 14px 24px;
+        font-size: 12px;
+        min-height: 44px;
+        align-items: center;
+      }
+
+      .nav-submenu {
+        position: static;
+        top: auto;
+        left: auto;
+        background: rgba(0, 30, 70, 0.8);
+        border: none;
+        border-radius: 0;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .has-dropdown.open .nav-submenu {
+        max-height: 500px;
+        display: block;
+      }
+
+      .nav-submenu a {
+        padding: 12px 24px 12px 48px;
+        font-size: 11px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      section {
+        padding: 90px 20px 60px;
+      }
+
+      .video-card {
+        flex-direction: column;
+        min-height: unset;
+      }
+
+      .video-frame {
+        flex: none;
+        width: 100%;
+        padding-bottom: 56.25%;
+      }
+
+      .video-frame::before {
+        display: none;
+      }
+
+      .video-body {
+        padding: 18px 20px 16px;
+      }
+
+      .video-title {
+        font-size: 14px;
+      }
+
+      .video-desc {
+        font-size: 12px;
+      }
+
+      .watch-btn {
+        padding: 8px 18px;
+        font-size: 11px;
+        min-height: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 7px;
+      }
+
+      footer {
+        padding: 20px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    @media(max-width: 480px) {
+      nav {
+        height: 56px;
+        padding: 0 16px;
+      }
+
+      .nav-logo {
+        gap: 8px;
+      }
+
+      .win-panes {
+        width: 24px;
+        height: 24px;
+        gap: 2px;
+      }
+
+      .nav-brand {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-brand span {
+        display: none;
+      }
+
+      .nav-links {
+        top: 56px;
+      }
+
+      section {
+        padding: 75px 14px 45px;
+      }
+
+      .video-index {
+        font-size: 8px;
+      }
+
+      .video-title {
+        font-size: 13px;
+      }
+
+      .video-tag {
+        padding: 2px 8px;
+        font-size: 7px;
+      }
+
+      .video-desc {
+        font-size: 11px;
+      }
+
+      .video-learn-title {
+        font-size: 7px;
+      }
+
+      .video-learn-list li {
+        font-size: 11px;
+      }
+
+      .watch-btn {
+        padding: 7px 14px;
+        font-size: 10px;
+        min-height: 36px;
+      }
+
+      .progress-track {
+        margin-bottom: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 6px;
+      }
+
+      footer {
+        padding: 14px;
+        font-size: 9px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -735,7 +963,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 1",
-        url: "https://youtu.be/PTzOiEW32Kg?si=jaOAzM6gUTpATJ2J",
+        url: "https://www.youtube.com/watch?v=PTzOiEW32Kg",
         description: "Windows Server 2008 Installation Guide (Oracle VirtualBox): complete walk-through from prerequisites to activation and post-install reminders.",
         keyPoints: [
           "Requirements: install Oracle VirtualBox and matching VirtualBox Extension Pack from https://www.virtualbox.org/.",
@@ -767,7 +995,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 2",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        url: "https://youtu.be/1iK9YrS71NM",
         description: "Perform DNS zone, record, and verification tasks used in routine server administration.",
         keyPoints: [
           "Create and edit host (A) and alias (CNAME) records",
@@ -789,7 +1017,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 3",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        url: "https://youtu.be/h7v50NA31qo",
         description: "Configure and validate DHCP behavior from both server and client perspectives.",
         keyPoints: [
           "Create scope ranges and exclusions",
@@ -811,7 +1039,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 4",
-        url: "https://youtu.be/hDUjPztHtaw?si=eAfmOR8I0_CYOqZy",
+        url: "https://youtu.be/ehiSOnlPzZo",
         description: "Hands-on permission design for secure shared resources and mapped network drives.",
         keyPoints: [
           "Create shared folders and configure share permissions",
@@ -825,23 +1053,28 @@ const caseParts = [
   },
   {
     part: "Part 5",
-    title: "Group Policy Enforcement",
+    title: "Group Policy Management",
     icon: "[#]",
-    tags: ["GPO", "Security", "Policy"],
-    description: "Create and link GPOs to enforce account, desktop, and security standards across domain clients.",
-    details: "This activity focuses on policy scoping, inheritance, and validation so administrators can apply consistent controls without manual per-device configuration.",
+    tags: ["GPO", "Restrictions", "Security"],
+    description: "Group Policy Management. We configure Group Policy Objects (GPOs) to manage system restrictions and security policies.",
+    details: "Implemented policies: remove Windows Update access, add Logoff to Start Menu, disable Task Manager (CTRL+ALT+DEL), customize Internet Explorer title bar, restrict LAN Connection Properties, and prevent access to Command Prompt, Registry Editor, and Control Panel. Admin accounts retain full control, while users are restricted.",
     videos: [
       {
         title: "Task Activity 5",
-        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
-        description: "Implement baseline GPO settings and validate their application on client machines.",
+        url: "https://youtu.be/XZ4pwlVnfF4",
+        description: "Configure and apply GPO restrictions and security controls for domain users.",
         keyPoints: [
-          "Create and link GPO to target OU",
-          "Set password and account lockout policies",
-          "Configure desktop restriction examples",
-          "Validate with gpupdate and gpresult"
+          "Remove Windows Update access",
+          "Add Logoff to Start Menu",
+          "Disable Task Manager (CTRL+ALT+DEL)",
+          "Customize Internet Explorer Title Bar",
+          "Restrict LAN Connection Properties",
+          "Prevent access to Command Prompt",
+          "Prevent access to Registry Editor",
+          "Prevent access to Control Panel",
+          "Admin accounts retain full control while users are restricted"
         ],
-        tags: ["GPMC", "GPO", "gpresult"]
+        tags: ["GPO", "System Restrictions", "Security Policy"]
       }
     ]
   },
@@ -855,7 +1088,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 6",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        url: "https://youtu.be/sDIxa2W0EDk",
         description: "Publish and verify a web application using IIS on Windows Server 2008.",
         keyPoints: [
           "Install IIS 7.0 web role",
@@ -877,7 +1110,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 7",
-        url: "https://youtu.be/35HSuW7lRDc?si=AfBTlx6L1ZQlVGzV",
+        url: "https://youtu.be/ehiSOnlPzZo",
         description: "Secure and test remote desktop access for designated admin accounts.",
         keyPoints: [
           "Enable RDP and configure NLA",
@@ -899,7 +1132,7 @@ const caseParts = [
     videos: [
       {
         title: "Task Activity 8",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        url: "https://youtu.be/jpdWVMAGuMo",
         description: "Plan, run, and verify backup and restore operations for critical server assets.",
         keyPoints: [
           "Configure backup schedule and retention",

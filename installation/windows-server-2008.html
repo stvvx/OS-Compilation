@@ -661,6 +661,234 @@
     .has-dropdown:focus-within .nav-submenu {
       display:block;
     }
+
+    /* Mobile Menu Toggle Button */
+    .nav-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      z-index: 210;
+    }
+
+    .nav-menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2.5px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .nav-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media(max-width: 768px) {
+      nav {
+        padding: 0 24px;
+        height: 62px;
+      }
+
+      .nav-menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(3, 9, 18, 0.98);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 180, 255, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.mobile-open {
+        max-height: 600px;
+      }
+
+      .nav-links li {
+        border-bottom: 1px solid rgba(0, 180, 255, 0.05);
+      }
+
+      .nav-links a {
+        display: flex;
+        padding: 14px 24px;
+        font-size: 12px;
+        min-height: 44px;
+        align-items: center;
+      }
+
+      .nav-submenu {
+        position: static;
+        top: auto;
+        left: auto;
+        background: rgba(0, 30, 70, 0.8);
+        border: none;
+        border-radius: 0;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .has-dropdown.open .nav-submenu {
+        max-height: 500px;
+        display: block;
+      }
+
+      .nav-submenu a {
+        padding: 12px 24px 12px 48px;
+        font-size: 11px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      section {
+        padding: 90px 20px 60px;
+      }
+
+      .video-card {
+        flex-direction: column;
+        min-height: unset;
+      }
+
+      .video-frame {
+        flex: none;
+        width: 100%;
+        padding-bottom: 56.25%;
+      }
+
+      .video-frame::before {
+        display: none;
+      }
+
+      .video-body {
+        padding: 18px 20px 16px;
+      }
+
+      .video-title {
+        font-size: 14px;
+      }
+
+      .video-desc {
+        font-size: 12px;
+      }
+
+      .watch-btn {
+        padding: 8px 18px;
+        font-size: 11px;
+        min-height: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 7px;
+      }
+
+      footer {
+        padding: 20px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    @media(max-width: 480px) {
+      nav {
+        height: 56px;
+        padding: 0 16px;
+      }
+
+      .nav-logo {
+        gap: 8px;
+      }
+
+      .win-panes {
+        width: 24px;
+        height: 24px;
+        gap: 2px;
+      }
+
+      .nav-brand {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-brand span {
+        display: none;
+      }
+
+      .nav-links {
+        top: 56px;
+      }
+
+      section {
+        padding: 75px 14px 45px;
+      }
+
+      .video-index {
+        font-size: 8px;
+      }
+
+      .video-title {
+        font-size: 13px;
+      }
+
+      .video-tag {
+        padding: 2px 8px;
+        font-size: 7px;
+      }
+
+      .video-desc {
+        font-size: 11px;
+      }
+
+      .video-learn-title {
+        font-size: 7px;
+      }
+
+      .video-learn-list li {
+        font-size: 11px;
+      }
+
+      .watch-btn {
+        padding: 7px 14px;
+        font-size: 10px;
+        min-height: 36px;
+      }
+
+      .progress-track {
+        margin-bottom: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 6px;
+      }
+
+      footer {
+        padding: 14px;
+        font-size: 9px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -739,7 +967,7 @@ const caseParts = [
     videos: [
       {
         title: "Windows 95 Installation Guide",
-        url: "https://youtu.be/yjg3nbwVQzc?si=1Rwvnl1HVmo0E0DJ",
+        url: "https://youtu.be/aXiYEmgftzY",
         description: "Step-by-step Windows 95 VM setup and installation walkthrough.",
         keyPoints: [
           "1. Important Download Links:",
@@ -769,7 +997,7 @@ const caseParts = [
     videos: [
       {
         title: "Windows 98 Installation Guide",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        url: "https://youtu.be/spRtE-rI5ng",
         description: "Step-by-step Windows 98 VM setup and installation walkthrough.",
         keyPoints: [
           "1. Important Download Link:",
@@ -959,7 +1187,7 @@ const caseParts = [
     videos: [
       {
         title: "Windows Server 2008 Installation Guide",
-        url: "https://www.youtube.com/watch?v=-ZgEHyXEgAw",
+        url: "https://youtu.be/DMrYVE6zEIg",
         description: "Step-by-step Server 2008 VM setup for lab deployment.",
         keyPoints: [
           "1. Important Download Links:",
@@ -987,7 +1215,7 @@ const caseParts = [
     videos: [
       {
         title: "Windows 7 Installation Guide",
-        url: "https://youtu.be/wMermxq9fWk?si=oonPn8Re0xPYu0Xn",
+        url: "https://www.youtube.com/watch?v=wMermxq9fWk",
         description: "Step-by-step Windows 7 installation in VirtualBox.",
         keyPoints: [
           "1. Important Download Link:",
@@ -1014,7 +1242,7 @@ const caseParts = [
     videos: [
       {
         title: "Windows 8 Installation Guide",
-        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        url: "https://youtu.be/-bWLEITYJfc",
         description: "Step-by-step Windows 8 installation in VirtualBox.",
         keyPoints: [
           "1. Important Download Link:",

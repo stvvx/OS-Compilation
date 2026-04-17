@@ -661,6 +661,234 @@
     .has-dropdown:focus-within .nav-submenu {
       display:block;
     }
+
+    /* Mobile Menu Toggle Button */
+    .nav-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      z-index: 210;
+    }
+
+    .nav-menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2.5px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .nav-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media(max-width: 768px) {
+      nav {
+        padding: 0 24px;
+        height: 62px;
+      }
+
+      .nav-menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(3, 9, 18, 0.98);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 180, 255, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.mobile-open {
+        max-height: 600px;
+      }
+
+      .nav-links li {
+        border-bottom: 1px solid rgba(0, 180, 255, 0.05);
+      }
+
+      .nav-links a {
+        display: flex;
+        padding: 14px 24px;
+        font-size: 12px;
+        min-height: 44px;
+        align-items: center;
+      }
+
+      .nav-submenu {
+        position: static;
+        top: auto;
+        left: auto;
+        background: rgba(0, 30, 70, 0.8);
+        border: none;
+        border-radius: 0;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .has-dropdown.open .nav-submenu {
+        max-height: 500px;
+        display: block;
+      }
+
+      .nav-submenu a {
+        padding: 12px 24px 12px 48px;
+        font-size: 11px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      section {
+        padding: 90px 20px 60px;
+      }
+
+      .video-card {
+        flex-direction: column;
+        min-height: unset;
+      }
+
+      .video-frame {
+        flex: none;
+        width: 100%;
+        padding-bottom: 56.25%;
+      }
+
+      .video-frame::before {
+        display: none;
+      }
+
+      .video-body {
+        padding: 18px 20px 16px;
+      }
+
+      .video-title {
+        font-size: 14px;
+      }
+
+      .video-desc {
+        font-size: 12px;
+      }
+
+      .watch-btn {
+        padding: 8px 18px;
+        font-size: 11px;
+        min-height: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 7px;
+      }
+
+      footer {
+        padding: 20px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    @media(max-width: 480px) {
+      nav {
+        height: 56px;
+        padding: 0 16px;
+      }
+
+      .nav-logo {
+        gap: 8px;
+      }
+
+      .win-panes {
+        width: 24px;
+        height: 24px;
+        gap: 2px;
+      }
+
+      .nav-brand {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-brand span {
+        display: none;
+      }
+
+      .nav-links {
+        top: 56px;
+      }
+
+      section {
+        padding: 75px 14px 45px;
+      }
+
+      .video-index {
+        font-size: 8px;
+      }
+
+      .video-title {
+        font-size: 13px;
+      }
+
+      .video-tag {
+        padding: 2px 8px;
+        font-size: 7px;
+      }
+
+      .video-desc {
+        font-size: 11px;
+      }
+
+      .video-learn-title {
+        font-size: 7px;
+      }
+
+      .video-learn-list li {
+        font-size: 11px;
+      }
+
+      .watch-btn {
+        padding: 7px 14px;
+        font-size: 10px;
+        min-height: 36px;
+      }
+
+      .progress-track {
+        margin-bottom: 40px;
+      }
+
+      .progress-step .p-label {
+        font-size: 6px;
+      }
+
+      footer {
+        padding: 14px;
+        font-size: 9px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -766,7 +994,7 @@ const caseParts = [
     videos: [
       {
         title: "TUPT Domain: Part 2",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+        url: "https://youtu.be/I383y2-qKLA",
         description: "Create and organize domain users, OUs, GPOs, workstation restrictions, and logon-hour policies for the TUP Taguig scenario.",
         keyPoints: [
           "1. Add Domain Users (distribute IT student names) to: Academic Department, Basic Art and Sciences Department, BTVTE Electrical, BTVTE Electronics, BTVTE Computer Hardware, BTVTE Computer Software, Electrical and Allied Department, Information Technology, Electrical Engineering, Electronics Engineering, Instrumentation and Control Technology, BET Mechatronics, Mechanical and Allied Department, Mechanical Engineering Technology, RAC Engineering Technology, Non Destructive Engineering Technology, Electromechanical Engineering Technology, Automotive Engineering Technology, BET ElectroMechanical, Civil and Allied Department, Civil Engineering, Civil Engineering Technology, Environmental Science, Chemical Engineering Technology, Administrative Department, Registrar's Office, Director's Office, Research and Extension, Human Resource and Management Office, Finance Office, Supply and Procurement, Records Office, Library Services",
@@ -793,7 +1021,7 @@ const caseParts = [
     videos: [
       {
         title: "TUPT Domain: Part 3",
-        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        url: "https://youtu.be/7aAIgSYw_o8",
         description: "End-to-end DHCP setup for Class A (XP Female) and Class B (Windows 7 Male) networks, including exclusions, DNS options, domain join, lease verification, and troubleshooting.",
         keyPoints: [
           "1. Setup steps: clone Windows Server 2008, clone Windows 7 and XP, and set WS2008 Adapter 1 and 2 to Internal Network",
@@ -824,7 +1052,7 @@ const caseParts = [
     videos: [
       {
         title: "TUPT Domain: Part 4",
-        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        url: "https://youtu.be/IL_zR-K1d9A",
         description: "End-to-end file services deployment with quotas, file screening, share provisioning, and mapped network drives.",
         keyPoints: [
           "1. Create folders: build directories for all departments/sections from Part 2, then create University and Installer folders (optional script automation allowed).",
@@ -852,7 +1080,7 @@ const caseParts = [
     videos: [
       {
         title: "TUPT Domain: Part 5",
-        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        url: "https://youtu.be/Y3_XdkbYGg8",
         description: "Step-by-step virtual disk preparation, initialization, and RAID volume creation in Disk Management.",
         keyPoints: [
           "1. Prepare virtual disks: clone the Windows Server 2008 DHCP VM, open Settings -> Storage -> Add Hard Disk -> Create -> check Pre-allocate full size -> set 50 MB -> Finish.",
@@ -970,7 +1198,7 @@ const caseParts = [
     videos: [
       {
         title: "TUPT Domain: Part 9",
-        url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+        url: "https://youtu.be/q2ys8nDwuig",
         description: "Finalize deployment workflow, evidence collection, and submission outputs.",
         keyPoints: [
           "1. Plan deployment strategy: choose imaging or unattended install approach per target workstation profile.",
