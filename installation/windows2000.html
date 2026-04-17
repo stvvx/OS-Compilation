@@ -902,7 +902,7 @@
 <div id="siteHeader"></div>
 <script>
 (function () {
-  fetch('/header.html')
+  fetch('../header.html')
     .then(function (r) { return r.text(); })
     .then(function (html) {
       var host = document.getElementById('siteHeader');
