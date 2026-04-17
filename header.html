@@ -1,3 +1,71 @@
+<style>
+  .nav-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 6px;
+    z-index: 210;
+  }
+
+  .nav-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2.5px;
+    background: var(--cyan, #00d4ff);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+  }
+
+  .nav-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+  }
+
+  @media (max-width: 768px) {
+    .nav-menu-toggle {
+      display: flex;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 62px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      z-index: 200;
+    }
+
+    .nav-links.mobile-open {
+      max-height: 600px;
+    }
+
+    .nav-links a {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
+    }
+
+    .nav-submenu {
+      position: static;
+      min-width: 100%;
+    }
+  }
+</style>
+
 <nav>
   <a href="/OS-Compilation/home.html" class="nav-logo">
     <div class="win-panes"><span></span><span></span><span></span><span></span></div>
