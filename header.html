@@ -137,6 +137,16 @@
     const dropdowns = document.querySelectorAll('.has-dropdown');
     if (!menuToggle) return;
 
+    function syncMenuToggleVisibility() {
+      if (window.innerWidth <= 768) {
+        menuToggle.style.display = 'flex';
+      } else {
+        menuToggle.style.display = '';
+      }
+    }
+
+    syncMenuToggleVisibility();
+
     // Toggle mobile menu
     menuToggle.addEventListener('click', function() {
       menuToggle.classList.toggle('active');
@@ -171,6 +181,7 @@
 
     // Close menu on window resize if going back to desktop
     window.addEventListener('resize', function() {
+      syncMenuToggleVisibility();
       if (window.innerWidth > 768) {
         menuToggle.classList.remove('active');
         navLinks.classList.remove('mobile-open');
