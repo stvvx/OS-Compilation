@@ -27,17 +27,17 @@
       </ul>
     </li>
     <li class="has-dropdown">
-      <a href="./case%20study/part1.html" data-nav="case"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
+      <a href="./case-study/part1.html" data-nav="case"><span class="dot"></span>Case Study <span class="nav-caret" aria-hidden="true"></span></a>
       <ul class="nav-submenu">
-        <li><a href="./case%20study/part1.html">Part 1: Domain Controller</a></li>
-        <li><a href="./case%20study/part2.html">Part 2: Adding Users</a></li>
-        <li><a href="./case%20study/part3.html">Part 3: DHCP Server</a></li>
-        <li><a href="./case%20study/part4.html">Part 4: File Sharing</a></li>
-        <li><a href="./case%20study/part5.html">Part 5: RAID</a></li>
-        <li><a href="./case%20study/part6.html">Part 6: Remote Desktop</a></li>
-        <li><a href="./case%20study/part7.html">Part 7: Web Server</a></li>
-        <li><a href="./case%20study/part8.html">Part 8: Group Policies</a></li>
-        <li><a href="./case%20study/part9.html">Part 9: Windows Deployment</a></li>
+        <li><a href="./case-study/part1.html">Part 1: Domain Controller</a></li>
+        <li><a href="./case-study/part2.html">Part 2: Adding Users</a></li>
+        <li><a href="./case-study/part3.html">Part 3: DHCP Server</a></li>
+        <li><a href="./case-study/part4.html">Part 4: File Sharing</a></li>
+        <li><a href="./case-study/part5.html">Part 5: RAID</a></li>
+        <li><a href="./case-study/part6.html">Part 6: Remote Desktop</a></li>
+        <li><a href="./case-study/part7.html">Part 7: Web Server</a></li>
+        <li><a href="./case-study/part8.html">Part 8: Group Policies</a></li>
+        <li><a href="./case-study/part9.html">Part 9: Windows Deployment</a></li>
       </ul>
     </li>
     <li class="has-dropdown">
@@ -68,7 +68,7 @@
     const navLinks = document.querySelector('.nav-links');
     const dropdowns = document.querySelectorAll('.has-dropdown');
     const pagePath = window.location.pathname.toLowerCase();
-    const prefix = (pagePath.indexOf('/task/') !== -1 || pagePath.indexOf('/case%20study/') !== -1 || pagePath.indexOf('/case study/') !== -1 || pagePath.indexOf('/installation/') !== -1) ? '../' : '';
+    const prefix = (pagePath.indexOf('/task/') !== -1 || pagePath.indexOf('/case-study/') !== -1 || pagePath.indexOf('/installation/') !== -1) ? '../' : '';
 
     if (!menuToggle) return;
 
