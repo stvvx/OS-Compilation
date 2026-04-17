@@ -908,10 +908,20 @@
       var host = document.getElementById('siteHeader');
       if (!host) return;
       host.innerHTML = html;
+      var scripts = host.querySelectorAll('script');
+      scripts.forEach(function (oldScript) {
+        var script = document.createElement('script');
+        if (oldScript.src) {
+          script.src = oldScript.src;
+        } else {
+          script.text = oldScript.textContent || oldScript.innerText || '';
+        }
+        oldScript.parentNode.replaceChild(script, oldScript);
+      });
       var path = window.location.pathname.toLowerCase();
       var active = 'home';
       if (path.indexOf('/task/') !== -1) active = 'task';
-      else if (path.indexOf('/case%20study/') !== -1 || path.indexOf('/case study/') !== -1) active = 'case';
+      else if (path.indexOf('/case-study/') !== -1) active = 'case';
       else if (path.indexOf('/installation/') !== -1) active = 'installation';
       var link = host.querySelector('[data-nav="' + active + '"]');
       if (link) link.classList.add('active');
